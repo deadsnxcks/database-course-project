@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS operation_cargo;
+DROP TABLE IF EXISTS storage_loc;
+DROP TABLE IF EXISTS cargo;
+DROP TABLE IF EXISTS operation;
+DROP TABLE IF EXISTS vessel;
+DROP TABLE IF EXISTS cargo_type;
