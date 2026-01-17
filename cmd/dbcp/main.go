@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
+	"dbcp/internal/app"
 	"dbcp/internal/config"
 	"dbcp/internal/lib/logger/slogpretty"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 const (
@@ -18,8 +22,21 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 
-	log.Info("start!")
+	ctx := context.Background()
+	application := app.New(log, cfg.GRPC.Port, cfg.DBConnString, ctx)
 
+	go func () {
+		application.GRPCServer.MustRun()
+	}()
+
+	log.Info("application start!")
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	<- stop
+	application.GRPCServer.Stop()
+	log.Info("Gracefully stopped")	
 }
 
 func setupLogger(env string) *slog.Logger {
