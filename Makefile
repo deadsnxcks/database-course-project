@@ -16,3 +16,5 @@ gen-proto:
 		--go-grpc_out=protos/gen/go \
 		--go-grpc_opt=paths=source_relative
 
+run:
+	go run cmd/dbcp/main.go
