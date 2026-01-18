@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package vessel.v1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/vessel;vesselv1";
+
+service VesselService {
+    rpc ListVessels (ListVesselsRequest) returns (ListVesselsResponse);
+    rpc GetVessel (GetVesselRequest) returns (GetVesselResponse);
+    rpc UpdateVessel (UpdateVesselRequest) returns (UpdateVesselResponse);
+    rpc CreateVessel (CreateVesselRequest) returns (CreateVesselResponse);
+    rpc DeleteVessel (DeleteVesselRequest) returns (DeleteVesselResponse);
+}
+
+message Vessel {
+    int64 id = 1;
+    string title = 2;
+    string vessel_type = 3;
+    double max_load = 4;
+}
+
+message ListVesselsRequest {}
+message ListVesselsResponse {
+    repeated Vessel vessels = 1;
+}
+
+message GetVesselRequest {
+    int64 id = 1;
+}
+message GetVesselResponse {
+    Vessel vessel = 1;
+}
+
+message CreateVesselRequest {
+    string title = 1;
+    string vessel_type = 2;
+    double max_load = 3;
+}
+message CreateVesselResponse {
+    int64 id = 1;
+}
+
+message UpdateVesselRequest {
+    int64 id = 1;
+    optional string title = 2;
+    optional string vessel_type = 3;
+    optional double max_load = 4;
+}
+message UpdateVesselResponse {}
+
+message DeleteVesselRequest {
+    int64 id = 1;
+}
+message DeleteVesselResponse {}

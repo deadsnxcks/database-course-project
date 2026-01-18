@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package cargotypev1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/cargotype;cargotypev1";
+
+service CargoTypeService {
+    rpc ListCargoTypes (ListCargoTypesRequest) returns (ListCargoTypesResponse);
+    rpc CreateCargoType (CreateCargoTypeRequest) returns (CreateCargoTypeResponse);
+    rpc DeleteCargoType (DeleteCargoTypeRequest) returns (DeleteCargoTypeResponse);
+    rpc GetCargoType (GetCargoTypeRequest) returns (GetCargoTypeResponse);
+    rpc UpdateCargoType (UpdateCargoTypeRequest) returns (UpdateCargoTypeResponse);
+
+}
+
+message CargoType {
+    int64 id = 1;
+    string title = 2;
+    double process_cost = 3;
+}
+
+message ListCargoTypesRequest {}
+message ListCargoTypesResponse {
+    repeated CargoType cargo_types = 1;
+}
+
+message GetCargoTypeRequest {
+    int64 id = 1;
+}
+message GetCargoTypeResponse {
+    CargoType cargo_type = 1;
+}
+
+message CreateCargoTypeRequest {
+    string title = 1;
+    double process_cost = 2;
+}
+message CreateCargoTypeResponse {
+    int64 id = 1;
+}
+
+message UpdateCargoTypeRequest {
+    int64 id = 1;
+    optional string title = 2;
+    optional double process_cost = 3;
+}
+message UpdateCargoTypeResponse {}
+
+message DeleteCargoTypeRequest {
+    int64 id = 1;
+}
+message DeleteCargoTypeResponse {}

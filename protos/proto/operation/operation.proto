@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package operationv1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/operation;operationv1";
+
+service OperationService {
+    rpc ListOperations (ListOperationsRequest) returns (ListOperationsResponse);
+    rpc CreateOperation (CreateOperationRequest) returns (CreateOperationResponse);
+    rpc DeleteOperation (DeleteOperationRequest) returns (DeleteOperationResponse);
+    rpc GetOperation (GetOperationRequest) returns (GetOperationResponse);
+    rpc UpdateOperation (UpdateOperationRequest) returns (UpdateOperationResponse);
+}
+
+message Operation {
+    int64 id = 1;
+    string title = 2;
+    string created_at = 3;
+}
+
+message ListOperationsRequest {}
+message ListOperationsResponse {
+    repeated Operation operations = 1;
+}
+
+message GetOperationRequest {
+    int64 id = 1;
+}
+message GetOperationResponse {
+    Operation operation = 1;
+}
+
+message CreateOperationRequest {
+    string title = 1;
+}
+message CreateOperationResponse {
+    int64 id = 1;
+}
+
+message UpdateOperationRequest {
+    int64 id = 1;
+    optional string title = 2;
+}
+message UpdateOperationResponse {}
+
+message DeleteOperationRequest {
+    int64 id = 1;
+}
+message DeleteOperationResponse {}

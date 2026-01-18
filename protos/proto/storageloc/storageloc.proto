@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package storagelocv1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/storageloc;storagelocv1";
+
+service StorageLocationService {
+    rpc ListStorageLocations (ListStorageLocationsRequest) returns (ListStorageLocationsResponse);
+    rpc CreateStorageLocation (CreateStorageLocationRequest) returns (CreateStorageLocationResponse);
+    rpc DeleteStorageLocation (DeleteStorageLocationRequest) returns (DeleteStorageLocationResponse);
+    rpc GetStorageLocation (GetStorageLocationRequest) returns (GetStorageLocationResponse);
+    rpc UpdateStorageLocation (UpdateStorageLocationRequest) returns (UpdateStorageLocationResponse);
+    rpc UseStorageLocation (UseStorageLocationRequest) returns (UseStorageLocationResponse);
+    rpc ResetStorageLocation (ResetStorageLocationRequest) returns (ResetStorageLocationResponse);
+}
+
+message StorageLocation {
+    int64 id = 1;
+    int64 cargo_type_id = 2;
+    double max_weight = 3;
+    double max_volume = 4;
+    optional int64 cargo_id = 5;
+    optional string date_of_placement = 6;
+}
+
+message ListStorageLocationsRequest {}
+message ListStorageLocationsResponse {
+    repeated StorageLocation storage_locations = 1;
+}
+
+message GetStorageLocationRequest {
+    int64 id = 1;
+}
+message GetStorageLocationResponse {
+    StorageLocation storage_location = 1;
+}
+
+message CreateStorageLocationRequest {
+    int64 cargo_type_id = 1;
+    double max_weight = 2;
+    double max_volume = 3;
+}
+message CreateStorageLocationResponse {
+    int64 id = 1;
+}
+
+message UpdateStorageLocationRequest {
+    int64 id = 1;
+    optional int64 cargo_type_id = 2;
+    optional double max_weight = 3;
+    optional double max_volume = 4;
+}
+message UpdateStorageLocationResponse {}
+
+message DeleteStorageLocationRequest {
+    int64 id = 1;
+}
+message DeleteStorageLocationResponse {}
+
+message UseStorageLocationRequest {
+    int64 storage_location_id = 1;
+    int64 cargo_id = 2;
+    string date_of_placement = 3;
+}
+message UseStorageLocationResponse {}
+
+message ResetStorageLocationRequest {
+    int64 id = 1;
+}
+message ResetStorageLocationResponse {}
