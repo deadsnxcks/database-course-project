@@ -4,6 +4,7 @@ import (
 	"dbcp/internal/grpc/cargo"
 	cargotype "dbcp/internal/grpc/cargo-type"
 	"dbcp/internal/grpc/operation"
+	"dbcp/internal/grpc/opercargo"
 	"dbcp/internal/grpc/storageloc"
 	"dbcp/internal/grpc/vessel"
 	"fmt"
@@ -26,6 +27,7 @@ func New(
 	cargoService cargo.Cargo,
 	storageLocService storageloc.StorageLoc,
 	operationService operation.Operation,
+	operCargoService opercargo.OperationCargo,
 	port int,
 ) *App {
 	gRPCServer := grpc.NewServer()
@@ -35,6 +37,7 @@ func New(
 	cargo.Register(gRPCServer, cargoService)
 	storageloc.Register(gRPCServer, storageLocService)
 	operation.Register(gRPCServer, operationService)
+	opercargo.Register(gRPCServer, operCargoService)
 
 	return &App{
 		log: log,
