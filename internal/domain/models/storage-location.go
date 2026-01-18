@@ -7,6 +7,6 @@ type StorageLocation struct {
 	CargoTypeID 	int64
 	MaxWeight		float64
 	MaxVolume		float64
-	CargoID			int64
-	DateOfPlacement	time.Time
+	CargoID			*int64
+	DateOfPlacement	*time.Time
 }

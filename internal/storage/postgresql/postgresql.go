@@ -695,16 +695,18 @@ func (s *Storage) StorageLocations(
 
 func (s *Storage) SaveStorageLoc(
 	ctx context.Context,
-	sl models.StorageLocation,
+	cargoTypeID int64,
+	maxWeight float64,
+	maxVolume float64,
 ) (int64, error) {
 	const op = "storage.postgresql.SaveStorageLoc"
 
 	var id int64
 	err := s.pool.QueryRow(ctx, `
-		INSERT INTO storage_loc (cargo_type_id, max_weight, max_volume, cargo_id, date_of_placement)
-		VALUES($1, $2, $3, $4, $5)
+		INSERT INTO storage_loc (cargo_type_id, max_weight, max_volume)
+		VALUES($1, $2, $3)
 		RETURNING id
-	`, sl.CargoTypeID, sl.MaxWeight, sl.MaxVolume, sl.CargoID, sl.DateOfPlacement).Scan(&id)
+	`, cargoTypeID, maxWeight, maxVolume).Scan(&id)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23503" {

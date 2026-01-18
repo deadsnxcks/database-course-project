@@ -9,6 +9,7 @@ package storagelocv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -28,7 +29,7 @@ type StorageLocation struct {
 	MaxWeight       float64                `protobuf:"fixed64,3,opt,name=max_weight,json=maxWeight,proto3" json:"max_weight,omitempty"`
 	MaxVolume       float64                `protobuf:"fixed64,4,opt,name=max_volume,json=maxVolume,proto3" json:"max_volume,omitempty"`
 	CargoId         *int64                 `protobuf:"varint,5,opt,name=cargo_id,json=cargoId,proto3,oneof" json:"cargo_id,omitempty"`
-	DateOfPlacement *string                `protobuf:"bytes,6,opt,name=date_of_placement,json=dateOfPlacement,proto3,oneof" json:"date_of_placement,omitempty"`
+	DateOfPlacement *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=date_of_placement,json=dateOfPlacement,proto3,oneof" json:"date_of_placement,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -98,11 +99,11 @@ func (x *StorageLocation) GetCargoId() int64 {
 	return 0
 }
 
-func (x *StorageLocation) GetDateOfPlacement() string {
-	if x != nil && x.DateOfPlacement != nil {
-		return *x.DateOfPlacement
+func (x *StorageLocation) GetDateOfPlacement() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DateOfPlacement
 	}
-	return ""
+	return nil
 }
 
 type ListStorageLocationsRequest struct {
@@ -565,7 +566,7 @@ type UseStorageLocationRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	StorageLocationId int64                  `protobuf:"varint,1,opt,name=storage_location_id,json=storageLocationId,proto3" json:"storage_location_id,omitempty"`
 	CargoId           int64                  `protobuf:"varint,2,opt,name=cargo_id,json=cargoId,proto3" json:"cargo_id,omitempty"`
-	DateOfPlacement   string                 `protobuf:"bytes,3,opt,name=date_of_placement,json=dateOfPlacement,proto3" json:"date_of_placement,omitempty"`
+	DateOfPlacement   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=date_of_placement,json=dateOfPlacement,proto3" json:"date_of_placement,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -614,11 +615,11 @@ func (x *UseStorageLocationRequest) GetCargoId() int64 {
 	return 0
 }
 
-func (x *UseStorageLocationRequest) GetDateOfPlacement() string {
+func (x *UseStorageLocationRequest) GetDateOfPlacement() *timestamppb.Timestamp {
 	if x != nil {
 		return x.DateOfPlacement
 	}
-	return ""
+	return nil
 }
 
 type UseStorageLocationResponse struct {
@@ -741,7 +742,7 @@ var File_storageloc_storageloc_proto protoreflect.FileDescriptor
 
 const file_storageloc_storageloc_proto_rawDesc = "" +
 	"\n" +
-	"\x1bstorageloc/storageloc.proto\x12\fstoragelocv1\"\xf7\x01\n" +
+	"\x1bstorageloc/storageloc.proto\x12\fstoragelocv1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x93\x02\n" +
 	"\x0fStorageLocation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\"\n" +
 	"\rcargo_type_id\x18\x02 \x01(\x03R\vcargoTypeId\x12\x1d\n" +
@@ -749,8 +750,8 @@ const file_storageloc_storageloc_proto_rawDesc = "" +
 	"max_weight\x18\x03 \x01(\x01R\tmaxWeight\x12\x1d\n" +
 	"\n" +
 	"max_volume\x18\x04 \x01(\x01R\tmaxVolume\x12\x1e\n" +
-	"\bcargo_id\x18\x05 \x01(\x03H\x00R\acargoId\x88\x01\x01\x12/\n" +
-	"\x11date_of_placement\x18\x06 \x01(\tH\x01R\x0fdateOfPlacement\x88\x01\x01B\v\n" +
+	"\bcargo_id\x18\x05 \x01(\x03H\x00R\acargoId\x88\x01\x01\x12K\n" +
+	"\x11date_of_placement\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\x0fdateOfPlacement\x88\x01\x01B\v\n" +
 	"\t_cargo_idB\x14\n" +
 	"\x12_date_of_placement\"\x1d\n" +
 	"\x1bListStorageLocationsRequest\"j\n" +
@@ -781,11 +782,11 @@ const file_storageloc_storageloc_proto_rawDesc = "" +
 	"\x1dUpdateStorageLocationResponse\".\n" +
 	"\x1cDeleteStorageLocationRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1f\n" +
-	"\x1dDeleteStorageLocationResponse\"\x92\x01\n" +
+	"\x1dDeleteStorageLocationResponse\"\xae\x01\n" +
 	"\x19UseStorageLocationRequest\x12.\n" +
 	"\x13storage_location_id\x18\x01 \x01(\x03R\x11storageLocationId\x12\x19\n" +
-	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\x12*\n" +
-	"\x11date_of_placement\x18\x03 \x01(\tR\x0fdateOfPlacement\"\x1c\n" +
+	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\x12F\n" +
+	"\x11date_of_placement\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdateOfPlacement\"\x1c\n" +
 	"\x1aUseStorageLocationResponse\"-\n" +
 	"\x1bResetStorageLocationRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1e\n" +
@@ -828,29 +829,32 @@ var file_storageloc_storageloc_proto_goTypes = []any{
 	(*UseStorageLocationResponse)(nil),    // 12: storagelocv1.UseStorageLocationResponse
 	(*ResetStorageLocationRequest)(nil),   // 13: storagelocv1.ResetStorageLocationRequest
 	(*ResetStorageLocationResponse)(nil),  // 14: storagelocv1.ResetStorageLocationResponse
+	(*timestamppb.Timestamp)(nil),         // 15: google.protobuf.Timestamp
 }
 var file_storageloc_storageloc_proto_depIdxs = []int32{
-	0,  // 0: storagelocv1.ListStorageLocationsResponse.storage_locations:type_name -> storagelocv1.StorageLocation
-	0,  // 1: storagelocv1.GetStorageLocationResponse.storage_location:type_name -> storagelocv1.StorageLocation
-	1,  // 2: storagelocv1.StorageLocationService.ListStorageLocations:input_type -> storagelocv1.ListStorageLocationsRequest
-	5,  // 3: storagelocv1.StorageLocationService.CreateStorageLocation:input_type -> storagelocv1.CreateStorageLocationRequest
-	9,  // 4: storagelocv1.StorageLocationService.DeleteStorageLocation:input_type -> storagelocv1.DeleteStorageLocationRequest
-	3,  // 5: storagelocv1.StorageLocationService.GetStorageLocation:input_type -> storagelocv1.GetStorageLocationRequest
-	7,  // 6: storagelocv1.StorageLocationService.UpdateStorageLocation:input_type -> storagelocv1.UpdateStorageLocationRequest
-	11, // 7: storagelocv1.StorageLocationService.UseStorageLocation:input_type -> storagelocv1.UseStorageLocationRequest
-	13, // 8: storagelocv1.StorageLocationService.ResetStorageLocation:input_type -> storagelocv1.ResetStorageLocationRequest
-	2,  // 9: storagelocv1.StorageLocationService.ListStorageLocations:output_type -> storagelocv1.ListStorageLocationsResponse
-	6,  // 10: storagelocv1.StorageLocationService.CreateStorageLocation:output_type -> storagelocv1.CreateStorageLocationResponse
-	10, // 11: storagelocv1.StorageLocationService.DeleteStorageLocation:output_type -> storagelocv1.DeleteStorageLocationResponse
-	4,  // 12: storagelocv1.StorageLocationService.GetStorageLocation:output_type -> storagelocv1.GetStorageLocationResponse
-	8,  // 13: storagelocv1.StorageLocationService.UpdateStorageLocation:output_type -> storagelocv1.UpdateStorageLocationResponse
-	12, // 14: storagelocv1.StorageLocationService.UseStorageLocation:output_type -> storagelocv1.UseStorageLocationResponse
-	14, // 15: storagelocv1.StorageLocationService.ResetStorageLocation:output_type -> storagelocv1.ResetStorageLocationResponse
-	9,  // [9:16] is the sub-list for method output_type
-	2,  // [2:9] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	15, // 0: storagelocv1.StorageLocation.date_of_placement:type_name -> google.protobuf.Timestamp
+	0,  // 1: storagelocv1.ListStorageLocationsResponse.storage_locations:type_name -> storagelocv1.StorageLocation
+	0,  // 2: storagelocv1.GetStorageLocationResponse.storage_location:type_name -> storagelocv1.StorageLocation
+	15, // 3: storagelocv1.UseStorageLocationRequest.date_of_placement:type_name -> google.protobuf.Timestamp
+	1,  // 4: storagelocv1.StorageLocationService.ListStorageLocations:input_type -> storagelocv1.ListStorageLocationsRequest
+	5,  // 5: storagelocv1.StorageLocationService.CreateStorageLocation:input_type -> storagelocv1.CreateStorageLocationRequest
+	9,  // 6: storagelocv1.StorageLocationService.DeleteStorageLocation:input_type -> storagelocv1.DeleteStorageLocationRequest
+	3,  // 7: storagelocv1.StorageLocationService.GetStorageLocation:input_type -> storagelocv1.GetStorageLocationRequest
+	7,  // 8: storagelocv1.StorageLocationService.UpdateStorageLocation:input_type -> storagelocv1.UpdateStorageLocationRequest
+	11, // 9: storagelocv1.StorageLocationService.UseStorageLocation:input_type -> storagelocv1.UseStorageLocationRequest
+	13, // 10: storagelocv1.StorageLocationService.ResetStorageLocation:input_type -> storagelocv1.ResetStorageLocationRequest
+	2,  // 11: storagelocv1.StorageLocationService.ListStorageLocations:output_type -> storagelocv1.ListStorageLocationsResponse
+	6,  // 12: storagelocv1.StorageLocationService.CreateStorageLocation:output_type -> storagelocv1.CreateStorageLocationResponse
+	10, // 13: storagelocv1.StorageLocationService.DeleteStorageLocation:output_type -> storagelocv1.DeleteStorageLocationResponse
+	4,  // 14: storagelocv1.StorageLocationService.GetStorageLocation:output_type -> storagelocv1.GetStorageLocationResponse
+	8,  // 15: storagelocv1.StorageLocationService.UpdateStorageLocation:output_type -> storagelocv1.UpdateStorageLocationResponse
+	12, // 16: storagelocv1.StorageLocationService.UseStorageLocation:output_type -> storagelocv1.UseStorageLocationResponse
+	14, // 17: storagelocv1.StorageLocationService.ResetStorageLocation:output_type -> storagelocv1.ResetStorageLocationResponse
+	11, // [11:18] is the sub-list for method output_type
+	4,  // [4:11] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_storageloc_storageloc_proto_init() }
