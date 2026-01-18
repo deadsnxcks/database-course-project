@@ -1,6 +1,7 @@
 package grpcapp
 
 import (
+	cargotype "dbcp/internal/grpc/cargo-type"
 	"dbcp/internal/grpc/vessel"
 	"fmt"
 	"log/slog"
@@ -18,11 +19,13 @@ type App struct {
 func New(
 	log *slog.Logger,
 	vesselService vessel.Vessel,
+	cargoTypeService cargotype.CargoType,
 	port int,
 ) *App {
 	gRPCServer := grpc.NewServer()
 
 	vessel.Register(gRPCServer, vesselService)
+	cargotype.Register(gRPCServer, cargoTypeService)
 
 	return &App{
 		log: log,

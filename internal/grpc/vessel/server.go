@@ -4,7 +4,7 @@ import (
 	"context"
 	"dbcp/internal/domain/models"
 	"dbcp/internal/storage"
-	dbcpv1 "dbcp/protos/gen/go/dbcp"
+	vesselv1 "dbcp/protos/gen/go/vessel"
 	"errors"
 
 	"google.golang.org/grpc"
@@ -27,27 +27,27 @@ type Vessel interface {
 }
 
 type serverAPI struct {
-	dbcpv1.UnimplementedDbcpServiceServer
+	vesselv1.UnimplementedVesselServiceServer
 	vessel Vessel
 }
 
 func Register(gRPCServer *grpc.Server, vessel Vessel) {
-	dbcpv1.RegisterDbcpServiceServer(gRPCServer, &serverAPI{vessel: vessel})
+	vesselv1.RegisterVesselServiceServer(gRPCServer, &serverAPI{vessel: vessel})
 }
 
 func (s *serverAPI) ListVessels(
 	ctx context.Context,
-	lv *dbcpv1.ListVesselsRequest,
-	) (*dbcpv1.ListVesselsResponse, error) {
+	lv *vesselv1.ListVesselsRequest,
+	) (*vesselv1.ListVesselsResponse, error) {
 
 	vessels, err := s.vessel.List(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to list vessels")
 	}
 
-	resp := make([]*dbcpv1.Vessel, 0, len(vessels))
+	resp := make([]*vesselv1.Vessel, 0, len(vessels))
 	for _, v := range vessels {
-		resp = append(resp, &dbcpv1.Vessel{
+		resp = append(resp, &vesselv1.Vessel{
 			Id:         v.ID,
 			Title:      v.Title,
 			VesselType: v.VesselType,
@@ -55,13 +55,13 @@ func (s *serverAPI) ListVessels(
 		})
 	}
 
-	return &dbcpv1.ListVesselsResponse{Vessels: resp}, nil
+	return &vesselv1.ListVesselsResponse{Vessels: resp}, nil
 }
 
 func (s *serverAPI) GetVessel(
 	ctx context.Context,
-	gv *dbcpv1.GetVesselRequest,
-) (*dbcpv1.GetVesselResponse, error) {
+	gv *vesselv1.GetVesselRequest,
+) (*vesselv1.GetVesselResponse, error) {
 	if gv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -75,13 +75,13 @@ func (s *serverAPI) GetVessel(
 		}
 	}
 
-	return &dbcpv1.GetVesselResponse{Vessel: toProtoVessel(vessel)}, nil
+	return &vesselv1.GetVesselResponse{Vessel: toProtoVessel(vessel)}, nil
 }
 
 func (s *serverAPI) CreateVessel(
 	ctx context.Context,
-	cv *dbcpv1.CreateVesselRequest,
-) (*dbcpv1.CreateVesselResponse, error) {
+	cv *vesselv1.CreateVesselRequest,
+) (*vesselv1.CreateVesselResponse, error) {
 	if cv.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required") 
 	}
@@ -102,13 +102,13 @@ func (s *serverAPI) CreateVessel(
 		return nil, status.Error(codes.Internal, "failed to create vessel")
 	}
 
-	return &dbcpv1.CreateVesselResponse{Id: id}, nil
+	return &vesselv1.CreateVesselResponse{Id: id}, nil
 }
 
 func (s *serverAPI) UpdateVessel(
 	ctx context.Context,
-	uv *dbcpv1.UpdateVesselRequest,
-) (*dbcpv1.UpdateVesselResponse, error) {
+	uv *vesselv1.UpdateVesselRequest,
+) (*vesselv1.UpdateVesselResponse, error) {
 	if uv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -148,13 +148,13 @@ func (s *serverAPI) UpdateVessel(
 		}
 	}
 
-	return &dbcpv1.UpdateVesselResponse{}, nil
+	return &vesselv1.UpdateVesselResponse{}, nil
 }
 
 func (s *serverAPI) DeleteVessel(
 	ctx context.Context,
-	dv *dbcpv1.DeleteVesselRequest,
-) (*dbcpv1.DeleteVesselResponse, error) {
+	dv *vesselv1.DeleteVesselRequest,
+) (*vesselv1.DeleteVesselResponse, error) {
 	if dv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -166,11 +166,11 @@ func (s *serverAPI) DeleteVessel(
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &dbcpv1.DeleteVesselResponse{}, nil
+	return &vesselv1.DeleteVesselResponse{}, nil
 }
 
-func toProtoVessel(v models.Vessel) *dbcpv1.Vessel {
-    return &dbcpv1.Vessel{
+func toProtoVessel(v models.Vessel) *vesselv1.Vessel {
+    return &vesselv1.Vessel{
         Id:         v.ID,
         Title:      v.Title,
         VesselType: v.VesselType,

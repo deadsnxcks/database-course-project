@@ -284,7 +284,7 @@ func (s *Storage) UpdateCargoType(
 	ctx context.Context,
 	id int64,
 	title *string,
-	processCost float64,
+	processCost *float64,
 ) error {
 	const op = "storage.postgresql.UpdateCargoType"
 
