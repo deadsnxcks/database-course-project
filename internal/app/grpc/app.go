@@ -1,6 +1,7 @@
 package grpcapp
 
 import (
+	"dbcp/internal/grpc/cargo"
 	cargotype "dbcp/internal/grpc/cargo-type"
 	"dbcp/internal/grpc/vessel"
 	"fmt"
@@ -20,12 +21,14 @@ func New(
 	log *slog.Logger,
 	vesselService vessel.Vessel,
 	cargoTypeService cargotype.CargoType,
+	cargoService cargo.Cargo,
 	port int,
 ) *App {
 	gRPCServer := grpc.NewServer()
 
 	vessel.Register(gRPCServer, vesselService)
 	cargotype.Register(gRPCServer, cargoTypeService)
+	cargo.Register(gRPCServer, cargoService)
 
 	return &App{
 		log: log,

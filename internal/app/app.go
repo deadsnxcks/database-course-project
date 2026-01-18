@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	grpcapp "dbcp/internal/app/grpc"
+	cargoservice "dbcp/internal/services/cargo"
 	cargotypeservice "dbcp/internal/services/cargo-type"
 	vesselservice "dbcp/internal/services/vessel"
 	"dbcp/internal/storage/postgresql"
@@ -26,8 +27,9 @@ func New(
 
 	vesselService := vesselservice.New(log, storage)
 	cargoTypeService := cargotypeservice.New(log, storage)
+	cargoService := cargoservice.New(log, storage)
 
-	grpcApp := grpcapp.New(log, vesselService, cargoTypeService, grpcPort)
+	grpcApp := grpcapp.New(log, vesselService, cargoTypeService, cargoService, grpcPort)
 
 	return &App{
 		GRPCServer: grpcApp,
