@@ -4,6 +4,8 @@ package operationv1;
 
 option go_package = "github.com/deadsnxcks/dbcp/protos/proto/operation;operationv1";
 
+import "google/protobuf/timestamp.proto";
+
 service OperationService {
     rpc ListOperations (ListOperationsRequest) returns (ListOperationsResponse);
     rpc CreateOperation (CreateOperationRequest) returns (CreateOperationResponse);
@@ -15,7 +17,7 @@ service OperationService {
 message Operation {
     int64 id = 1;
     string title = 2;
-    string created_at = 3;
+    google.protobuf.Timestamp created_at = 3;
 }
 
 message ListOperationsRequest {}

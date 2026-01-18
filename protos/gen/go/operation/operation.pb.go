@@ -9,6 +9,7 @@ package operationv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -25,7 +26,7 @@ type Operation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,11 +75,11 @@ func (x *Operation) GetTitle() string {
 	return ""
 }
 
-func (x *Operation) GetCreatedAt() string {
+func (x *Operation) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
-	return ""
+	return nil
 }
 
 type ListOperationsRequest struct {
@@ -509,12 +510,12 @@ var File_operation_operation_proto protoreflect.FileDescriptor
 
 const file_operation_operation_proto_rawDesc = "" +
 	"\n" +
-	"\x19operation/operation.proto\x12\voperationv1\"P\n" +
+	"\x19operation/operation.proto\x12\voperationv1\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n" +
 	"\tOperation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1d\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x129\n" +
 	"\n" +
-	"created_at\x18\x03 \x01(\tR\tcreatedAt\"\x17\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x17\n" +
 	"\x15ListOperationsRequest\"P\n" +
 	"\x16ListOperationsResponse\x126\n" +
 	"\n" +
@@ -568,25 +569,27 @@ var file_operation_operation_proto_goTypes = []any{
 	(*UpdateOperationResponse)(nil), // 8: operationv1.UpdateOperationResponse
 	(*DeleteOperationRequest)(nil),  // 9: operationv1.DeleteOperationRequest
 	(*DeleteOperationResponse)(nil), // 10: operationv1.DeleteOperationResponse
+	(*timestamppb.Timestamp)(nil),   // 11: google.protobuf.Timestamp
 }
 var file_operation_operation_proto_depIdxs = []int32{
-	0,  // 0: operationv1.ListOperationsResponse.operations:type_name -> operationv1.Operation
-	0,  // 1: operationv1.GetOperationResponse.operation:type_name -> operationv1.Operation
-	1,  // 2: operationv1.OperationService.ListOperations:input_type -> operationv1.ListOperationsRequest
-	5,  // 3: operationv1.OperationService.CreateOperation:input_type -> operationv1.CreateOperationRequest
-	9,  // 4: operationv1.OperationService.DeleteOperation:input_type -> operationv1.DeleteOperationRequest
-	3,  // 5: operationv1.OperationService.GetOperation:input_type -> operationv1.GetOperationRequest
-	7,  // 6: operationv1.OperationService.UpdateOperation:input_type -> operationv1.UpdateOperationRequest
-	2,  // 7: operationv1.OperationService.ListOperations:output_type -> operationv1.ListOperationsResponse
-	6,  // 8: operationv1.OperationService.CreateOperation:output_type -> operationv1.CreateOperationResponse
-	10, // 9: operationv1.OperationService.DeleteOperation:output_type -> operationv1.DeleteOperationResponse
-	4,  // 10: operationv1.OperationService.GetOperation:output_type -> operationv1.GetOperationResponse
-	8,  // 11: operationv1.OperationService.UpdateOperation:output_type -> operationv1.UpdateOperationResponse
-	7,  // [7:12] is the sub-list for method output_type
-	2,  // [2:7] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	11, // 0: operationv1.Operation.created_at:type_name -> google.protobuf.Timestamp
+	0,  // 1: operationv1.ListOperationsResponse.operations:type_name -> operationv1.Operation
+	0,  // 2: operationv1.GetOperationResponse.operation:type_name -> operationv1.Operation
+	1,  // 3: operationv1.OperationService.ListOperations:input_type -> operationv1.ListOperationsRequest
+	5,  // 4: operationv1.OperationService.CreateOperation:input_type -> operationv1.CreateOperationRequest
+	9,  // 5: operationv1.OperationService.DeleteOperation:input_type -> operationv1.DeleteOperationRequest
+	3,  // 6: operationv1.OperationService.GetOperation:input_type -> operationv1.GetOperationRequest
+	7,  // 7: operationv1.OperationService.UpdateOperation:input_type -> operationv1.UpdateOperationRequest
+	2,  // 8: operationv1.OperationService.ListOperations:output_type -> operationv1.ListOperationsResponse
+	6,  // 9: operationv1.OperationService.CreateOperation:output_type -> operationv1.CreateOperationResponse
+	10, // 10: operationv1.OperationService.DeleteOperation:output_type -> operationv1.DeleteOperationResponse
+	4,  // 11: operationv1.OperationService.GetOperation:output_type -> operationv1.GetOperationResponse
+	8,  // 12: operationv1.OperationService.UpdateOperation:output_type -> operationv1.UpdateOperationResponse
+	8,  // [8:13] is the sub-list for method output_type
+	3,  // [3:8] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_operation_operation_proto_init() }

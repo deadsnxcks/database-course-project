@@ -415,16 +415,14 @@ func (s *Storage) UpdateOperation(
 	ctx context.Context,
 	id int64,
 	title *string,
-	createdAt *time.Time,
 ) error {
 	const op = "storage.postgresql.UpdateOperation"
 
 	cmdTag, err := s.pool.Exec(ctx, `
 		UPDATE operation
 		SET title = COALESCE($1, title),
-			created_at = COALESCE($2, created_at)
 		WHERE id = $3
-	`, title, createdAt, id)
+	`, title, id)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
