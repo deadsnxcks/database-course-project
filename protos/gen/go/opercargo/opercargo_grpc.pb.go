@@ -19,18 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OperationCargoService_ListOperationsCargos_FullMethodName = "/opercargov1.OperationCargoService/ListOperationsCargos"
-	OperationCargoService_CreateOperationCargo_FullMethodName = "/opercargov1.OperationCargoService/CreateOperationCargo"
-	OperationCargoService_DeleteOperationCargo_FullMethodName = "/opercargov1.OperationCargoService/DeleteOperationCargo"
+	OperationCargoService_List_FullMethodName   = "/opercargov1.OperationCargoService/List"
+	OperationCargoService_Create_FullMethodName = "/opercargov1.OperationCargoService/Create"
+	OperationCargoService_Delete_FullMethodName = "/opercargov1.OperationCargoService/Delete"
 )
 
 // OperationCargoServiceClient is the client API for OperationCargoService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationCargoServiceClient interface {
-	ListOperationsCargos(ctx context.Context, in *ListOperationsCargosRequest, opts ...grpc.CallOption) (*ListOperationsCargosResponse, error)
-	CreateOperationCargo(ctx context.Context, in *CreateOperationCargoRequest, opts ...grpc.CallOption) (*CreateOperationCargoResponse, error)
-	DeleteOperationCargo(ctx context.Context, in *DeleteOperationCargoRequest, opts ...grpc.CallOption) (*DeleteOperationCargoResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type operationCargoServiceClient struct {
@@ -41,30 +41,30 @@ func NewOperationCargoServiceClient(cc grpc.ClientConnInterface) OperationCargoS
 	return &operationCargoServiceClient{cc}
 }
 
-func (c *operationCargoServiceClient) ListOperationsCargos(ctx context.Context, in *ListOperationsCargosRequest, opts ...grpc.CallOption) (*ListOperationsCargosResponse, error) {
+func (c *operationCargoServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListOperationsCargosResponse)
-	err := c.cc.Invoke(ctx, OperationCargoService_ListOperationsCargos_FullMethodName, in, out, cOpts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, OperationCargoService_List_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationCargoServiceClient) CreateOperationCargo(ctx context.Context, in *CreateOperationCargoRequest, opts ...grpc.CallOption) (*CreateOperationCargoResponse, error) {
+func (c *operationCargoServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateOperationCargoResponse)
-	err := c.cc.Invoke(ctx, OperationCargoService_CreateOperationCargo_FullMethodName, in, out, cOpts...)
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, OperationCargoService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationCargoServiceClient) DeleteOperationCargo(ctx context.Context, in *DeleteOperationCargoRequest, opts ...grpc.CallOption) (*DeleteOperationCargoResponse, error) {
+func (c *operationCargoServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteOperationCargoResponse)
-	err := c.cc.Invoke(ctx, OperationCargoService_DeleteOperationCargo_FullMethodName, in, out, cOpts...)
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, OperationCargoService_Delete_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,9 +75,9 @@ func (c *operationCargoServiceClient) DeleteOperationCargo(ctx context.Context, 
 // All implementations must embed UnimplementedOperationCargoServiceServer
 // for forward compatibility.
 type OperationCargoServiceServer interface {
-	ListOperationsCargos(context.Context, *ListOperationsCargosRequest) (*ListOperationsCargosResponse, error)
-	CreateOperationCargo(context.Context, *CreateOperationCargoRequest) (*CreateOperationCargoResponse, error)
-	DeleteOperationCargo(context.Context, *DeleteOperationCargoRequest) (*DeleteOperationCargoResponse, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedOperationCargoServiceServer()
 }
 
@@ -88,14 +88,14 @@ type OperationCargoServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedOperationCargoServiceServer struct{}
 
-func (UnimplementedOperationCargoServiceServer) ListOperationsCargos(context.Context, *ListOperationsCargosRequest) (*ListOperationsCargosResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListOperationsCargos not implemented")
+func (UnimplementedOperationCargoServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedOperationCargoServiceServer) CreateOperationCargo(context.Context, *CreateOperationCargoRequest) (*CreateOperationCargoResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateOperationCargo not implemented")
+func (UnimplementedOperationCargoServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedOperationCargoServiceServer) DeleteOperationCargo(context.Context, *DeleteOperationCargoRequest) (*DeleteOperationCargoResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteOperationCargo not implemented")
+func (UnimplementedOperationCargoServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedOperationCargoServiceServer) mustEmbedUnimplementedOperationCargoServiceServer() {}
 func (UnimplementedOperationCargoServiceServer) testEmbeddedByValue()                               {}
@@ -118,56 +118,56 @@ func RegisterOperationCargoServiceServer(s grpc.ServiceRegistrar, srv OperationC
 	s.RegisterService(&OperationCargoService_ServiceDesc, srv)
 }
 
-func _OperationCargoService_ListOperationsCargos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOperationsCargosRequest)
+func _OperationCargoService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationCargoServiceServer).ListOperationsCargos(ctx, in)
+		return srv.(OperationCargoServiceServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationCargoService_ListOperationsCargos_FullMethodName,
+		FullMethod: OperationCargoService_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationCargoServiceServer).ListOperationsCargos(ctx, req.(*ListOperationsCargosRequest))
+		return srv.(OperationCargoServiceServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationCargoService_CreateOperationCargo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOperationCargoRequest)
+func _OperationCargoService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationCargoServiceServer).CreateOperationCargo(ctx, in)
+		return srv.(OperationCargoServiceServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationCargoService_CreateOperationCargo_FullMethodName,
+		FullMethod: OperationCargoService_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationCargoServiceServer).CreateOperationCargo(ctx, req.(*CreateOperationCargoRequest))
+		return srv.(OperationCargoServiceServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationCargoService_DeleteOperationCargo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteOperationCargoRequest)
+func _OperationCargoService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationCargoServiceServer).DeleteOperationCargo(ctx, in)
+		return srv.(OperationCargoServiceServer).Delete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationCargoService_DeleteOperationCargo_FullMethodName,
+		FullMethod: OperationCargoService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationCargoServiceServer).DeleteOperationCargo(ctx, req.(*DeleteOperationCargoRequest))
+		return srv.(OperationCargoServiceServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -180,16 +180,16 @@ var OperationCargoService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*OperationCargoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListOperationsCargos",
-			Handler:    _OperationCargoService_ListOperationsCargos_Handler,
+			MethodName: "List",
+			Handler:    _OperationCargoService_List_Handler,
 		},
 		{
-			MethodName: "CreateOperationCargo",
-			Handler:    _OperationCargoService_CreateOperationCargo_Handler,
+			MethodName: "Create",
+			Handler:    _OperationCargoService_Create_Handler,
 		},
 		{
-			MethodName: "DeleteOperationCargo",
-			Handler:    _OperationCargoService_DeleteOperationCargo_Handler,
+			MethodName: "Delete",
+			Handler:    _OperationCargoService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

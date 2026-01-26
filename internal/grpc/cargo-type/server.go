@@ -34,10 +34,10 @@ func Register(gRPCServer *grpc.Server, cargoType CargoType) {
 	cargotypev1.RegisterCargoTypeServiceServer(gRPCServer, &serverAPI{cargoType: cargoType})
 }
 
-func (s *serverAPI) ListCargoTypes(
+func (s *serverAPI) List(
 	ctx context.Context,
-	req *cargotypev1.ListCargoTypesRequest,
-) (*cargotypev1.ListCargoTypesResponse, error) {
+	req *cargotypev1.ListRequest,
+) (*cargotypev1.ListResponse, error) {
 	ctList, err := s.cargoType.List(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to list cargo types")
@@ -52,24 +52,24 @@ func (s *serverAPI) ListCargoTypes(
 		})
 	}
 
-	return &cargotypev1.ListCargoTypesResponse{CargoTypes: pbList}, nil
+	return &cargotypev1.ListResponse{CargoTypes: pbList}, nil
 }
 
-func (s *serverAPI) GetCargoType(
+func (s *serverAPI) Get(
 	ctx context.Context,
-	req *cargotypev1.GetCargoTypeRequest,
-) (*cargotypev1.GetCargoTypeResponse, error) {
+	req *cargotypev1.GetRequest,
+) (*cargotypev1.GetResponse, error) {
 	ct, err := s.cargoType.Get(ctx, req.GetId())
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "cargo type not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to get cargo type")
 		}
 	}
 
-	return &cargotypev1.GetCargoTypeResponse{
+	return &cargotypev1.GetResponse{
 		CargoType: &cargotypev1.CargoType{
 			Id:          ct.ID,
 			Title:       ct.Title,
@@ -78,10 +78,10 @@ func (s *serverAPI) GetCargoType(
 	}, nil
 }
 
-func (s *serverAPI) CreateCargoType(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	req *cargotypev1.CreateCargoTypeRequest,
-) (*cargotypev1.CreateCargoTypeResponse, error) {
+	req *cargotypev1.CreateRequest,
+) (*cargotypev1.CreateResponse, error) {
 	if req.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required")
 	}
@@ -95,20 +95,20 @@ func (s *serverAPI) CreateCargoType(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrCargoTypeExists):
-			return nil, status.Error(codes.AlreadyExists, err.Error())
+			return nil, status.Error(codes.AlreadyExists, "cargo type already exists")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to create cargo type")
 		}
 	}
 
-	return &cargotypev1.CreateCargoTypeResponse{Id: id}, nil
+	return &cargotypev1.CreateResponse{Id: id}, nil
 }
 
 
-func (s *serverAPI) UpdateCargoType(
+func (s *serverAPI) Update(
 	ctx context.Context,
-	req *cargotypev1.UpdateCargoTypeRequest,
-) (*cargotypev1.UpdateCargoTypeResponse, error) {
+	req *cargotypev1.UpdateRequest,
+) (*cargotypev1.UpdateResponse, error) {
 	var title *string
 	if req.GetTitle() != "" {
 		t := req.GetTitle()
@@ -125,30 +125,32 @@ func (s *serverAPI) UpdateCargoType(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "cargo type not found")
 		case errors.Is(err, storage.ErrCargoTypeExists):
-			return nil, status.Error(codes.AlreadyExists, err.Error())
+			return nil, status.Error(codes.AlreadyExists, "cargo type already exists")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to update cargp type")
 		}
 	}
 
-	return &cargotypev1.UpdateCargoTypeResponse{}, nil
+	return &cargotypev1.UpdateResponse{}, nil
 }
 
-func (s *serverAPI) DeleteCargoType(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	req *cargotypev1.DeleteCargoTypeRequest,
-) (*cargotypev1.DeleteCargoTypeResponse, error) {
+	req *cargotypev1.DeleteRequest,
+) (*cargotypev1.DeleteResponse, error) {
 	err := s.cargoType.Delete(ctx, req.GetId())
 	if err != nil {
 		switch {
+		case errors.Is(err, storage.ErrCargoTypeInUse):
+			return nil, status.Error(codes.FailedPrecondition, "cargo type is used")
 		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "cargo type not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to delete cargo type")
 		}
 	}
 
-	return &cargotypev1.DeleteCargoTypeResponse{}, nil
+	return &cargotypev1.DeleteResponse{}, nil
 }

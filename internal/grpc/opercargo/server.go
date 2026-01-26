@@ -32,10 +32,10 @@ func Register(gRPCServer *grpc.Server, operCargo OperationCargo) {
 	)
 }
 
-func (s *serverAPI) ListOperationCargos(
+func (s *serverAPI) List(
 	ctx context.Context,
-	req *opercargov1.ListOperationsCargosRequest,
-) (*opercargov1.ListOperationsCargosResponse, error) {
+	req *opercargov1.ListRequest,
+) (*opercargov1.ListResponse, error) {
 	operCargos, err := s.operCargo.List(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to list operation cargos")
@@ -49,15 +49,15 @@ func (s *serverAPI) ListOperationCargos(
 		})
 	}
 
-	return &opercargov1.ListOperationsCargosResponse{
+	return &opercargov1.ListResponse{
 		OperationsCargos: resp,
 	}, nil
 }
 
-func (s *serverAPI) CreateOperationCargo(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	req *opercargov1.CreateOperationCargoRequest,
-) (*opercargov1.CreateOperationCargoResponse, error) {
+	req *opercargov1.CreateRequest,
+) (*opercargov1.CreateResponse, error) {
 	if req.GetOperationId() <= 0 || req.GetCargoId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "operation_id and cargo_id are required")
 	}
@@ -66,21 +66,21 @@ func (s *serverAPI) CreateOperationCargo(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperCargoAlreadyExist):
-			return nil, status.Error(codes.AlreadyExists, err.Error())
+			return nil, status.Error(codes.AlreadyExists, "operarion_cargo already exists")
 		case errors.Is(err, storage.ErrRelatedEntityNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to create operation_cargo")
 		}
 	}
 
-	return &opercargov1.CreateOperationCargoResponse{}, nil
+	return &opercargov1.CreateResponse{}, nil
 }
 
-func (s *serverAPI) DeleteOperationCargo(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	req *opercargov1.DeleteOperationCargoRequest,
-) (*opercargov1.DeleteOperationCargoResponse, error) {
+	req *opercargov1.DeleteRequest,
+) (*opercargov1.DeleteResponse, error) {
 	if req.GetOperationId() <= 0 || req.GetCargoId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "operation_id and cargo_id are required")
 	}
@@ -89,11 +89,11 @@ func (s *serverAPI) DeleteOperationCargo(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperCargoNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "operation_cargo not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "operation_cargo deletion failed")
 		}
 	}
 
-	return &opercargov1.DeleteOperationCargoResponse{}, nil
+	return &opercargov1.DeleteResponse{}, nil
 }

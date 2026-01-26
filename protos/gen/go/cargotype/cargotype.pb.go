@@ -81,26 +81,26 @@ func (x *CargoType) GetProcessCost() float64 {
 	return 0
 }
 
-type ListCargoTypesRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListCargoTypesRequest) Reset() {
-	*x = ListCargoTypesRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListCargoTypesRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListCargoTypesRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListCargoTypesRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -112,32 +112,32 @@ func (x *ListCargoTypesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListCargoTypesRequest.ProtoReflect.Descriptor instead.
-func (*ListCargoTypesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{1}
 }
 
-type ListCargoTypesResponse struct {
+type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CargoTypes    []*CargoType           `protobuf:"bytes,1,rep,name=cargo_types,json=cargoTypes,proto3" json:"cargo_types,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListCargoTypesResponse) Reset() {
-	*x = ListCargoTypesResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListCargoTypesResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListCargoTypesResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListCargoTypesResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -149,39 +149,39 @@ func (x *ListCargoTypesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListCargoTypesResponse.ProtoReflect.Descriptor instead.
-func (*ListCargoTypesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListCargoTypesResponse) GetCargoTypes() []*CargoType {
+func (x *ListResponse) GetCargoTypes() []*CargoType {
 	if x != nil {
 		return x.CargoTypes
 	}
 	return nil
 }
 
-type GetCargoTypeRequest struct {
+type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCargoTypeRequest) Reset() {
-	*x = GetCargoTypeRequest{}
+func (x *GetRequest) Reset() {
+	*x = GetRequest{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCargoTypeRequest) String() string {
+func (x *GetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCargoTypeRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() {}
 
-func (x *GetCargoTypeRequest) ProtoReflect() protoreflect.Message {
+func (x *GetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -193,39 +193,39 @@ func (x *GetCargoTypeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCargoTypeRequest.ProtoReflect.Descriptor instead.
-func (*GetCargoTypeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
+func (*GetRequest) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetCargoTypeRequest) GetId() int64 {
+func (x *GetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetCargoTypeResponse struct {
+type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CargoType     *CargoType             `protobuf:"bytes,1,opt,name=cargo_type,json=cargoType,proto3" json:"cargo_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCargoTypeResponse) Reset() {
-	*x = GetCargoTypeResponse{}
+func (x *GetResponse) Reset() {
+	*x = GetResponse{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetCargoTypeResponse) String() string {
+func (x *GetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCargoTypeResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() {}
 
-func (x *GetCargoTypeResponse) ProtoReflect() protoreflect.Message {
+func (x *GetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -237,19 +237,19 @@ func (x *GetCargoTypeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCargoTypeResponse.ProtoReflect.Descriptor instead.
-func (*GetCargoTypeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
+func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetCargoTypeResponse) GetCargoType() *CargoType {
+func (x *GetResponse) GetCargoType() *CargoType {
 	if x != nil {
 		return x.CargoType
 	}
 	return nil
 }
 
-type CreateCargoTypeRequest struct {
+type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	ProcessCost   float64                `protobuf:"fixed64,2,opt,name=process_cost,json=processCost,proto3" json:"process_cost,omitempty"`
@@ -257,20 +257,20 @@ type CreateCargoTypeRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateCargoTypeRequest) Reset() {
-	*x = CreateCargoTypeRequest{}
+func (x *CreateRequest) Reset() {
+	*x = CreateRequest{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateCargoTypeRequest) String() string {
+func (x *CreateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateCargoTypeRequest) ProtoMessage() {}
+func (*CreateRequest) ProtoMessage() {}
 
-func (x *CreateCargoTypeRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -282,46 +282,46 @@ func (x *CreateCargoTypeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateCargoTypeRequest.ProtoReflect.Descriptor instead.
-func (*CreateCargoTypeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
+func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateCargoTypeRequest) GetTitle() string {
+func (x *CreateRequest) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-func (x *CreateCargoTypeRequest) GetProcessCost() float64 {
+func (x *CreateRequest) GetProcessCost() float64 {
 	if x != nil {
 		return x.ProcessCost
 	}
 	return 0
 }
 
-type CreateCargoTypeResponse struct {
+type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateCargoTypeResponse) Reset() {
-	*x = CreateCargoTypeResponse{}
+func (x *CreateResponse) Reset() {
+	*x = CreateResponse{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateCargoTypeResponse) String() string {
+func (x *CreateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateCargoTypeResponse) ProtoMessage() {}
+func (*CreateResponse) ProtoMessage() {}
 
-func (x *CreateCargoTypeResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -333,19 +333,19 @@ func (x *CreateCargoTypeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateCargoTypeResponse.ProtoReflect.Descriptor instead.
-func (*CreateCargoTypeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
+func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CreateCargoTypeResponse) GetId() int64 {
+func (x *CreateResponse) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type UpdateCargoTypeRequest struct {
+type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         *string                `protobuf:"bytes,2,opt,name=title,proto3,oneof" json:"title,omitempty"`
@@ -354,20 +354,20 @@ type UpdateCargoTypeRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateCargoTypeRequest) Reset() {
-	*x = UpdateCargoTypeRequest{}
+func (x *UpdateRequest) Reset() {
+	*x = UpdateRequest{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCargoTypeRequest) String() string {
+func (x *UpdateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCargoTypeRequest) ProtoMessage() {}
+func (*UpdateRequest) ProtoMessage() {}
 
-func (x *UpdateCargoTypeRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -379,52 +379,52 @@ func (x *UpdateCargoTypeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCargoTypeRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCargoTypeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRequest) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateCargoTypeRequest) GetId() int64 {
+func (x *UpdateRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateCargoTypeRequest) GetTitle() string {
+func (x *UpdateRequest) GetTitle() string {
 	if x != nil && x.Title != nil {
 		return *x.Title
 	}
 	return ""
 }
 
-func (x *UpdateCargoTypeRequest) GetProcessCost() float64 {
+func (x *UpdateRequest) GetProcessCost() float64 {
 	if x != nil && x.ProcessCost != nil {
 		return *x.ProcessCost
 	}
 	return 0
 }
 
-type UpdateCargoTypeResponse struct {
+type UpdateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateCargoTypeResponse) Reset() {
-	*x = UpdateCargoTypeResponse{}
+func (x *UpdateResponse) Reset() {
+	*x = UpdateResponse{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCargoTypeResponse) String() string {
+func (x *UpdateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCargoTypeResponse) ProtoMessage() {}
+func (*UpdateResponse) ProtoMessage() {}
 
-func (x *UpdateCargoTypeResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -436,32 +436,32 @@ func (x *UpdateCargoTypeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCargoTypeResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCargoTypeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{8}
 }
 
-type DeleteCargoTypeRequest struct {
+type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteCargoTypeRequest) Reset() {
-	*x = DeleteCargoTypeRequest{}
+func (x *DeleteRequest) Reset() {
+	*x = DeleteRequest{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteCargoTypeRequest) String() string {
+func (x *DeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteCargoTypeRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() {}
 
-func (x *DeleteCargoTypeRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -473,38 +473,38 @@ func (x *DeleteCargoTypeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteCargoTypeRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCargoTypeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DeleteCargoTypeRequest) GetId() int64 {
+func (x *DeleteRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type DeleteCargoTypeResponse struct {
+type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteCargoTypeResponse) Reset() {
-	*x = DeleteCargoTypeResponse{}
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
 	mi := &file_cargotype_cargotype_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteCargoTypeResponse) String() string {
+func (x *DeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteCargoTypeResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() {}
 
-func (x *DeleteCargoTypeResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_cargotype_cargotype_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -516,8 +516,8 @@ func (x *DeleteCargoTypeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteCargoTypeResponse.ProtoReflect.Descriptor instead.
-func (*DeleteCargoTypeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_cargotype_cargotype_proto_rawDescGZIP(), []int{10}
 }
 
@@ -529,37 +529,38 @@ const file_cargotype_cargotype_proto_rawDesc = "" +
 	"\tCargoType\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12!\n" +
-	"\fprocess_cost\x18\x03 \x01(\x01R\vprocessCost\"\x17\n" +
-	"\x15ListCargoTypesRequest\"Q\n" +
-	"\x16ListCargoTypesResponse\x127\n" +
+	"\fprocess_cost\x18\x03 \x01(\x01R\vprocessCost\"\r\n" +
+	"\vListRequest\"G\n" +
+	"\fListResponse\x127\n" +
 	"\vcargo_types\x18\x01 \x03(\v2\x16.cargotypev1.CargoTypeR\n" +
-	"cargoTypes\"%\n" +
-	"\x13GetCargoTypeRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"M\n" +
-	"\x14GetCargoTypeResponse\x125\n" +
+	"cargoTypes\"\x1c\n" +
 	"\n" +
-	"cargo_type\x18\x01 \x01(\v2\x16.cargotypev1.CargoTypeR\tcargoType\"Q\n" +
-	"\x16CreateCargoTypeRequest\x12\x14\n" +
+	"GetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"D\n" +
+	"\vGetResponse\x125\n" +
+	"\n" +
+	"cargo_type\x18\x01 \x01(\v2\x16.cargotypev1.CargoTypeR\tcargoType\"H\n" +
+	"\rCreateRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12!\n" +
-	"\fprocess_cost\x18\x02 \x01(\x01R\vprocessCost\")\n" +
-	"\x17CreateCargoTypeResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x86\x01\n" +
-	"\x16UpdateCargoTypeRequest\x12\x0e\n" +
+	"\fprocess_cost\x18\x02 \x01(\x01R\vprocessCost\" \n" +
+	"\x0eCreateResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"}\n" +
+	"\rUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x19\n" +
 	"\x05title\x18\x02 \x01(\tH\x00R\x05title\x88\x01\x01\x12&\n" +
 	"\fprocess_cost\x18\x03 \x01(\x01H\x01R\vprocessCost\x88\x01\x01B\b\n" +
 	"\x06_titleB\x0f\n" +
-	"\r_process_cost\"\x19\n" +
-	"\x17UpdateCargoTypeResponse\"(\n" +
-	"\x16DeleteCargoTypeRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x19\n" +
-	"\x17DeleteCargoTypeResponse2\xdc\x03\n" +
-	"\x10CargoTypeService\x12Y\n" +
-	"\x0eListCargoTypes\x12\".cargotypev1.ListCargoTypesRequest\x1a#.cargotypev1.ListCargoTypesResponse\x12\\\n" +
-	"\x0fCreateCargoType\x12#.cargotypev1.CreateCargoTypeRequest\x1a$.cargotypev1.CreateCargoTypeResponse\x12\\\n" +
-	"\x0fDeleteCargoType\x12#.cargotypev1.DeleteCargoTypeRequest\x1a$.cargotypev1.DeleteCargoTypeResponse\x12S\n" +
-	"\fGetCargoType\x12 .cargotypev1.GetCargoTypeRequest\x1a!.cargotypev1.GetCargoTypeResponse\x12\\\n" +
-	"\x0fUpdateCargoType\x12#.cargotypev1.UpdateCargoTypeRequest\x1a$.cargotypev1.UpdateCargoTypeResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/cargotype;cargotypev1b\x06proto3"
+	"\r_process_cost\"\x10\n" +
+	"\x0eUpdateResponse\"\x1f\n" +
+	"\rDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
+	"\x0eDeleteResponse2\xd2\x02\n" +
+	"\x10CargoTypeService\x12;\n" +
+	"\x04List\x12\x18.cargotypev1.ListRequest\x1a\x19.cargotypev1.ListResponse\x12A\n" +
+	"\x06Create\x12\x1a.cargotypev1.CreateRequest\x1a\x1b.cargotypev1.CreateResponse\x12A\n" +
+	"\x06Delete\x12\x1a.cargotypev1.DeleteRequest\x1a\x1b.cargotypev1.DeleteResponse\x128\n" +
+	"\x03Get\x12\x17.cargotypev1.GetRequest\x1a\x18.cargotypev1.GetResponse\x12A\n" +
+	"\x06Update\x12\x1a.cargotypev1.UpdateRequest\x1a\x1b.cargotypev1.UpdateResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/cargotype;cargotypev1b\x06proto3"
 
 var (
 	file_cargotype_cargotype_proto_rawDescOnce sync.Once
@@ -575,31 +576,31 @@ func file_cargotype_cargotype_proto_rawDescGZIP() []byte {
 
 var file_cargotype_cargotype_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_cargotype_cargotype_proto_goTypes = []any{
-	(*CargoType)(nil),               // 0: cargotypev1.CargoType
-	(*ListCargoTypesRequest)(nil),   // 1: cargotypev1.ListCargoTypesRequest
-	(*ListCargoTypesResponse)(nil),  // 2: cargotypev1.ListCargoTypesResponse
-	(*GetCargoTypeRequest)(nil),     // 3: cargotypev1.GetCargoTypeRequest
-	(*GetCargoTypeResponse)(nil),    // 4: cargotypev1.GetCargoTypeResponse
-	(*CreateCargoTypeRequest)(nil),  // 5: cargotypev1.CreateCargoTypeRequest
-	(*CreateCargoTypeResponse)(nil), // 6: cargotypev1.CreateCargoTypeResponse
-	(*UpdateCargoTypeRequest)(nil),  // 7: cargotypev1.UpdateCargoTypeRequest
-	(*UpdateCargoTypeResponse)(nil), // 8: cargotypev1.UpdateCargoTypeResponse
-	(*DeleteCargoTypeRequest)(nil),  // 9: cargotypev1.DeleteCargoTypeRequest
-	(*DeleteCargoTypeResponse)(nil), // 10: cargotypev1.DeleteCargoTypeResponse
+	(*CargoType)(nil),      // 0: cargotypev1.CargoType
+	(*ListRequest)(nil),    // 1: cargotypev1.ListRequest
+	(*ListResponse)(nil),   // 2: cargotypev1.ListResponse
+	(*GetRequest)(nil),     // 3: cargotypev1.GetRequest
+	(*GetResponse)(nil),    // 4: cargotypev1.GetResponse
+	(*CreateRequest)(nil),  // 5: cargotypev1.CreateRequest
+	(*CreateResponse)(nil), // 6: cargotypev1.CreateResponse
+	(*UpdateRequest)(nil),  // 7: cargotypev1.UpdateRequest
+	(*UpdateResponse)(nil), // 8: cargotypev1.UpdateResponse
+	(*DeleteRequest)(nil),  // 9: cargotypev1.DeleteRequest
+	(*DeleteResponse)(nil), // 10: cargotypev1.DeleteResponse
 }
 var file_cargotype_cargotype_proto_depIdxs = []int32{
-	0,  // 0: cargotypev1.ListCargoTypesResponse.cargo_types:type_name -> cargotypev1.CargoType
-	0,  // 1: cargotypev1.GetCargoTypeResponse.cargo_type:type_name -> cargotypev1.CargoType
-	1,  // 2: cargotypev1.CargoTypeService.ListCargoTypes:input_type -> cargotypev1.ListCargoTypesRequest
-	5,  // 3: cargotypev1.CargoTypeService.CreateCargoType:input_type -> cargotypev1.CreateCargoTypeRequest
-	9,  // 4: cargotypev1.CargoTypeService.DeleteCargoType:input_type -> cargotypev1.DeleteCargoTypeRequest
-	3,  // 5: cargotypev1.CargoTypeService.GetCargoType:input_type -> cargotypev1.GetCargoTypeRequest
-	7,  // 6: cargotypev1.CargoTypeService.UpdateCargoType:input_type -> cargotypev1.UpdateCargoTypeRequest
-	2,  // 7: cargotypev1.CargoTypeService.ListCargoTypes:output_type -> cargotypev1.ListCargoTypesResponse
-	6,  // 8: cargotypev1.CargoTypeService.CreateCargoType:output_type -> cargotypev1.CreateCargoTypeResponse
-	10, // 9: cargotypev1.CargoTypeService.DeleteCargoType:output_type -> cargotypev1.DeleteCargoTypeResponse
-	4,  // 10: cargotypev1.CargoTypeService.GetCargoType:output_type -> cargotypev1.GetCargoTypeResponse
-	8,  // 11: cargotypev1.CargoTypeService.UpdateCargoType:output_type -> cargotypev1.UpdateCargoTypeResponse
+	0,  // 0: cargotypev1.ListResponse.cargo_types:type_name -> cargotypev1.CargoType
+	0,  // 1: cargotypev1.GetResponse.cargo_type:type_name -> cargotypev1.CargoType
+	1,  // 2: cargotypev1.CargoTypeService.List:input_type -> cargotypev1.ListRequest
+	5,  // 3: cargotypev1.CargoTypeService.Create:input_type -> cargotypev1.CreateRequest
+	9,  // 4: cargotypev1.CargoTypeService.Delete:input_type -> cargotypev1.DeleteRequest
+	3,  // 5: cargotypev1.CargoTypeService.Get:input_type -> cargotypev1.GetRequest
+	7,  // 6: cargotypev1.CargoTypeService.Update:input_type -> cargotypev1.UpdateRequest
+	2,  // 7: cargotypev1.CargoTypeService.List:output_type -> cargotypev1.ListResponse
+	6,  // 8: cargotypev1.CargoTypeService.Create:output_type -> cargotypev1.CreateResponse
+	10, // 9: cargotypev1.CargoTypeService.Delete:output_type -> cargotypev1.DeleteResponse
+	4,  // 10: cargotypev1.CargoTypeService.Get:output_type -> cargotypev1.GetResponse
+	8,  // 11: cargotypev1.CargoTypeService.Update:output_type -> cargotypev1.UpdateResponse
 	7,  // [7:12] is the sub-list for method output_type
 	2,  // [2:7] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name

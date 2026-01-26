@@ -7,13 +7,13 @@ option go_package = "github.com/deadsnxcks/dbcp/protos/proto/storageloc;storagel
 import "google/protobuf/timestamp.proto";
 
 service StorageLocationService {
-    rpc ListStorageLocations (ListStorageLocationsRequest) returns (ListStorageLocationsResponse);
-    rpc CreateStorageLocation (CreateStorageLocationRequest) returns (CreateStorageLocationResponse);
-    rpc DeleteStorageLocation (DeleteStorageLocationRequest) returns (DeleteStorageLocationResponse);
-    rpc GetStorageLocation (GetStorageLocationRequest) returns (GetStorageLocationResponse);
-    rpc UpdateStorageLocation (UpdateStorageLocationRequest) returns (UpdateStorageLocationResponse);
-    rpc UseStorageLocation (UseStorageLocationRequest) returns (UseStorageLocationResponse);
-    rpc ResetStorageLocation (ResetStorageLocationRequest) returns (ResetStorageLocationResponse);
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
+    rpc Use     (UseRequest)    returns (UseResponse);
+    rpc Reset   (ResetRequest)  returns (ResetResponse);
 }
 
 message StorageLocation {
@@ -25,48 +25,48 @@ message StorageLocation {
     optional google.protobuf.Timestamp date_of_placement = 6;
 }
 
-message ListStorageLocationsRequest {}
-message ListStorageLocationsResponse {
+message ListRequest {}
+message ListResponse {
     repeated StorageLocation storage_locations = 1;
 }
 
-message GetStorageLocationRequest {
+message GetRequest {
     int64 id = 1;
 }
-message GetStorageLocationResponse {
+message GetResponse {
     StorageLocation storage_location = 1;
 }
 
-message CreateStorageLocationRequest {
+message CreateRequest {
     int64 cargo_type_id = 1;
     double max_weight = 2;
     double max_volume = 3;
 }
-message CreateStorageLocationResponse {
+message CreateResponse {
     int64 id = 1;
 }
 
-message UpdateStorageLocationRequest {
+message UpdateRequest {
     int64 id = 1;
     optional int64 cargo_type_id = 2;
     optional double max_weight = 3;
     optional double max_volume = 4;
 }
-message UpdateStorageLocationResponse {}
+message UpdateResponse {}
 
-message DeleteStorageLocationRequest {
+message DeleteRequest {
     int64 id = 1;
 }
-message DeleteStorageLocationResponse {}
+message DeleteResponse {}
 
-message UseStorageLocationRequest {
+message UseRequest {
     int64 storage_location_id = 1;
     int64 cargo_id = 2;
     google.protobuf.Timestamp date_of_placement = 3;
 }
-message UseStorageLocationResponse {}
+message UseResponse {}
 
-message ResetStorageLocationRequest {
+message ResetRequest {
     int64 id = 1;
 }
-message ResetStorageLocationResponse {}
+message ResetResponse {}

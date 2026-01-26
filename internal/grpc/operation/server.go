@@ -39,10 +39,10 @@ func Register(gRPCServer *grpc.Server, operation Operation) {
 	)
 }
 
-func (s *serverAPI) ListOperations(
+func (s *serverAPI) List(
 	ctx context.Context,
-	_ *operationv1.ListOperationsRequest,
-) (*operationv1.ListOperationsResponse, error) {
+	_ *operationv1.ListRequest,
+) (*operationv1.ListResponse, error) {
 
 	ops, err := s.operation.List(ctx)
 	if err != nil {
@@ -54,15 +54,15 @@ func (s *serverAPI) ListOperations(
 		resp = append(resp, toProtoOperation(op))
 	}
 
-	return &operationv1.ListOperationsResponse{
+	return &operationv1.ListResponse{
 		Operations: resp,
 	}, nil
 }
 
-func (s *serverAPI) GetOperation(
+func (s *serverAPI) Get(
 	ctx context.Context,
-	req *operationv1.GetOperationRequest,
-) (*operationv1.GetOperationResponse, error) {
+	req *operationv1.GetRequest,
+) (*operationv1.GetResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -72,21 +72,21 @@ func (s *serverAPI) GetOperation(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperationNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "operation not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to get operation")
 		}
 	}
 
-	return &operationv1.GetOperationResponse{
+	return &operationv1.GetResponse{
 		Operation: toProtoOperation(op),
 	}, nil
 }
 
-func (s *serverAPI) CreateOperation(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	req *operationv1.CreateOperationRequest,
-) (*operationv1.CreateOperationResponse, error) {
+	req *operationv1.CreateRequest,
+) (*operationv1.CreateResponse, error) {
 
 	if req.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required")
@@ -94,18 +94,18 @@ func (s *serverAPI) CreateOperation(
 
 	id, err := s.operation.Create(ctx, req.GetTitle())
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(codes.Internal, "failed to create operation")
 	}
 
-	return &operationv1.CreateOperationResponse{
+	return &operationv1.CreateResponse{
 		Id: id,
 	}, nil
 }
 
-func (s *serverAPI) UpdateOperation(
+func (s *serverAPI) Update(
 	ctx context.Context,
-	req *operationv1.UpdateOperationRequest,
-) (*operationv1.UpdateOperationResponse, error) {
+	req *operationv1.UpdateRequest,
+) (*operationv1.UpdateResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -124,19 +124,19 @@ func (s *serverAPI) UpdateOperation(
 	); err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperationNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "operation not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to update operation")
 		}
 	}
 
-	return &operationv1.UpdateOperationResponse{}, nil
+	return &operationv1.UpdateResponse{}, nil
 }
 
-func (s *serverAPI) DeleteOperation(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	req *operationv1.DeleteOperationRequest,
-) (*operationv1.DeleteOperationResponse, error) {
+	req *operationv1.DeleteRequest,
+) (*operationv1.DeleteResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -145,13 +145,13 @@ func (s *serverAPI) DeleteOperation(
 	if err := s.operation.Delete(ctx, req.GetId()); err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperationNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "operation not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to delete operation")
 		}
 	}
 
-	return &operationv1.DeleteOperationResponse{}, nil
+	return &operationv1.DeleteResponse{}, nil
 }
 
 func toProtoOperation(

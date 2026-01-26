@@ -16,14 +16,14 @@ type Vessel interface {
 	List(ctx context.Context) ([]models.Vessel, error)
 	Get(ctx context.Context, id int64) (models.Vessel, error)
 	Create(ctx context.Context, vessel models.Vessel) (int64, error)
-	Delete(ctx context.Context, id int64) (error)
+	Delete(ctx context.Context, id int64) error
 	Update(
-		ctx context.Context, 
+		ctx context.Context,
 		id int64,
-		title *string, 
-		vesselType *string, 
+		title *string,
+		vesselType *string,
 		maxLoad *float64,
-	) (error)
+	) error
 }
 
 type serverAPI struct {
@@ -35,10 +35,10 @@ func Register(gRPCServer *grpc.Server, vessel Vessel) {
 	vesselv1.RegisterVesselServiceServer(gRPCServer, &serverAPI{vessel: vessel})
 }
 
-func (s *serverAPI) ListVessels(
+func (s *serverAPI) List(
 	ctx context.Context,
-	lv *vesselv1.ListVesselsRequest,
-	) (*vesselv1.ListVesselsResponse, error) {
+	lv *vesselv1.ListRequest,
+) (*vesselv1.ListResponse, error) {
 
 	vessels, err := s.vessel.List(ctx)
 	if err != nil {
@@ -55,35 +55,35 @@ func (s *serverAPI) ListVessels(
 		})
 	}
 
-	return &vesselv1.ListVesselsResponse{Vessels: resp}, nil
+	return &vesselv1.ListResponse{Vessels: resp}, nil
 }
 
-func (s *serverAPI) GetVessel(
+func (s *serverAPI) Get(
 	ctx context.Context,
-	gv *vesselv1.GetVesselRequest,
-) (*vesselv1.GetVesselResponse, error) {
+	gv *vesselv1.GetRequest,
+) (*vesselv1.GetResponse, error) {
 	if gv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 	vessel, err := s.vessel.Get(ctx, gv.GetId())
 	if err != nil {
 		switch {
-		case errors.Is(err, storage.ErrVesselExists):
-			return nil, status.Error(codes.AlreadyExists, err.Error())
+		case errors.Is(err, storage.ErrVesselNotFound):
+			return nil, status.Error(codes.NotFound, "vessel not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to get vessel")
 		}
 	}
 
-	return &vesselv1.GetVesselResponse{Vessel: toProtoVessel(vessel)}, nil
+	return &vesselv1.GetResponse{Vessel: toProtoVessel(vessel)}, nil
 }
 
-func (s *serverAPI) CreateVessel(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	cv *vesselv1.CreateVesselRequest,
-) (*vesselv1.CreateVesselResponse, error) {
+	cv *vesselv1.CreateRequest,
+) (*vesselv1.CreateResponse, error) {
 	if cv.GetTitle() == "" {
-		return nil, status.Error(codes.InvalidArgument, "title is required") 
+		return nil, status.Error(codes.InvalidArgument, "title is required")
 	}
 	if cv.GetMaxLoad() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "max load must be greater than 0")
@@ -93,26 +93,30 @@ func (s *serverAPI) CreateVessel(
 	}
 
 	vessel := models.Vessel{
-		Title: cv.GetTitle(),
-		MaxLoad: cv.GetMaxLoad(),
+		Title:      cv.GetTitle(),
+		MaxLoad:    cv.GetMaxLoad(),
 		VesselType: cv.GetVesselType(),
 	}
 	id, err := s.vessel.Create(ctx, vessel)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to create vessel")
+		switch {
+		case errors.Is(err, storage.ErrVesselExists):
+			return nil, status.Error(codes.AlreadyExists, "vessel already exists")
+		default:
+			return nil, status.Error(codes.Internal, "failed to create vessel")
+		}
 	}
 
-	return &vesselv1.CreateVesselResponse{Id: id}, nil
+	return &vesselv1.CreateResponse{Id: id}, nil
 }
 
-func (s *serverAPI) UpdateVessel(
+func (s *serverAPI) Update(
 	ctx context.Context,
-	uv *vesselv1.UpdateVesselRequest,
-) (*vesselv1.UpdateVesselResponse, error) {
+	uv *vesselv1.UpdateRequest,
+) (*vesselv1.UpdateResponse, error) {
 	if uv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
-
 
 	var title *string
 	if uv.GetTitle() != "" {
@@ -131,7 +135,7 @@ func (s *serverAPI) UpdateVessel(
 		ml := uv.GetMaxLoad()
 		maxLoad = &ml
 	}
-	
+
 	err := s.vessel.Update(
 		ctx,
 		uv.GetId(),
@@ -142,38 +146,44 @@ func (s *serverAPI) UpdateVessel(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrVesselNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "vessel not found")
+		case errors.Is(err, storage.ErrVesselExists):
+			return nil, status.Error(codes.AlreadyExists, "vessel already exists")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to update vessel")
 		}
 	}
 
-	return &vesselv1.UpdateVesselResponse{}, nil
+	return &vesselv1.UpdateResponse{}, nil
 }
 
-func (s *serverAPI) DeleteVessel(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	dv *vesselv1.DeleteVesselRequest,
-) (*vesselv1.DeleteVesselResponse, error) {
+	dv *vesselv1.DeleteRequest,
+) (*vesselv1.DeleteResponse, error) {
 	if dv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
 	if err := s.vessel.Delete(ctx, dv.GetId()); err != nil {
-		if errors.Is(err, storage.ErrVesselNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrVesselInUse):
+			return nil, status.Error(codes.FailedPrecondition, "vessel is used")
+		case errors.Is(err, storage.ErrVesselNotFound):
+			return nil, status.Error(codes.NotFound, "vessel not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to delete vessel")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &vesselv1.DeleteVesselResponse{}, nil
+	return &vesselv1.DeleteResponse{}, nil
 }
 
 func toProtoVessel(v models.Vessel) *vesselv1.Vessel {
-    return &vesselv1.Vessel{
-        Id:         v.ID,
-        Title:      v.Title,
-        VesselType: v.VesselType,
-        MaxLoad:    v.MaxLoad,
-    }
+	return &vesselv1.Vessel{
+		Id:         v.ID,
+		Title:      v.Title,
+		VesselType: v.VesselType,
+		MaxLoad:    v.MaxLoad,
+	}
 }

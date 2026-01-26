@@ -5,11 +5,11 @@ package vessel.v1;
 option go_package = "github.com/deadsnxcks/dbcp/protos/proto/vessel;vesselv1";
 
 service VesselService {
-    rpc ListVessels (ListVesselsRequest) returns (ListVesselsResponse);
-    rpc GetVessel (GetVesselRequest) returns (GetVesselResponse);
-    rpc UpdateVessel (UpdateVesselRequest) returns (UpdateVesselResponse);
-    rpc CreateVessel (CreateVesselRequest) returns (CreateVesselResponse);
-    rpc DeleteVessel (DeleteVesselRequest) returns (DeleteVesselResponse);
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
 }
 
 message Vessel {
@@ -19,36 +19,36 @@ message Vessel {
     double max_load = 4;
 }
 
-message ListVesselsRequest {}
-message ListVesselsResponse {
+message ListRequest {}
+message ListResponse {
     repeated Vessel vessels = 1;
 }
 
-message GetVesselRequest {
+message GetRequest {
     int64 id = 1;
 }
-message GetVesselResponse {
+message GetResponse {
     Vessel vessel = 1;
 }
 
-message CreateVesselRequest {
+message CreateRequest {
     string title = 1;
     string vessel_type = 2;
     double max_load = 3;
 }
-message CreateVesselResponse {
+message CreateResponse {
     int64 id = 1;
 }
 
-message UpdateVesselRequest {
+message UpdateRequest {
     int64 id = 1;
     optional string title = 2;
     optional string vessel_type = 3;
     optional double max_load = 4;
 }
-message UpdateVesselResponse {}
+message UpdateResponse {}
 
-message DeleteVesselRequest {
+message DeleteRequest {
     int64 id = 1;
 }
-message DeleteVesselResponse {}
+message DeleteResponse {}

@@ -5,9 +5,9 @@ package opercargov1;
 option go_package = "github.com/deadsnxcks/dbcp/protos/proto/opercargo;opercargov1";
 
 service OperationCargoService {
-    rpc ListOperationsCargos (ListOperationsCargosRequest) returns (ListOperationsCargosResponse);
-    rpc CreateOperationCargo (CreateOperationCargoRequest) returns (CreateOperationCargoResponse);
-    rpc DeleteOperationCargo (DeleteOperationCargoRequest) returns (DeleteOperationCargoResponse);
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
 }
 
 message OperationCargo {
@@ -15,19 +15,19 @@ message OperationCargo {
     int64 cargo_id = 2;
 }
 
-message ListOperationsCargosRequest {}
-message ListOperationsCargosResponse {
+message ListRequest {}
+message ListResponse {
     repeated OperationCargo operations_cargos = 1;
 }
 
-message CreateOperationCargoRequest {
+message CreateRequest {
     int64 operation_id = 1;
     int64 cargo_id = 2;
 }
-message CreateOperationCargoResponse {}
+message CreateResponse {}
 
-message DeleteOperationCargoRequest {
+message DeleteRequest {
     int64 operation_id = 1;
     int64 cargo_id = 2;
 }
-message DeleteOperationCargoResponse {}
+message DeleteResponse {}

@@ -5,19 +5,22 @@ import "errors"
 var (
 	ErrVesselExists = errors.New("vessel already exists")
 	ErrVesselNotFound = errors.New("vessel not found")
+	ErrVesselInUse = errors.New("vessel is used")
 
 	ErrCargoTypeExists = errors.New("cargo type already exists")
 	ErrCargoTypeNotFound = errors.New("cargo type not found")
-	ErrCargoTypeInUse = errors.New("cargo type used")
+	ErrCargoTypeInUse = errors.New("cargo type is used")
 
 	ErrOperationExists = errors.New("operation already exists")
 	ErrOperationNotFound = errors.New("operation not found")
-	ErrOperationInUse = errors.New("operation used")
+	ErrOperationInUse = errors.New("operation is used")
 
 	ErrCargoNotFound = errors.New("cargo not found")
-	ErrCargoInUse = errors.New("cargo used")
+	ErrCargoExists = errors.New("cargo already exists")
+	ErrCargoInUse = errors.New("cargo is used")
 
 	ErrStorageLocNotFound = errors.New("storage location not found")
+	ErrStorageLocInUse = errors.New("storage location is useed")
 	ErrStorageLocNotSuitable = errors.New("storage location not suitable")
 	ErrStorageLocAlreadyEmpty = errors.New("storage location already empty")
 

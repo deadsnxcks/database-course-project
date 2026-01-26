@@ -14,8 +14,6 @@ import (
 
 type Cargo interface {
 	List(ctx context.Context) ([]models.Cargo, error)
-	ListByVesselID(ctx context.Context, vesselID int64) ([]models.Cargo, error)
-	ListByTypeID(ctx context.Context, typeID int64) ([]models.Cargo, error)
 	Get(ctx context.Context, id int64) (models.Cargo, error)
 	Create(ctx context.Context, cargo models.Cargo) (int64, error)
 	Delete(ctx context.Context, id int64) (error)
@@ -39,10 +37,10 @@ func Register(gRPCServer *grpc.Server, cargo Cargo) {
 	cargov1.RegisterCargoServiceServer(gRPCServer, &serverAPI{cargo: cargo})
 }
 
-func (s *serverAPI) ListCargos(
+func (s *serverAPI) List(
 	ctx context.Context,
-	_ *cargov1.ListCargosRequest,
-) (*cargov1.ListCargosResponse, error) {
+	_ *cargov1.ListRequest,
+) (*cargov1.ListResponse, error) {
 
 	cargos, err := s.cargo.List(ctx)
 	if err != nil {
@@ -54,35 +52,13 @@ func (s *serverAPI) ListCargos(
 		resp = append(resp, toProtoCargo(c))
 	}
 
-	return &cargov1.ListCargosResponse{Cargos: resp}, nil
+	return &cargov1.ListResponse{Cargos: resp}, nil
 }
 
-func (s *serverAPI) ListCargosByVesselID(
+func (s *serverAPI) Get(
 	ctx context.Context,
-	req *cargov1.GetCargosByVesselIDRequest,
-) (*cargov1.GetCargosByVesselIDResponse, error) {
-
-	if req.GetVesselId() <= 0 {
-		return nil, status.Error(codes.InvalidArgument, "vessel_id is required")
-	}
-
-	cargos, err := s.cargo.ListByVesselID(ctx, req.GetVesselId())
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	resp := make([]*cargov1.Cargo, 0, len(cargos))
-	for _, c := range cargos {
-		resp = append(resp, toProtoCargo(c))
-	}
-
-	return &cargov1.GetCargosByVesselIDResponse{Cargos: resp}, nil
-}
-
-func (s *serverAPI) GetCargo(
-	ctx context.Context,
-	req *cargov1.GetCargoRequest,
-) (*cargov1.GetCargoResponse, error) {
+	req *cargov1.GetRequest,
+) (*cargov1.GetResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -91,18 +67,18 @@ func (s *serverAPI) GetCargo(
 	cargo, err := s.cargo.Get(ctx, req.GetId())
 	if err != nil {
 		if errors.Is(err, storage.ErrCargoNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "cargo not found")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(codes.Internal, "failed to get cargo")
 	}
 
-	return &cargov1.GetCargoResponse{Cargo: toProtoCargo(cargo)}, nil
+	return &cargov1.GetResponse{Cargo: toProtoCargo(cargo)}, nil
 }
 
-func (s *serverAPI) CreateCargo(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	req *cargov1.CreateCargoRequest,
-) (*cargov1.CreateCargoResponse, error) {
+	req *cargov1.CreateRequest,
+) (*cargov1.CreateResponse, error) {
 
 	if req.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required")
@@ -113,6 +89,13 @@ func (s *serverAPI) CreateCargo(
 	if req.GetWeight() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "weight must be positive")
 	}
+	if req.GetVolume() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "volume must be positive")
+	}
+	if req.GetVesselId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "vessel_id is required")
+	}
+
 
 	cargo := models.Cargo{
 		Title:      req.GetTitle(),
@@ -124,16 +107,23 @@ func (s *serverAPI) CreateCargo(
 
 	id, err := s.cargo.Create(ctx, cargo)
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrCargoExists):
+			return nil, status.Error(codes.AlreadyExists, "cargo already exists")
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to create cargo")
+		}
 	}
 
-	return &cargov1.CreateCargoResponse{Id: id}, nil
+	return &cargov1.CreateResponse{Id: id}, nil
 }
 
-func (s *serverAPI) UpdateCargo(
+func (s *serverAPI) Update(
 	ctx context.Context,
-	req *cargov1.UpdateCargoRequest,
-) (*cargov1.UpdateCargoResponse, error) {
+	req *cargov1.UpdateRequest,
+) (*cargov1.UpdateResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -177,32 +167,42 @@ func (s *serverAPI) UpdateCargo(
 		volume,
 		vesselID,
 	); err != nil {
-		if errors.Is(err, storage.ErrCargoNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrCargoNotFound):
+			return nil, status.Error(codes.NotFound, "cargo not found")
+		case errors.Is(err, storage.ErrCargoExists):
+			return nil, status.Error(codes.AlreadyExists, "cargo already exists")
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to update cargo")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &cargov1.UpdateCargoResponse{}, nil
+	return &cargov1.UpdateResponse{}, nil
 }
 
-func (s *serverAPI) DeleteCargo(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	req *cargov1.DeleteCargoRequest,
-) (*cargov1.DeleteCargoResponse, error) {
+	req *cargov1.DeleteRequest,
+) (*cargov1.DeleteResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
 	if err := s.cargo.Delete(ctx, req.GetId()); err != nil {
-		if errors.Is(err, storage.ErrCargoNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrCargoInUse):
+			return nil, status.Error(codes.FailedPrecondition, "cargo is used")
+		case errors.Is(err, storage.ErrCargoNotFound):
+			return nil, status.Error(codes.NotFound, "cargo not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to delete cargo")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &cargov1.DeleteCargoResponse{}, nil
+	return &cargov1.DeleteResponse{}, nil
 }
 
 func toProtoCargo(c models.Cargo) *cargov1.Cargo {

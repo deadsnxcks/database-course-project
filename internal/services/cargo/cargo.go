@@ -21,9 +21,7 @@ type CargoProvider interface {
 	Cargos(ctx context.Context) ([]models.Cargo, error)
 	SaveCargo(ctx context.Context, cargo models.Cargo) (int64, error)
 	DeleteCargo(ctx context.Context, id int64) error
-	CargoByID(ctx context.Context, id int64) (models.Cargo, error)
-	CargosByVesselID(ctx context.Context, vesselID int64) ([]models.Cargo, error)
-	CargosByTypeID(ctx context.Context, typeID int64) ([]models.Cargo, error)
+	Cargo(ctx context.Context, id int64) (models.Cargo, error)
 	UpdateCargo(
 		ctx context.Context,
 		id int64,
@@ -74,7 +72,7 @@ func (c *CargoService) Get(
 		return models.Cargo{}, fmt.Errorf("%s: invalid id", op)
 	}
 
-	cargo, err := c.cProvider.CargoByID(ctx, id)
+	cargo, err := c.cProvider.Cargo(ctx, id)
 	if err != nil {
 		log.Error("failed to get cargo", sl.Err(err))
 		return models.Cargo{}, fmt.Errorf("%s: %w", op, err)
@@ -82,48 +80,6 @@ func (c *CargoService) Get(
 
 	log.Info("Cargo received", slog.Int64("id", id))
 	return cargo, nil
-}
-
-func (c *CargoService) ListByVesselID(
-	ctx context.Context, 
-	vesselID int64,
-) ([]models.Cargo, error) {
-	const op = opStart + ".ListByVesselID"
-
-	log := c.log.With(slog.String("op", op), slog.Int64("vessel_id", vesselID))
-
-	if vesselID <= 0 {
-		return nil, fmt.Errorf("%s: invalid vesselID", op)
-	}
-
-	cargos, err := c.cProvider.CargosByVesselID(ctx, vesselID)
-	if err != nil {
-		log.Error("failed to list cargos by vessel", sl.Err(err))
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
-
-	return cargos, nil
-}
-
-func (c *CargoService) ListByTypeID(
-	ctx context.Context, 
-	typeID int64,
-) ([]models.Cargo, error) {
-	const op = opStart + ".ListByTypeID"
-
-	log := c.log.With(slog.String("op", op), slog.Int64("type_id", typeID))
-
-	if typeID <= 0 {
-		return nil, fmt.Errorf("%s: invalid typeID", op)
-	}
-
-	cargos, err := c.cProvider.CargosByTypeID(ctx, typeID)
-	if err != nil {
-		log.Error("failed to list cargos by type", sl.Err(err))
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
-
-	return cargos, nil
 }
 
 func (c *CargoService) Create(

@@ -54,10 +54,10 @@ func Register(gRPCServer *grpc.Server, storageLocation StorageLoc) {
 	)
 }
 
-func (s *serverAPI) ListStorageLocations(
+func (s *serverAPI) List(
 	ctx context.Context,
-	_ *storagelocv1.ListStorageLocationsRequest,
-) (*storagelocv1.ListStorageLocationsResponse, error) {
+	_ *storagelocv1.ListRequest,
+) (*storagelocv1.ListResponse, error) {
 
 	locs, err := s.storageLocation.List(ctx)
 	if err != nil {
@@ -69,15 +69,15 @@ func (s *serverAPI) ListStorageLocations(
 		resp = append(resp, toProtoStorageLoc(l))
 	}
 
-	return &storagelocv1.ListStorageLocationsResponse{
+	return &storagelocv1.ListResponse{
 		StorageLocations: resp,
 	}, nil
 }
 
-func (s *serverAPI) GetStorageLocation(
+func (s *serverAPI) Get(
 	ctx context.Context,
-	req *storagelocv1.GetStorageLocationRequest,
-) (*storagelocv1.GetStorageLocationResponse, error) {
+	req *storagelocv1.GetRequest,
+) (*storagelocv1.GetResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -86,20 +86,20 @@ func (s *serverAPI) GetStorageLocation(
 	loc, err := s.storageLocation.Get(ctx, req.GetId())
 	if err != nil {
 		if errors.Is(err, storage.ErrStorageLocNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "storage location not found")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, status.Error(codes.Internal, "failed to get storage location")
 	}
 
-	return &storagelocv1.GetStorageLocationResponse{
+	return &storagelocv1.GetResponse{
 		StorageLocation: toProtoStorageLoc(loc),
 	}, nil
 }
 
-func (s *serverAPI) CreateStorageLocation(
+func (s *serverAPI) Create(
 	ctx context.Context,
-	req *storagelocv1.CreateStorageLocationRequest,
-) (*storagelocv1.CreateStorageLocationResponse, error) {
+	req *storagelocv1.CreateRequest,
+) (*storagelocv1.CreateResponse, error) {
 
 	if req.GetCargoTypeId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "cargo_type_id is required")
@@ -118,16 +118,21 @@ func (s *serverAPI) CreateStorageLocation(
 		req.GetMaxVolume(),
 	)
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return nil, status.Error(codes.NotFound, "related entity not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to create storage location")
+		}
 	}
 
-	return &storagelocv1.CreateStorageLocationResponse{Id: id}, nil
+	return &storagelocv1.CreateResponse{Id: id}, nil
 }
 
-func (s *serverAPI) UpdateStorageLocation(
+func (s *serverAPI) Update(
 	ctx context.Context,
-	req *storagelocv1.UpdateStorageLocationRequest,
-) (*storagelocv1.UpdateStorageLocationResponse, error) {
+	req *storagelocv1.UpdateRequest,
+) (*storagelocv1.UpdateResponse, error) {
 
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
@@ -159,58 +164,109 @@ func (s *serverAPI) UpdateStorageLocation(
 		maxVolume,
 	)
 	if err != nil {
-		if errors.Is(err, storage.ErrStorageLocNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
+		switch {
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return nil, status.Error(codes.NotFound, "storage location not found")
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return nil, status.Error(codes.NotFound, "related entity not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to update storage location")
 		}
-		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &storagelocv1.UpdateStorageLocationResponse{}, nil
+	return &storagelocv1.UpdateResponse{}, nil
 }
 
-func (s *serverAPI) UseStorageLocation(
+func (s *serverAPI) Delete(
 	ctx context.Context,
-	req *storagelocv1.UseStorageLocationRequest,
-) (*storagelocv1.UseStorageLocationResponse, error) {
-
-	if req.GetStorageLocationId() <= 0 || req.GetCargoId() <= 0 {
-		return nil, status.Error(codes.InvalidArgument, "id and cargo_id are required")
-	}
-
-	date := time.Now()
-	if req.GetDateOfPlacement() != nil {
-		date = req.GetDateOfPlacement().AsTime()
-	}
-
-	err := s.storageLocation.Use(ctx, req.GetStorageLocationId(), req.GetCargoId(), date)
-	if err != nil {
-		if errors.Is(err, storage.ErrStorageLocNotSuitable) {
-			return nil, status.Error(codes.FailedPrecondition, err.Error())
-		}
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	return &storagelocv1.UseStorageLocationResponse{}, nil
-}
-
-func (s *serverAPI) ResetStorageLocation(
-	ctx context.Context,
-	req *storagelocv1.ResetStorageLocationRequest,
-) (*storagelocv1.ResetStorageLocationResponse, error) {
-
+	req *storagelocv1.DeleteRequest,
+) (*storagelocv1.DeleteResponse, error) {
+	
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	err := s.storageLocation.Reset(ctx, req.GetId())
+	err := s.storageLocation.Delete(ctx, req.GetId())
 	if err != nil {
-		if errors.Is(err, storage.ErrStorageLocNotFound) {
+		switch {
+		case errors.Is(err, storage.ErrStorageLocInUse):
+			return nil, status.Error(codes.FailedPrecondition, err.Error())
+		case errors.Is(err, storage.ErrStorageLocNotFound):
 			return nil, status.Error(codes.NotFound, err.Error())
+		default:
+			return nil, status.Error(codes.Internal, err.Error())
 		}
-		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &storagelocv1.ResetStorageLocationResponse{}, nil
+	return &storagelocv1.DeleteResponse{}, nil
+}
+
+func (s *serverAPI) Use(
+	ctx context.Context,
+	req *storagelocv1.UseRequest,
+) (*storagelocv1.UseResponse, error) {
+
+	if req.GetStorageLocationId() <= 0 {
+        return nil, status.Error(codes.InvalidArgument, 
+            "storage_location_id must be positive")
+    }
+    
+    if req.GetCargoId() <= 0 {
+        return nil, status.Error(codes.InvalidArgument, 
+            "cargo_id must be positive")
+    }
+
+	date := time.Now()
+    if req.GetDateOfPlacement() != nil {
+        date = req.GetDateOfPlacement().AsTime()
+        
+        if date.After(time.Now()) {
+            return nil, status.Error(codes.InvalidArgument, 
+                "date_of_placement cannot be in the future")
+        }
+    }
+
+	err := s.storageLocation.Use(ctx, req.GetStorageLocationId(), req.GetCargoId(), date)
+	if err != nil {
+		switch {
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return nil, status.Error(codes.NotFound, "storage location not found")
+		case errors.Is(err, storage.ErrCargoNotFound):
+			return nil, status.Error(codes.NotFound, "cargo not found")
+		case errors.Is(err, storage.ErrStorageLocInUse):
+			return nil, status.Error(codes.FailedPrecondition, "storage location is already in use")
+		case errors.Is(err, storage.ErrStorageLocNotSuitable):
+			return nil, status.Error(codes.FailedPrecondition, "storage location not suitable for this cargo")
+		default:
+			return nil, status.Error(codes.Internal, "failed to use storage location")
+		}
+	}
+
+	return &storagelocv1.UseResponse{}, nil
+}
+
+func (s *serverAPI) Reset(
+	ctx context.Context,
+	req *storagelocv1.ResetRequest,
+) (*storagelocv1.ResetResponse, error) {
+
+	if req.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is must be positive")
+	}
+
+	err := s.storageLocation.Reset(ctx, req.GetId())
+	if err != nil {
+		switch {
+		case errors.Is(err, storage.ErrStorageLocAlreadyEmpty):
+			return nil, status.Error(codes.FailedPrecondition, "stiorage location is already empty")
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return nil, status.Error(codes.NotFound, "storage location not found")
+		default:
+			return nil, status.Error(codes.Internal, "failed to reset storage location")
+		}
+	}
+
+	return &storagelocv1.ResetResponse{}, nil
 }
 
 func toProtoStorageLoc(

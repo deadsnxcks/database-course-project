@@ -5,11 +5,11 @@ package cargotypev1;
 option go_package = "github.com/deadsnxcks/dbcp/protos/proto/cargotype;cargotypev1";
 
 service CargoTypeService {
-    rpc ListCargoTypes (ListCargoTypesRequest) returns (ListCargoTypesResponse);
-    rpc CreateCargoType (CreateCargoTypeRequest) returns (CreateCargoTypeResponse);
-    rpc DeleteCargoType (DeleteCargoTypeRequest) returns (DeleteCargoTypeResponse);
-    rpc GetCargoType (GetCargoTypeRequest) returns (GetCargoTypeResponse);
-    rpc UpdateCargoType (UpdateCargoTypeRequest) returns (UpdateCargoTypeResponse);
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
 
 }
 
@@ -19,34 +19,34 @@ message CargoType {
     double process_cost = 3;
 }
 
-message ListCargoTypesRequest {}
-message ListCargoTypesResponse {
+message ListRequest {}
+message ListResponse {
     repeated CargoType cargo_types = 1;
 }
 
-message GetCargoTypeRequest {
+message GetRequest {
     int64 id = 1;
 }
-message GetCargoTypeResponse {
+message GetResponse {
     CargoType cargo_type = 1;
 }
 
-message CreateCargoTypeRequest {
+message CreateRequest {
     string title = 1;
     double process_cost = 2;
 }
-message CreateCargoTypeResponse {
+message CreateResponse {
     int64 id = 1;
 }
 
-message UpdateCargoTypeRequest {
+message UpdateRequest {
     int64 id = 1;
     optional string title = 2;
     optional double process_cost = 3;
 }
-message UpdateCargoTypeResponse {}
+message UpdateResponse {}
 
-message DeleteCargoTypeRequest {
+message DeleteRequest {
     int64 id = 1;
 }
-message DeleteCargoTypeResponse {}
+message DeleteResponse {}

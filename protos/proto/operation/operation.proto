@@ -7,11 +7,11 @@ option go_package = "github.com/deadsnxcks/dbcp/protos/proto/operation;operation
 import "google/protobuf/timestamp.proto";
 
 service OperationService {
-    rpc ListOperations (ListOperationsRequest) returns (ListOperationsResponse);
-    rpc CreateOperation (CreateOperationRequest) returns (CreateOperationResponse);
-    rpc DeleteOperation (DeleteOperationRequest) returns (DeleteOperationResponse);
-    rpc GetOperation (GetOperationRequest) returns (GetOperationResponse);
-    rpc UpdateOperation (UpdateOperationRequest) returns (UpdateOperationResponse);
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
 }
 
 message Operation {
@@ -20,32 +20,32 @@ message Operation {
     google.protobuf.Timestamp created_at = 3;
 }
 
-message ListOperationsRequest {}
-message ListOperationsResponse {
+message ListRequest {}
+message ListResponse {
     repeated Operation operations = 1;
 }
 
-message GetOperationRequest {
+message GetRequest {
     int64 id = 1;
 }
-message GetOperationResponse {
+message GetResponse {
     Operation operation = 1;
 }
 
-message CreateOperationRequest {
+message CreateRequest {
     string title = 1;
 }
-message CreateOperationResponse {
+message CreateResponse {
     int64 id = 1;
 }
 
-message UpdateOperationRequest {
+message UpdateRequest {
     int64 id = 1;
     optional string title = 2;
 }
-message UpdateOperationResponse {}
+message UpdateResponse {}
 
-message DeleteOperationRequest {
+message DeleteRequest {
     int64 id = 1;
 }
-message DeleteOperationResponse {}
+message DeleteResponse {}

@@ -26,9 +26,9 @@ func New(ctx context.Context, connString string) (*Storage, error) {
 	}
 
 	if err := pool.Ping(ctx); err != nil {
-        pool.Close()
-        return nil, fmt.Errorf("%s: ping failed: %w", op, err)
-    }
+		pool.Close()
+		return nil, fmt.Errorf("%s: ping failed: %w", op, err)
+	}
 
 	return &Storage{pool: pool}, nil
 }
@@ -106,7 +106,7 @@ func (s *Storage) DeleteVessel(
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23503" {
-			return fmt.Errorf("%s: %w", op, storage.ErrCargoTypeInUse)
+			return fmt.Errorf("%s: %w", op, storage.ErrVesselInUse)
 		}
 		return fmt.Errorf("%s: %w", op, err)
 	}
@@ -296,6 +296,11 @@ func (s *Storage) UpdateCargoType(
 		WHERE id = $3
 	`, title, processCost, id)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return fmt.Errorf("%s: %w", op, storage.ErrCargoTypeExists)
+		}
+
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -352,11 +357,6 @@ func (s *Storage) SaveOperation(
 		RETURNING id
 	`, operation.Title).Scan(&id)
 	if err != nil {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return 0, fmt.Errorf("%s: %w", op, storage.ErrOperationExists)
-		}
-
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -420,8 +420,8 @@ func (s *Storage) UpdateOperation(
 
 	cmdTag, err := s.pool.Exec(ctx, `
 		UPDATE operation
-		SET title = COALESCE($1, title),
-		WHERE id = $3
+		SET title = COALESCE($1, title)
+		WHERE id = $2
 	`, title, id)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
@@ -519,7 +519,7 @@ func (s *Storage) DeleteCargo(
 	return nil
 }
 
-func (s *Storage) CargoByID(
+func (s *Storage) Cargo(
 	ctx context.Context,
 	id int64,
 ) (models.Cargo, error) {
@@ -542,82 +542,6 @@ func (s *Storage) CargoByID(
 	return c, nil
 }
 
-func (s *Storage) CargosByVesselID(
-	ctx context.Context,
-	vesselID int64,
-) ([]models.Cargo, error) {
-	const op = "storage.postgresql.Cargo"
-
-	rows, err := s.pool.Query(ctx, `
-		SELECT id, title, type_id, weight, volume, vessel_id
-		FROM cargo
-		WHERE vessel_id = $1
-	`, vesselID)
-	if err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
-	defer rows.Close()
-
-	var cargosByVeselID []models.Cargo
-	for rows.Next() {
-		var c models.Cargo
-		if err := rows.Scan(&c.ID, 
-			&c.Title, 
-			&c.TypeID, 
-			&c.Weight, 
-			&c.Volume, 
-			&c.VesselID,
-		); err != nil {
-			return nil, fmt.Errorf("%s: %w", op, err)
-		}
-		cargosByVeselID = append(cargosByVeselID, c)
-	}
-	
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
-
-	return cargosByVeselID, nil
-}
-
-func (s *Storage) CargosByTypeID(
-	ctx context.Context,
-	typeID int64,
-) ([]models.Cargo, error) {
-	const op = "storage.postgresql.Cargo"
-
-	rows, err := s.pool.Query(ctx, `
-		SELECT id, title, type_id, weight, volume, vessel_id
-		FROM cargo
-		WHERE type_id = $1
-	`, typeID)
-	if err != nil {
-		return nil, fmt.Errorf("%s: %w",op, err)
-	}
-	defer rows.Close()
-
-	var cargosByTypeID []models.Cargo
-	for rows.Next() {
-		var c models.Cargo
-		if err := rows.Scan(&c.ID, 
-			&c.Title, 
-			&c.TypeID, 
-			&c.Weight, 
-			&c.Volume, 
-			&c.VesselID,
-		); err != nil {
-			return nil, fmt.Errorf("%s: %w", op, err)
-		}
-		cargosByTypeID = append(cargosByTypeID, c)
-	}
-	
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)
-	}
-
-	return cargosByTypeID, nil
-}
-
 func (s *Storage) UpdateCargo(
 	ctx context.Context,
 	id int64,
@@ -637,11 +561,14 @@ func (s *Storage) UpdateCargo(
 			volume = COALESCE($4, volume),
 			vessel_id = COALESCE($5, vessel_id)
 		WHERE id = $6
-	`, title, typeID, weight, volume, vesselID)
+	`, title, typeID, weight, volume, vesselID, id)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23503" {
-			return fmt.Errorf("%s: %w", op, storage.ErrForeignKeyViolation)
+			return fmt.Errorf("%s: %w", op, storage.ErrRelatedEntityNotFound)
+		}
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return fmt.Errorf("%s: %w", op, storage.ErrCargoExists)
 		}
 		return fmt.Errorf("%s: %w", op, err)
 	}
@@ -722,10 +649,24 @@ func (s *Storage) DeleteStorageLoc(
 ) error {
 	const op = "storage.postgresql.DeleteStorageLoc"
 
+	var inUse bool
+	err := s.pool.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM storage_loc WHERE id = $1 AND cargo_id IS NOT NULL
+		)
+	`, id).Scan(&inUse)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if inUse {
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocInUse)
+	}
+
 	cmdTag, err := s.pool.Exec(ctx, `
 		DELETE FROM storage_loc
-		WHERE id = $1
-	`)
+		WHERE id = $1 AND cargo_id IS NULL AND date_of_placement IS NULL
+	`, id)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
@@ -783,6 +724,10 @@ func (s *Storage) UpdateStorageLoc(
 		WHERE id = $4
 	`, cargoTypeID, maxWeight, maxVolume, id)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23503" {
+			return fmt.Errorf("%s: %w", op, storage.ErrRelatedEntityNotFound)
+		}
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -801,9 +746,51 @@ func (s *Storage) UseStorageLoc(
 ) error {
 	const op = "storage.postgresql.UseStorageLoc"
 
-	_, err := s.pool.Exec(ctx, `
+	var isExist bool
+	err := s.pool.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM storage_loc WHERE id = $1
+		)
+	`, storageLocID).Scan(&isExist)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if !isExist {
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotFound)
+	}
+
+	var isOccupied bool
+	err = s.pool.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM storage_loc WHERE id = $1 AND cargo_id IS NOT NULL
+		)
+	`, storageLocID).Scan(&isOccupied)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if isOccupied {
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocInUse)
+	}
+
+	var cargoExists bool
+	err = s.pool.QueryRow(ctx, `
+        SELECT EXISTS (
+            SELECT 1 FROM cargo WHERE id = $1
+        )
+    `, cargoID).Scan(&cargoExists)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if !cargoExists {
+		return fmt.Errorf("%s: %w", op, storage.ErrCargoNotFound)
+	}
+
+	cmdTag, err := s.pool.Exec(ctx, `
 		UPDATE storage_loc sl
-		SET cargo_id = c.id
+		SET cargo_id = c.id,
 			date_of_placement = $3
 		FROM cargo c
 		WHERE 
@@ -811,44 +798,15 @@ func (s *Storage) UseStorageLoc(
 			AND c.id = $2
 			AND sl.cargo_id IS NULL
 			AND sl.cargo_type_id = c.type_id
-			AND sl.max_weight <= c.weight
-			AND sl.max_volume <= c.volume
+			AND sl.max_weight >= c.weight
+			AND sl.max_volume >= c.volume
 	`, storageLocID, cargoID, date)
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			var exists bool
-			checkErr := s.pool.QueryRow(ctx, `
-				SELECT EXISTS (
-					SELECT 1 FROM storage_loc WHERE id = $1
-				)
-			`, storageLocID).Scan(&exists)
-
-			if checkErr != nil {
-				return fmt.Errorf("%s: %w", op, checkErr)
-			}
-
-			if !exists {
-				return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotFound)
-			}
-
-			checkErr = s.pool.QueryRow(ctx, `
-				SELECT EXISTS (
-					SELECT 1 FROM cargo WHERE id = $1
-				)
-			`, cargoID).Scan(&exists)
-
-			if checkErr != nil {
-				return fmt.Errorf("%s: %w", op, checkErr)
-			}
-
-			if !exists {
-				return fmt.Errorf("%s: %w", op, storage.ErrCargoNotFound)
-			}
-
-			return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotSuitable)
-		}
-
 		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if cmdTag.RowsAffected() == 0 {
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotSuitable)
 	}
 
 	return nil
@@ -867,29 +825,27 @@ func (s *Storage) ResetStorageLoc(
 		WHERE id = $1 AND cargo_id IS NOT NULL
 	`, id)
 	if err != nil {
-		fmt.Errorf("%s: %w", op, err)
-	}
-
-	if cmdTag.RowsAffected() > 0 {
-		return nil
-	}
-
-	var exists bool
-	err = s.pool.QueryRow(ctx, `
-		SELECT EXISTS (
-			SELECT 1 FROM storage_loc WHERE id = $1
-		)
-	`, id).Scan(&exists)
-
-	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	if !exists {
-		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotFound)
+	if cmdTag.RowsAffected() == 0 {
+		var exists bool
+		err := s.pool.QueryRow(ctx, `
+            SELECT EXISTS(SELECT 1 FROM storage_loc WHERE id = $1)
+        `, id).Scan(&exists)
+
+		if err != nil {
+			return fmt.Errorf("%s: %w", op, err)
+		}
+
+		if !exists {
+			return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotFound)
+		}
+
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocAlreadyEmpty)
 	}
 
-	return fmt.Errorf("%s: %w", op, storage.ErrStorageLocAlreadyEmpty)
+	return nil
 }
 
 func (s *Storage) OperationsCargos(

@@ -82,26 +82,26 @@ func (x *Operation) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-type ListOperationsRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListOperationsRequest) Reset() {
-	*x = ListOperationsRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_operation_operation_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListOperationsRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListOperationsRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListOperationsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -113,32 +113,32 @@ func (x *ListOperationsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListOperationsRequest.ProtoReflect.Descriptor instead.
-func (*ListOperationsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{1}
 }
 
-type ListOperationsResponse struct {
+type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Operations    []*Operation           `protobuf:"bytes,1,rep,name=operations,proto3" json:"operations,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListOperationsResponse) Reset() {
-	*x = ListOperationsResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_operation_operation_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListOperationsResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListOperationsResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListOperationsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -150,39 +150,39 @@ func (x *ListOperationsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListOperationsResponse.ProtoReflect.Descriptor instead.
-func (*ListOperationsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListOperationsResponse) GetOperations() []*Operation {
+func (x *ListResponse) GetOperations() []*Operation {
 	if x != nil {
 		return x.Operations
 	}
 	return nil
 }
 
-type GetOperationRequest struct {
+type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetOperationRequest) Reset() {
-	*x = GetOperationRequest{}
+func (x *GetRequest) Reset() {
+	*x = GetRequest{}
 	mi := &file_operation_operation_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetOperationRequest) String() string {
+func (x *GetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetOperationRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() {}
 
-func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
+func (x *GetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -194,39 +194,39 @@ func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetOperationRequest.ProtoReflect.Descriptor instead.
-func (*GetOperationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
+func (*GetRequest) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetOperationRequest) GetId() int64 {
+func (x *GetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetOperationResponse struct {
+type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Operation     *Operation             `protobuf:"bytes,1,opt,name=operation,proto3" json:"operation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetOperationResponse) Reset() {
-	*x = GetOperationResponse{}
+func (x *GetResponse) Reset() {
+	*x = GetResponse{}
 	mi := &file_operation_operation_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetOperationResponse) String() string {
+func (x *GetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetOperationResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() {}
 
-func (x *GetOperationResponse) ProtoReflect() protoreflect.Message {
+func (x *GetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -238,39 +238,39 @@ func (x *GetOperationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetOperationResponse.ProtoReflect.Descriptor instead.
-func (*GetOperationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
+func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetOperationResponse) GetOperation() *Operation {
+func (x *GetResponse) GetOperation() *Operation {
 	if x != nil {
 		return x.Operation
 	}
 	return nil
 }
 
-type CreateOperationRequest struct {
+type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateOperationRequest) Reset() {
-	*x = CreateOperationRequest{}
+func (x *CreateRequest) Reset() {
+	*x = CreateRequest{}
 	mi := &file_operation_operation_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateOperationRequest) String() string {
+func (x *CreateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateOperationRequest) ProtoMessage() {}
+func (*CreateRequest) ProtoMessage() {}
 
-func (x *CreateOperationRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -282,39 +282,39 @@ func (x *CreateOperationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateOperationRequest.ProtoReflect.Descriptor instead.
-func (*CreateOperationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
+func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateOperationRequest) GetTitle() string {
+func (x *CreateRequest) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-type CreateOperationResponse struct {
+type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateOperationResponse) Reset() {
-	*x = CreateOperationResponse{}
+func (x *CreateResponse) Reset() {
+	*x = CreateResponse{}
 	mi := &file_operation_operation_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateOperationResponse) String() string {
+func (x *CreateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateOperationResponse) ProtoMessage() {}
+func (*CreateResponse) ProtoMessage() {}
 
-func (x *CreateOperationResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -326,19 +326,19 @@ func (x *CreateOperationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateOperationResponse.ProtoReflect.Descriptor instead.
-func (*CreateOperationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
+func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CreateOperationResponse) GetId() int64 {
+func (x *CreateResponse) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type UpdateOperationRequest struct {
+type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         *string                `protobuf:"bytes,2,opt,name=title,proto3,oneof" json:"title,omitempty"`
@@ -346,20 +346,20 @@ type UpdateOperationRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateOperationRequest) Reset() {
-	*x = UpdateOperationRequest{}
+func (x *UpdateRequest) Reset() {
+	*x = UpdateRequest{}
 	mi := &file_operation_operation_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateOperationRequest) String() string {
+func (x *UpdateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateOperationRequest) ProtoMessage() {}
+func (*UpdateRequest) ProtoMessage() {}
 
-func (x *UpdateOperationRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -371,45 +371,45 @@ func (x *UpdateOperationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateOperationRequest.ProtoReflect.Descriptor instead.
-func (*UpdateOperationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRequest) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateOperationRequest) GetId() int64 {
+func (x *UpdateRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateOperationRequest) GetTitle() string {
+func (x *UpdateRequest) GetTitle() string {
 	if x != nil && x.Title != nil {
 		return *x.Title
 	}
 	return ""
 }
 
-type UpdateOperationResponse struct {
+type UpdateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateOperationResponse) Reset() {
-	*x = UpdateOperationResponse{}
+func (x *UpdateResponse) Reset() {
+	*x = UpdateResponse{}
 	mi := &file_operation_operation_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateOperationResponse) String() string {
+func (x *UpdateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateOperationResponse) ProtoMessage() {}
+func (*UpdateResponse) ProtoMessage() {}
 
-func (x *UpdateOperationResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -421,32 +421,32 @@ func (x *UpdateOperationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateOperationResponse.ProtoReflect.Descriptor instead.
-func (*UpdateOperationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{8}
 }
 
-type DeleteOperationRequest struct {
+type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteOperationRequest) Reset() {
-	*x = DeleteOperationRequest{}
+func (x *DeleteRequest) Reset() {
+	*x = DeleteRequest{}
 	mi := &file_operation_operation_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteOperationRequest) String() string {
+func (x *DeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteOperationRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() {}
 
-func (x *DeleteOperationRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -458,38 +458,38 @@ func (x *DeleteOperationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteOperationRequest.ProtoReflect.Descriptor instead.
-func (*DeleteOperationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DeleteOperationRequest) GetId() int64 {
+func (x *DeleteRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type DeleteOperationResponse struct {
+type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteOperationResponse) Reset() {
-	*x = DeleteOperationResponse{}
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
 	mi := &file_operation_operation_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteOperationResponse) String() string {
+func (x *DeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteOperationResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() {}
 
-func (x *DeleteOperationResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_operation_operation_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -501,8 +501,8 @@ func (x *DeleteOperationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteOperationResponse.ProtoReflect.Descriptor instead.
-func (*DeleteOperationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_operation_operation_proto_rawDescGZIP(), []int{10}
 }
 
@@ -515,34 +515,35 @@ const file_operation_operation_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x129\n" +
 	"\n" +
-	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x17\n" +
-	"\x15ListOperationsRequest\"P\n" +
-	"\x16ListOperationsResponse\x126\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\r\n" +
+	"\vListRequest\"F\n" +
+	"\fListResponse\x126\n" +
 	"\n" +
 	"operations\x18\x01 \x03(\v2\x16.operationv1.OperationR\n" +
-	"operations\"%\n" +
-	"\x13GetOperationRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
-	"\x14GetOperationResponse\x124\n" +
-	"\toperation\x18\x01 \x01(\v2\x16.operationv1.OperationR\toperation\".\n" +
-	"\x16CreateOperationRequest\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\")\n" +
-	"\x17CreateOperationResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"M\n" +
-	"\x16UpdateOperationRequest\x12\x0e\n" +
+	"operations\"\x1c\n" +
+	"\n" +
+	"GetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"C\n" +
+	"\vGetResponse\x124\n" +
+	"\toperation\x18\x01 \x01(\v2\x16.operationv1.OperationR\toperation\"%\n" +
+	"\rCreateRequest\x12\x14\n" +
+	"\x05title\x18\x01 \x01(\tR\x05title\" \n" +
+	"\x0eCreateResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"D\n" +
+	"\rUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x19\n" +
 	"\x05title\x18\x02 \x01(\tH\x00R\x05title\x88\x01\x01B\b\n" +
-	"\x06_title\"\x19\n" +
-	"\x17UpdateOperationResponse\"(\n" +
-	"\x16DeleteOperationRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x19\n" +
-	"\x17DeleteOperationResponse2\xdc\x03\n" +
-	"\x10OperationService\x12Y\n" +
-	"\x0eListOperations\x12\".operationv1.ListOperationsRequest\x1a#.operationv1.ListOperationsResponse\x12\\\n" +
-	"\x0fCreateOperation\x12#.operationv1.CreateOperationRequest\x1a$.operationv1.CreateOperationResponse\x12\\\n" +
-	"\x0fDeleteOperation\x12#.operationv1.DeleteOperationRequest\x1a$.operationv1.DeleteOperationResponse\x12S\n" +
-	"\fGetOperation\x12 .operationv1.GetOperationRequest\x1a!.operationv1.GetOperationResponse\x12\\\n" +
-	"\x0fUpdateOperation\x12#.operationv1.UpdateOperationRequest\x1a$.operationv1.UpdateOperationResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/operation;operationv1b\x06proto3"
+	"\x06_title\"\x10\n" +
+	"\x0eUpdateResponse\"\x1f\n" +
+	"\rDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
+	"\x0eDeleteResponse2\xd2\x02\n" +
+	"\x10OperationService\x12;\n" +
+	"\x04List\x12\x18.operationv1.ListRequest\x1a\x19.operationv1.ListResponse\x12A\n" +
+	"\x06Create\x12\x1a.operationv1.CreateRequest\x1a\x1b.operationv1.CreateResponse\x12A\n" +
+	"\x06Delete\x12\x1a.operationv1.DeleteRequest\x1a\x1b.operationv1.DeleteResponse\x128\n" +
+	"\x03Get\x12\x17.operationv1.GetRequest\x1a\x18.operationv1.GetResponse\x12A\n" +
+	"\x06Update\x12\x1a.operationv1.UpdateRequest\x1a\x1b.operationv1.UpdateResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/operation;operationv1b\x06proto3"
 
 var (
 	file_operation_operation_proto_rawDescOnce sync.Once
@@ -558,33 +559,33 @@ func file_operation_operation_proto_rawDescGZIP() []byte {
 
 var file_operation_operation_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_operation_operation_proto_goTypes = []any{
-	(*Operation)(nil),               // 0: operationv1.Operation
-	(*ListOperationsRequest)(nil),   // 1: operationv1.ListOperationsRequest
-	(*ListOperationsResponse)(nil),  // 2: operationv1.ListOperationsResponse
-	(*GetOperationRequest)(nil),     // 3: operationv1.GetOperationRequest
-	(*GetOperationResponse)(nil),    // 4: operationv1.GetOperationResponse
-	(*CreateOperationRequest)(nil),  // 5: operationv1.CreateOperationRequest
-	(*CreateOperationResponse)(nil), // 6: operationv1.CreateOperationResponse
-	(*UpdateOperationRequest)(nil),  // 7: operationv1.UpdateOperationRequest
-	(*UpdateOperationResponse)(nil), // 8: operationv1.UpdateOperationResponse
-	(*DeleteOperationRequest)(nil),  // 9: operationv1.DeleteOperationRequest
-	(*DeleteOperationResponse)(nil), // 10: operationv1.DeleteOperationResponse
-	(*timestamppb.Timestamp)(nil),   // 11: google.protobuf.Timestamp
+	(*Operation)(nil),             // 0: operationv1.Operation
+	(*ListRequest)(nil),           // 1: operationv1.ListRequest
+	(*ListResponse)(nil),          // 2: operationv1.ListResponse
+	(*GetRequest)(nil),            // 3: operationv1.GetRequest
+	(*GetResponse)(nil),           // 4: operationv1.GetResponse
+	(*CreateRequest)(nil),         // 5: operationv1.CreateRequest
+	(*CreateResponse)(nil),        // 6: operationv1.CreateResponse
+	(*UpdateRequest)(nil),         // 7: operationv1.UpdateRequest
+	(*UpdateResponse)(nil),        // 8: operationv1.UpdateResponse
+	(*DeleteRequest)(nil),         // 9: operationv1.DeleteRequest
+	(*DeleteResponse)(nil),        // 10: operationv1.DeleteResponse
+	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
 }
 var file_operation_operation_proto_depIdxs = []int32{
 	11, // 0: operationv1.Operation.created_at:type_name -> google.protobuf.Timestamp
-	0,  // 1: operationv1.ListOperationsResponse.operations:type_name -> operationv1.Operation
-	0,  // 2: operationv1.GetOperationResponse.operation:type_name -> operationv1.Operation
-	1,  // 3: operationv1.OperationService.ListOperations:input_type -> operationv1.ListOperationsRequest
-	5,  // 4: operationv1.OperationService.CreateOperation:input_type -> operationv1.CreateOperationRequest
-	9,  // 5: operationv1.OperationService.DeleteOperation:input_type -> operationv1.DeleteOperationRequest
-	3,  // 6: operationv1.OperationService.GetOperation:input_type -> operationv1.GetOperationRequest
-	7,  // 7: operationv1.OperationService.UpdateOperation:input_type -> operationv1.UpdateOperationRequest
-	2,  // 8: operationv1.OperationService.ListOperations:output_type -> operationv1.ListOperationsResponse
-	6,  // 9: operationv1.OperationService.CreateOperation:output_type -> operationv1.CreateOperationResponse
-	10, // 10: operationv1.OperationService.DeleteOperation:output_type -> operationv1.DeleteOperationResponse
-	4,  // 11: operationv1.OperationService.GetOperation:output_type -> operationv1.GetOperationResponse
-	8,  // 12: operationv1.OperationService.UpdateOperation:output_type -> operationv1.UpdateOperationResponse
+	0,  // 1: operationv1.ListResponse.operations:type_name -> operationv1.Operation
+	0,  // 2: operationv1.GetResponse.operation:type_name -> operationv1.Operation
+	1,  // 3: operationv1.OperationService.List:input_type -> operationv1.ListRequest
+	5,  // 4: operationv1.OperationService.Create:input_type -> operationv1.CreateRequest
+	9,  // 5: operationv1.OperationService.Delete:input_type -> operationv1.DeleteRequest
+	3,  // 6: operationv1.OperationService.Get:input_type -> operationv1.GetRequest
+	7,  // 7: operationv1.OperationService.Update:input_type -> operationv1.UpdateRequest
+	2,  // 8: operationv1.OperationService.List:output_type -> operationv1.ListResponse
+	6,  // 9: operationv1.OperationService.Create:output_type -> operationv1.CreateResponse
+	10, // 10: operationv1.OperationService.Delete:output_type -> operationv1.DeleteResponse
+	4,  // 11: operationv1.OperationService.Get:output_type -> operationv1.GetResponse
+	8,  // 12: operationv1.OperationService.Update:output_type -> operationv1.UpdateResponse
 	8,  // [8:13] is the sub-list for method output_type
 	3,  // [3:8] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name

@@ -5,13 +5,11 @@ package cargov1;
 option go_package = "github.com/deadsnxcks/dbcp/protos/proto/cargo;cargov1";
 
 service CargoService {
-    rpc ListCargos (ListCargosRequest) returns (ListCargosResponse);
-    rpc ListCargosByVesselID (GetCargosByVesselIDRequest) returns (GetCargosByVesselIDResponse);
-    rpc ListCargosByTypeID (GetCargosByTypeIDRequest) returns (GetCargosByTypeIDResponse);
-    rpc CreateCargo (CreateCargoRequest) returns (CreateCargoResponse);
-    rpc DeleteCargo (DeleteCargoRequest) returns (DeleteCargoResponse);
-    rpc GetCargo (GetCargoRequest) returns (GetCargoResponse);
-    rpc UpdateCargo (UpdateCargoRequest) returns (UpdateCargoResponse);
+    rpc List    (ListRequest)    returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
 }
 
 message Cargo {
@@ -23,44 +21,30 @@ message Cargo {
     int64 vessel_id = 6;
 }
 
-message ListCargosRequest {}
-message ListCargosResponse {
+message ListRequest {}
+message ListResponse {
     repeated Cargo cargos = 1;
 }
 
-message GetCargosByVesselIDRequest {
-    int64 vessel_id = 1;
-}
-message GetCargosByVesselIDResponse {
-    repeated Cargo cargos = 1;
-}
-
-message GetCargosByTypeIDRequest {
-    int64 type_id = 1;
-}
-message GetCargosByTypeIDResponse {
-    repeated Cargo cargos = 1;
-}
-
-message GetCargoRequest {
+message GetRequest {
     int64 id = 1;
 }
-message GetCargoResponse {
+message GetResponse {
     Cargo cargo = 1;
 }
 
-message CreateCargoRequest {
+message CreateRequest {
     string title = 1;
     int64 type_id = 2;
     double weight = 3;
     double volume = 4;
     int64 vessel_id = 5;
 }
-message CreateCargoResponse {
+message CreateResponse {
     int64 id = 1;
 }
 
-message UpdateCargoRequest {
+message UpdateRequest {
     int64 id = 1;
     optional string title = 2;
     optional int64 type_id = 3;
@@ -68,9 +52,9 @@ message UpdateCargoRequest {
     optional double volume = 5;
     optional int64 vessel_id = 6;
 }
-message UpdateCargoResponse {}
+message UpdateResponse {}
 
-message DeleteCargoRequest {
+message DeleteRequest {
     int64 id = 1;
 }
-message DeleteCargoResponse {}
+message DeleteResponse {}
