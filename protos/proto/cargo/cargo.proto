@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package cargov1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/cargo;cargov1";
+
+service CargoService {
+    rpc List    (ListRequest)    returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+    rpc Get     (GetRequest)    returns (GetResponse);
+    rpc Update  (UpdateRequest) returns (UpdateResponse);
+}
+
+message Cargo {
+    int64 id = 1;
+    string title = 2;
+    int64 type_id = 3;
+    double weight = 4;
+    double volume = 5;
+    int64 vessel_id = 6;
+}
+
+message ListRequest {}
+message ListResponse {
+    repeated Cargo cargos = 1;
+}
+
+message GetRequest {
+    int64 id = 1;
+}
+message GetResponse {
+    Cargo cargo = 1;
+}
+
+message CreateRequest {
+    string title = 1;
+    int64 type_id = 2;
+    double weight = 3;
+    double volume = 4;
+    int64 vessel_id = 5;
+}
+message CreateResponse {
+    int64 id = 1;
+}
+
+message UpdateRequest {
+    int64 id = 1;
+    optional string title = 2;
+    optional int64 type_id = 3;
+    optional double weight = 4;
+    optional double volume = 5;
+    optional int64 vessel_id = 6;
+}
+message UpdateResponse {}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+message DeleteResponse {}

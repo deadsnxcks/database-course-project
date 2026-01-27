@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package reportv1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/report;reportv1";
+
+service ReportService {
+    rpc GenerateUnloadedCargoReport(UnloadedCargoReportRequest) returns (CargoDetailReport);
+    rpc GenerateCargoTypeSummaryReport(CargoTypeReportRequest)  returns (CargoTypeReport);
+}
+
+message UnloadedCargoReportRequest {}
+
+message CargoDetailItem {
+    string cargo_name = 1;          
+    double weight_tons = 2;          
+    string cargo_type = 3;          
+    string vessel_name = 4;       
+    string unloading_date = 5;
+}
+
+message CargoDetailReport {
+    repeated CargoDetailItem items = 1;
+}
+
+message CargoTypeReportRequest {}
+
+message CargoTypeItem {
+    string cargo_type_name = 1;      
+    int32 cargo_count = 2;          
+    double total_weight_tons = 3;    
+    double total_volume_m3 = 4;      
+    double process_cost = 5;
+}
+
+message CargoTypeReport {
+    repeated CargoTypeItem items = 1;
+}

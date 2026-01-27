@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package opercargov1;
+
+option go_package = "github.com/deadsnxcks/dbcp/protos/proto/opercargo;opercargov1";
+
+service OperationCargoService {
+    rpc List    (ListRequest)   returns (ListResponse);
+    rpc Create  (CreateRequest) returns (CreateResponse);
+    rpc Delete  (DeleteRequest) returns (DeleteResponse);
+}
+
+message OperationCargo {
+    int64 operation_id = 1;
+    int64 cargo_id = 2;
+}
+
+message ListRequest {}
+message ListResponse {
+    repeated OperationCargo operations_cargos = 1;
+}
+
+message CreateRequest {
+    int64 operation_id = 1;
+    int64 cargo_id = 2;
+}
+message CreateResponse {}
+
+message DeleteRequest {
+    int64 operation_id = 1;
+    int64 cargo_id = 2;
+}
+message DeleteResponse {}
