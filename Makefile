@@ -9,6 +9,15 @@ migrate-down:
 
 gen-proto: gen-vessel-proto gen-cargotype-proto gen-cargo-proto gen-operation-proto gen-storageloc-proto gen-opercargo-proto
 
+gen-report-proto:
+	protoc \
+		-I protos/proto \
+		protos/proto/report/report.proto \
+		--go_out=protos/gen/go \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=protos/gen/go \
+		--go-grpc_opt=paths=source_relative
+
 gen-vessel-proto:
 	protoc \
 		-I protos/proto \

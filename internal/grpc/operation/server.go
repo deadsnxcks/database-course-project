@@ -146,6 +146,8 @@ func (s *serverAPI) Delete(
 		switch {
 		case errors.Is(err, storage.ErrOperationNotFound):
 			return nil, status.Error(codes.NotFound, "operation not found")
+		case errors.Is(err, storage.ErrOperationInUse):
+			return nil, status.Error(codes.FailedPrecondition, "operation is in use")
 		default:
 			return nil, status.Error(codes.Internal, "failed to delete operation")
 		}

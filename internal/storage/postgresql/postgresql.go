@@ -788,7 +788,26 @@ func (s *Storage) UseStorageLoc(
 		return fmt.Errorf("%s: %w", op, storage.ErrCargoNotFound)
 	}
 
-	cmdTag, err := s.pool.Exec(ctx, `
+	var isCargoPlaced bool
+	err = s.pool.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM storage_loc WHERE cargo_id = $1
+		)
+	`, cargoID).Scan(&isCargoPlaced)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	if isCargoPlaced {
+		return fmt.Errorf("%s: %w", op, storage.ErrCargoAlreadyPlaced)
+	}
+
+	tx, err := s.pool.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	defer tx.Rollback(ctx)
+
+	cmdTag, err := tx.Exec(ctx, `
 		UPDATE storage_loc sl
 		SET cargo_id = c.id,
 			date_of_placement = $3
@@ -807,6 +826,28 @@ func (s *Storage) UseStorageLoc(
 
 	if cmdTag.RowsAffected() == 0 {
 		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocNotSuitable)
+	}
+
+	var operationID int64
+	err = tx.QueryRow(ctx, `
+		INSERT INTO operation (title, created_at)
+		VALUES ('Размещение на складе', $1)
+		RETURNING id
+	`, date).Scan(&operationID)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	_, err = tx.Exec(ctx, `
+		INSERT INTO operation_cargo (operation_id, cargo_id)
+		VALUES ($1, $2)
+	`, operationID, cargoID)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return fmt.Errorf("%s: %w", op, err)
 	}
 
 	return nil
@@ -922,4 +963,101 @@ func (s *Storage) DeleteOperationCargo(
 	}
 
 	return nil
+}
+
+func (s *Storage) CargoDetailReport(
+    ctx context.Context,
+) ([]models.CargoDetailItem, error) {
+    const op = "storage.postgresql.CargoDetailReport"
+
+    rows, err := s.pool.Query(ctx, `
+        SELECT 
+            c.title AS cargo_name,
+            c.weight AS weight,
+            ct.title AS cargo_type,
+            v.title AS vessel_type,
+            o.created_at AS unloading_date
+        FROM cargo c
+        JOIN cargo_type ct ON c.type_id = ct.id
+        JOIN vessel v ON c.vessel_id = v.id
+        JOIN operation_cargo oc ON c.id = oc.cargo_id
+        JOIN operation o ON oc.operation_id = o.id
+        WHERE o.title = 'Выгрузка'
+        ORDER BY o.created_at DESC
+    `)
+    
+    if err != nil {
+        return nil, fmt.Errorf("%s: %w", op, err)
+    }
+    defer rows.Close()
+
+    var items []models.CargoDetailItem
+    for rows.Next() {
+        var item models.CargoDetailItem
+        
+        err := rows.Scan(
+            &item.CargoName,
+            &item.Weight,
+            &item.CargoType,
+            &item.VesselName,
+            &item.UnloadingDate,
+        )
+        if err != nil {
+            return nil, fmt.Errorf("%s: %w", op, err)
+        }
+        
+        items = append(items, item)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, fmt.Errorf("%s: %w", op, err)
+    }
+
+    return items, nil
+}
+
+func (s *Storage) CargoTypeReport(
+	ctx context.Context,
+) ([]models.CargoTypeItem, error) {
+	const op = "storage.postgresql.CargoTypeReport"
+
+	rows, err := s.pool.Query(ctx, `
+		SELECT 
+			ct.title AS cargo_type_name,
+			COUNT(c.id) AS cargo_count,
+			SUM(c.weight) AS total_weight_tons,
+			SUM(c.weight) * ct.process_cost AS total_process_cost
+		FROM cargo c
+		JOIN cargo_type ct ON c.type_id = ct.id
+		GROUP BY ct.id, ct.title, ct.process_cost
+		ORDER BY total_weight_tons DESC;
+	`)
+
+	if err != nil {
+        return nil, fmt.Errorf("%s: %w", op, err)
+    }
+    defer rows.Close()
+
+    var items []models.CargoTypeItem
+    for rows.Next() {
+        var item models.CargoTypeItem
+        
+        err := rows.Scan(
+            &item.CargoTypeName,
+            &item.CargoCount,
+            &item.TotalWeight,
+            &item.TotalProcessCost,
+        )
+        if err != nil {
+            return nil, fmt.Errorf("%s: %w", op, err)
+        }
+        
+        items = append(items, item)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, fmt.Errorf("%s: %w", op, err)
+    }
+
+    return items, nil
 }

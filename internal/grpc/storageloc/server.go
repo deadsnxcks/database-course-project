@@ -17,27 +17,27 @@ import (
 type StorageLoc interface {
 	List(ctx context.Context) ([]models.StorageLocation, error)
 	Get(ctx context.Context, id int64) (models.StorageLocation, error)
-	Delete(ctx context.Context, id int64) (error)
+	Delete(ctx context.Context, id int64) error
 	Create(
 		ctx context.Context,
-		cargoTypeID int64, 
+		cargoTypeID int64,
 		maxWeight float64,
 		maxVolume float64,
 	) (int64, error)
 	Update(
-		ctx context.Context, 
+		ctx context.Context,
 		id int64,
-		cargoTypeID *int64, 
-		maxWeight *float64, 
+		cargoTypeID *int64,
+		maxWeight *float64,
 		maxVolume *float64,
-	) (error)
+	) error
 	Use(
 		ctx context.Context,
 		id int64,
 		cargoId int64,
 		date time.Time,
-	) (error)
-	Reset(ctx context.Context, id int64) (error)
+	) error
+	Reset(ctx context.Context, id int64) error
 }
 
 type serverAPI struct {
@@ -47,7 +47,7 @@ type serverAPI struct {
 
 func Register(gRPCServer *grpc.Server, storageLocation StorageLoc) {
 	storagelocv1.RegisterStorageLocationServiceServer(
-		gRPCServer, 
+		gRPCServer,
 		&serverAPI{
 			storageLocation: storageLocation,
 		},
@@ -181,7 +181,7 @@ func (s *serverAPI) Delete(
 	ctx context.Context,
 	req *storagelocv1.DeleteRequest,
 ) (*storagelocv1.DeleteResponse, error) {
-	
+
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
@@ -190,11 +190,11 @@ func (s *serverAPI) Delete(
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrStorageLocInUse):
-			return nil, status.Error(codes.FailedPrecondition, err.Error())
+			return nil, status.Error(codes.FailedPrecondition, "storage location is used")
 		case errors.Is(err, storage.ErrStorageLocNotFound):
-			return nil, status.Error(codes.NotFound, err.Error())
+			return nil, status.Error(codes.NotFound, "storage location not found")
 		default:
-			return nil, status.Error(codes.Internal, err.Error())
+			return nil, status.Error(codes.Internal, "failed to delete storage location")
 		}
 	}
 
@@ -207,24 +207,27 @@ func (s *serverAPI) Use(
 ) (*storagelocv1.UseResponse, error) {
 
 	if req.GetStorageLocationId() <= 0 {
-        return nil, status.Error(codes.InvalidArgument, 
-            "storage_location_id must be positive")
-    }
-    
-    if req.GetCargoId() <= 0 {
-        return nil, status.Error(codes.InvalidArgument, 
-            "cargo_id must be positive")
-    }
+		return nil, status.Error(codes.InvalidArgument,
+			"storage_location_id must be positive")
+	}
+
+	if req.GetCargoId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument,
+			"cargo_id must be positive")
+	}
 
 	date := time.Now()
-    if req.GetDateOfPlacement() != nil {
-        date = req.GetDateOfPlacement().AsTime()
-        
-        if date.After(time.Now()) {
-            return nil, status.Error(codes.InvalidArgument, 
-                "date_of_placement cannot be in the future")
-        }
-    }
+	if req.GetDateOfPlacement() != nil {
+		date = req.GetDateOfPlacement().AsTime()
+		
+		_, offset := time.Now().Zone()
+		adjustedNow := time.Now().UTC().Add(time.Duration(offset) * time.Second)	
+				
+		if date.After(adjustedNow) {
+			return nil, status.Error(codes.InvalidArgument,
+				"date_of_placement cannot be in the future")
+		}
+	}
 
 	err := s.storageLocation.Use(ctx, req.GetStorageLocationId(), req.GetCargoId(), date)
 	if err != nil {
@@ -237,6 +240,8 @@ func (s *serverAPI) Use(
 			return nil, status.Error(codes.FailedPrecondition, "storage location is already in use")
 		case errors.Is(err, storage.ErrStorageLocNotSuitable):
 			return nil, status.Error(codes.FailedPrecondition, "storage location not suitable for this cargo")
+		case errors.Is(err, storage.ErrCargoAlreadyPlaced):
+			return nil, status.Error(codes.FailedPrecondition, "cargo is already placed in a storage location")
 		default:
 			return nil, status.Error(codes.Internal, "failed to use storage location")
 		}
@@ -283,11 +288,11 @@ func toProtoStorageLoc(
 	}
 
 	return &storagelocv1.StorageLocation{
-		Id: 				sl.ID,
-		CargoTypeId: 		sl.CargoTypeID,
-		MaxWeight: 			sl.MaxWeight,
-		MaxVolume: 			sl.MaxVolume,
-		CargoId: 			cargoID,
-		DateOfPlacement: 	date,
+		Id:              sl.ID,
+		CargoTypeId:     sl.CargoTypeID,
+		MaxWeight:       sl.MaxWeight,
+		MaxVolume:       sl.MaxVolume,
+		CargoId:         cargoID,
+		DateOfPlacement: date,
 	}
 }

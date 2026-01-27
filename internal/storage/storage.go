@@ -18,6 +18,7 @@ var (
 	ErrCargoNotFound = errors.New("cargo not found")
 	ErrCargoExists = errors.New("cargo already exists")
 	ErrCargoInUse = errors.New("cargo is used")
+	ErrCargoAlreadyPlaced = errors.New("cargo is already placed in a storage location")
 
 	ErrStorageLocNotFound = errors.New("storage location not found")
 	ErrStorageLocInUse = errors.New("storage location is useed")
