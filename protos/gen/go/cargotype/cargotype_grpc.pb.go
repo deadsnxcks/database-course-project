@@ -19,22 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CargoTypeService_ListCargoTypes_FullMethodName  = "/cargotypev1.CargoTypeService/ListCargoTypes"
-	CargoTypeService_CreateCargoType_FullMethodName = "/cargotypev1.CargoTypeService/CreateCargoType"
-	CargoTypeService_DeleteCargoType_FullMethodName = "/cargotypev1.CargoTypeService/DeleteCargoType"
-	CargoTypeService_GetCargoType_FullMethodName    = "/cargotypev1.CargoTypeService/GetCargoType"
-	CargoTypeService_UpdateCargoType_FullMethodName = "/cargotypev1.CargoTypeService/UpdateCargoType"
+	CargoTypeService_List_FullMethodName   = "/cargotypev1.CargoTypeService/List"
+	CargoTypeService_Create_FullMethodName = "/cargotypev1.CargoTypeService/Create"
+	CargoTypeService_Delete_FullMethodName = "/cargotypev1.CargoTypeService/Delete"
+	CargoTypeService_Get_FullMethodName    = "/cargotypev1.CargoTypeService/Get"
+	CargoTypeService_Update_FullMethodName = "/cargotypev1.CargoTypeService/Update"
 )
 
 // CargoTypeServiceClient is the client API for CargoTypeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CargoTypeServiceClient interface {
-	ListCargoTypes(ctx context.Context, in *ListCargoTypesRequest, opts ...grpc.CallOption) (*ListCargoTypesResponse, error)
-	CreateCargoType(ctx context.Context, in *CreateCargoTypeRequest, opts ...grpc.CallOption) (*CreateCargoTypeResponse, error)
-	DeleteCargoType(ctx context.Context, in *DeleteCargoTypeRequest, opts ...grpc.CallOption) (*DeleteCargoTypeResponse, error)
-	GetCargoType(ctx context.Context, in *GetCargoTypeRequest, opts ...grpc.CallOption) (*GetCargoTypeResponse, error)
-	UpdateCargoType(ctx context.Context, in *UpdateCargoTypeRequest, opts ...grpc.CallOption) (*UpdateCargoTypeResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 }
 
 type cargoTypeServiceClient struct {
@@ -45,50 +45,50 @@ func NewCargoTypeServiceClient(cc grpc.ClientConnInterface) CargoTypeServiceClie
 	return &cargoTypeServiceClient{cc}
 }
 
-func (c *cargoTypeServiceClient) ListCargoTypes(ctx context.Context, in *ListCargoTypesRequest, opts ...grpc.CallOption) (*ListCargoTypesResponse, error) {
+func (c *cargoTypeServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListCargoTypesResponse)
-	err := c.cc.Invoke(ctx, CargoTypeService_ListCargoTypes_FullMethodName, in, out, cOpts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, CargoTypeService_List_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cargoTypeServiceClient) CreateCargoType(ctx context.Context, in *CreateCargoTypeRequest, opts ...grpc.CallOption) (*CreateCargoTypeResponse, error) {
+func (c *cargoTypeServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateCargoTypeResponse)
-	err := c.cc.Invoke(ctx, CargoTypeService_CreateCargoType_FullMethodName, in, out, cOpts...)
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, CargoTypeService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cargoTypeServiceClient) DeleteCargoType(ctx context.Context, in *DeleteCargoTypeRequest, opts ...grpc.CallOption) (*DeleteCargoTypeResponse, error) {
+func (c *cargoTypeServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteCargoTypeResponse)
-	err := c.cc.Invoke(ctx, CargoTypeService_DeleteCargoType_FullMethodName, in, out, cOpts...)
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, CargoTypeService_Delete_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cargoTypeServiceClient) GetCargoType(ctx context.Context, in *GetCargoTypeRequest, opts ...grpc.CallOption) (*GetCargoTypeResponse, error) {
+func (c *cargoTypeServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCargoTypeResponse)
-	err := c.cc.Invoke(ctx, CargoTypeService_GetCargoType_FullMethodName, in, out, cOpts...)
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, CargoTypeService_Get_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *cargoTypeServiceClient) UpdateCargoType(ctx context.Context, in *UpdateCargoTypeRequest, opts ...grpc.CallOption) (*UpdateCargoTypeResponse, error) {
+func (c *cargoTypeServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateCargoTypeResponse)
-	err := c.cc.Invoke(ctx, CargoTypeService_UpdateCargoType_FullMethodName, in, out, cOpts...)
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, CargoTypeService_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,11 +99,11 @@ func (c *cargoTypeServiceClient) UpdateCargoType(ctx context.Context, in *Update
 // All implementations must embed UnimplementedCargoTypeServiceServer
 // for forward compatibility.
 type CargoTypeServiceServer interface {
-	ListCargoTypes(context.Context, *ListCargoTypesRequest) (*ListCargoTypesResponse, error)
-	CreateCargoType(context.Context, *CreateCargoTypeRequest) (*CreateCargoTypeResponse, error)
-	DeleteCargoType(context.Context, *DeleteCargoTypeRequest) (*DeleteCargoTypeResponse, error)
-	GetCargoType(context.Context, *GetCargoTypeRequest) (*GetCargoTypeResponse, error)
-	UpdateCargoType(context.Context, *UpdateCargoTypeRequest) (*UpdateCargoTypeResponse, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	mustEmbedUnimplementedCargoTypeServiceServer()
 }
 
@@ -114,20 +114,20 @@ type CargoTypeServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCargoTypeServiceServer struct{}
 
-func (UnimplementedCargoTypeServiceServer) ListCargoTypes(context.Context, *ListCargoTypesRequest) (*ListCargoTypesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListCargoTypes not implemented")
+func (UnimplementedCargoTypeServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedCargoTypeServiceServer) CreateCargoType(context.Context, *CreateCargoTypeRequest) (*CreateCargoTypeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateCargoType not implemented")
+func (UnimplementedCargoTypeServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedCargoTypeServiceServer) DeleteCargoType(context.Context, *DeleteCargoTypeRequest) (*DeleteCargoTypeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteCargoType not implemented")
+func (UnimplementedCargoTypeServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedCargoTypeServiceServer) GetCargoType(context.Context, *GetCargoTypeRequest) (*GetCargoTypeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetCargoType not implemented")
+func (UnimplementedCargoTypeServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedCargoTypeServiceServer) UpdateCargoType(context.Context, *UpdateCargoTypeRequest) (*UpdateCargoTypeResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateCargoType not implemented")
+func (UnimplementedCargoTypeServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedCargoTypeServiceServer) mustEmbedUnimplementedCargoTypeServiceServer() {}
 func (UnimplementedCargoTypeServiceServer) testEmbeddedByValue()                          {}
@@ -150,92 +150,92 @@ func RegisterCargoTypeServiceServer(s grpc.ServiceRegistrar, srv CargoTypeServic
 	s.RegisterService(&CargoTypeService_ServiceDesc, srv)
 }
 
-func _CargoTypeService_ListCargoTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCargoTypesRequest)
+func _CargoTypeService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CargoTypeServiceServer).ListCargoTypes(ctx, in)
+		return srv.(CargoTypeServiceServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CargoTypeService_ListCargoTypes_FullMethodName,
+		FullMethod: CargoTypeService_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CargoTypeServiceServer).ListCargoTypes(ctx, req.(*ListCargoTypesRequest))
+		return srv.(CargoTypeServiceServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CargoTypeService_CreateCargoType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateCargoTypeRequest)
+func _CargoTypeService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CargoTypeServiceServer).CreateCargoType(ctx, in)
+		return srv.(CargoTypeServiceServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CargoTypeService_CreateCargoType_FullMethodName,
+		FullMethod: CargoTypeService_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CargoTypeServiceServer).CreateCargoType(ctx, req.(*CreateCargoTypeRequest))
+		return srv.(CargoTypeServiceServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CargoTypeService_DeleteCargoType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteCargoTypeRequest)
+func _CargoTypeService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CargoTypeServiceServer).DeleteCargoType(ctx, in)
+		return srv.(CargoTypeServiceServer).Delete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CargoTypeService_DeleteCargoType_FullMethodName,
+		FullMethod: CargoTypeService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CargoTypeServiceServer).DeleteCargoType(ctx, req.(*DeleteCargoTypeRequest))
+		return srv.(CargoTypeServiceServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CargoTypeService_GetCargoType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCargoTypeRequest)
+func _CargoTypeService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CargoTypeServiceServer).GetCargoType(ctx, in)
+		return srv.(CargoTypeServiceServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CargoTypeService_GetCargoType_FullMethodName,
+		FullMethod: CargoTypeService_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CargoTypeServiceServer).GetCargoType(ctx, req.(*GetCargoTypeRequest))
+		return srv.(CargoTypeServiceServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CargoTypeService_UpdateCargoType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateCargoTypeRequest)
+func _CargoTypeService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CargoTypeServiceServer).UpdateCargoType(ctx, in)
+		return srv.(CargoTypeServiceServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: CargoTypeService_UpdateCargoType_FullMethodName,
+		FullMethod: CargoTypeService_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CargoTypeServiceServer).UpdateCargoType(ctx, req.(*UpdateCargoTypeRequest))
+		return srv.(CargoTypeServiceServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -248,24 +248,24 @@ var CargoTypeService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CargoTypeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListCargoTypes",
-			Handler:    _CargoTypeService_ListCargoTypes_Handler,
+			MethodName: "List",
+			Handler:    _CargoTypeService_List_Handler,
 		},
 		{
-			MethodName: "CreateCargoType",
-			Handler:    _CargoTypeService_CreateCargoType_Handler,
+			MethodName: "Create",
+			Handler:    _CargoTypeService_Create_Handler,
 		},
 		{
-			MethodName: "DeleteCargoType",
-			Handler:    _CargoTypeService_DeleteCargoType_Handler,
+			MethodName: "Delete",
+			Handler:    _CargoTypeService_Delete_Handler,
 		},
 		{
-			MethodName: "GetCargoType",
-			Handler:    _CargoTypeService_GetCargoType_Handler,
+			MethodName: "Get",
+			Handler:    _CargoTypeService_Get_Handler,
 		},
 		{
-			MethodName: "UpdateCargoType",
-			Handler:    _CargoTypeService_UpdateCargoType_Handler,
+			MethodName: "Update",
+			Handler:    _CargoTypeService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

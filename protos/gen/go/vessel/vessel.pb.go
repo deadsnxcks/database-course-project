@@ -89,26 +89,26 @@ func (x *Vessel) GetMaxLoad() float64 {
 	return 0
 }
 
-type ListVesselsRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListVesselsRequest) Reset() {
-	*x = ListVesselsRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_vessel_vessel_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListVesselsRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListVesselsRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListVesselsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -120,32 +120,32 @@ func (x *ListVesselsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListVesselsRequest.ProtoReflect.Descriptor instead.
-func (*ListVesselsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{1}
 }
 
-type ListVesselsResponse struct {
+type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Vessels       []*Vessel              `protobuf:"bytes,1,rep,name=vessels,proto3" json:"vessels,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListVesselsResponse) Reset() {
-	*x = ListVesselsResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_vessel_vessel_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListVesselsResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListVesselsResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListVesselsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -157,39 +157,39 @@ func (x *ListVesselsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListVesselsResponse.ProtoReflect.Descriptor instead.
-func (*ListVesselsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListVesselsResponse) GetVessels() []*Vessel {
+func (x *ListResponse) GetVessels() []*Vessel {
 	if x != nil {
 		return x.Vessels
 	}
 	return nil
 }
 
-type GetVesselRequest struct {
+type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetVesselRequest) Reset() {
-	*x = GetVesselRequest{}
+func (x *GetRequest) Reset() {
+	*x = GetRequest{}
 	mi := &file_vessel_vessel_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetVesselRequest) String() string {
+func (x *GetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetVesselRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() {}
 
-func (x *GetVesselRequest) ProtoReflect() protoreflect.Message {
+func (x *GetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -201,39 +201,39 @@ func (x *GetVesselRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetVesselRequest.ProtoReflect.Descriptor instead.
-func (*GetVesselRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
+func (*GetRequest) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetVesselRequest) GetId() int64 {
+func (x *GetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetVesselResponse struct {
+type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Vessel        *Vessel                `protobuf:"bytes,1,opt,name=vessel,proto3" json:"vessel,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetVesselResponse) Reset() {
-	*x = GetVesselResponse{}
+func (x *GetResponse) Reset() {
+	*x = GetResponse{}
 	mi := &file_vessel_vessel_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetVesselResponse) String() string {
+func (x *GetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetVesselResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() {}
 
-func (x *GetVesselResponse) ProtoReflect() protoreflect.Message {
+func (x *GetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -245,19 +245,19 @@ func (x *GetVesselResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetVesselResponse.ProtoReflect.Descriptor instead.
-func (*GetVesselResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
+func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetVesselResponse) GetVessel() *Vessel {
+func (x *GetResponse) GetVessel() *Vessel {
 	if x != nil {
 		return x.Vessel
 	}
 	return nil
 }
 
-type CreateVesselRequest struct {
+type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	VesselType    string                 `protobuf:"bytes,2,opt,name=vessel_type,json=vesselType,proto3" json:"vessel_type,omitempty"`
@@ -266,20 +266,20 @@ type CreateVesselRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateVesselRequest) Reset() {
-	*x = CreateVesselRequest{}
+func (x *CreateRequest) Reset() {
+	*x = CreateRequest{}
 	mi := &file_vessel_vessel_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateVesselRequest) String() string {
+func (x *CreateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateVesselRequest) ProtoMessage() {}
+func (*CreateRequest) ProtoMessage() {}
 
-func (x *CreateVesselRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -291,53 +291,53 @@ func (x *CreateVesselRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateVesselRequest.ProtoReflect.Descriptor instead.
-func (*CreateVesselRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
+func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateVesselRequest) GetTitle() string {
+func (x *CreateRequest) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-func (x *CreateVesselRequest) GetVesselType() string {
+func (x *CreateRequest) GetVesselType() string {
 	if x != nil {
 		return x.VesselType
 	}
 	return ""
 }
 
-func (x *CreateVesselRequest) GetMaxLoad() float64 {
+func (x *CreateRequest) GetMaxLoad() float64 {
 	if x != nil {
 		return x.MaxLoad
 	}
 	return 0
 }
 
-type CreateVesselResponse struct {
+type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateVesselResponse) Reset() {
-	*x = CreateVesselResponse{}
+func (x *CreateResponse) Reset() {
+	*x = CreateResponse{}
 	mi := &file_vessel_vessel_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateVesselResponse) String() string {
+func (x *CreateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateVesselResponse) ProtoMessage() {}
+func (*CreateResponse) ProtoMessage() {}
 
-func (x *CreateVesselResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -349,19 +349,19 @@ func (x *CreateVesselResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateVesselResponse.ProtoReflect.Descriptor instead.
-func (*CreateVesselResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
+func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CreateVesselResponse) GetId() int64 {
+func (x *CreateResponse) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type UpdateVesselRequest struct {
+type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         *string                `protobuf:"bytes,2,opt,name=title,proto3,oneof" json:"title,omitempty"`
@@ -371,20 +371,20 @@ type UpdateVesselRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateVesselRequest) Reset() {
-	*x = UpdateVesselRequest{}
+func (x *UpdateRequest) Reset() {
+	*x = UpdateRequest{}
 	mi := &file_vessel_vessel_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateVesselRequest) String() string {
+func (x *UpdateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateVesselRequest) ProtoMessage() {}
+func (*UpdateRequest) ProtoMessage() {}
 
-func (x *UpdateVesselRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -396,59 +396,59 @@ func (x *UpdateVesselRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateVesselRequest.ProtoReflect.Descriptor instead.
-func (*UpdateVesselRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRequest) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateVesselRequest) GetId() int64 {
+func (x *UpdateRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateVesselRequest) GetTitle() string {
+func (x *UpdateRequest) GetTitle() string {
 	if x != nil && x.Title != nil {
 		return *x.Title
 	}
 	return ""
 }
 
-func (x *UpdateVesselRequest) GetVesselType() string {
+func (x *UpdateRequest) GetVesselType() string {
 	if x != nil && x.VesselType != nil {
 		return *x.VesselType
 	}
 	return ""
 }
 
-func (x *UpdateVesselRequest) GetMaxLoad() float64 {
+func (x *UpdateRequest) GetMaxLoad() float64 {
 	if x != nil && x.MaxLoad != nil {
 		return *x.MaxLoad
 	}
 	return 0
 }
 
-type UpdateVesselResponse struct {
+type UpdateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateVesselResponse) Reset() {
-	*x = UpdateVesselResponse{}
+func (x *UpdateResponse) Reset() {
+	*x = UpdateResponse{}
 	mi := &file_vessel_vessel_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateVesselResponse) String() string {
+func (x *UpdateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateVesselResponse) ProtoMessage() {}
+func (*UpdateResponse) ProtoMessage() {}
 
-func (x *UpdateVesselResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -460,32 +460,32 @@ func (x *UpdateVesselResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateVesselResponse.ProtoReflect.Descriptor instead.
-func (*UpdateVesselResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{8}
 }
 
-type DeleteVesselRequest struct {
+type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteVesselRequest) Reset() {
-	*x = DeleteVesselRequest{}
+func (x *DeleteRequest) Reset() {
+	*x = DeleteRequest{}
 	mi := &file_vessel_vessel_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteVesselRequest) String() string {
+func (x *DeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteVesselRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() {}
 
-func (x *DeleteVesselRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -497,38 +497,38 @@ func (x *DeleteVesselRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteVesselRequest.ProtoReflect.Descriptor instead.
-func (*DeleteVesselRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DeleteVesselRequest) GetId() int64 {
+func (x *DeleteRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type DeleteVesselResponse struct {
+type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteVesselResponse) Reset() {
-	*x = DeleteVesselResponse{}
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
 	mi := &file_vessel_vessel_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteVesselResponse) String() string {
+func (x *DeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteVesselResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() {}
 
-func (x *DeleteVesselResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_vessel_vessel_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -540,8 +540,8 @@ func (x *DeleteVesselResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteVesselResponse.ProtoReflect.Descriptor instead.
-func (*DeleteVesselResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_vessel_vessel_proto_rawDescGZIP(), []int{10}
 }
 
@@ -555,22 +555,23 @@ const file_vessel_vessel_proto_rawDesc = "" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1f\n" +
 	"\vvessel_type\x18\x03 \x01(\tR\n" +
 	"vesselType\x12\x19\n" +
-	"\bmax_load\x18\x04 \x01(\x01R\amaxLoad\"\x14\n" +
-	"\x12ListVesselsRequest\"B\n" +
-	"\x13ListVesselsResponse\x12+\n" +
-	"\avessels\x18\x01 \x03(\v2\x11.vessel.v1.VesselR\avessels\"\"\n" +
-	"\x10GetVesselRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\">\n" +
-	"\x11GetVesselResponse\x12)\n" +
-	"\x06vessel\x18\x01 \x01(\v2\x11.vessel.v1.VesselR\x06vessel\"g\n" +
-	"\x13CreateVesselRequest\x12\x14\n" +
+	"\bmax_load\x18\x04 \x01(\x01R\amaxLoad\"\r\n" +
+	"\vListRequest\";\n" +
+	"\fListResponse\x12+\n" +
+	"\avessels\x18\x01 \x03(\v2\x11.vessel.v1.VesselR\avessels\"\x1c\n" +
+	"\n" +
+	"GetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"8\n" +
+	"\vGetResponse\x12)\n" +
+	"\x06vessel\x18\x01 \x01(\v2\x11.vessel.v1.VesselR\x06vessel\"a\n" +
+	"\rCreateRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12\x1f\n" +
 	"\vvessel_type\x18\x02 \x01(\tR\n" +
 	"vesselType\x12\x19\n" +
-	"\bmax_load\x18\x03 \x01(\x01R\amaxLoad\"&\n" +
-	"\x14CreateVesselResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\xad\x01\n" +
-	"\x13UpdateVesselRequest\x12\x0e\n" +
+	"\bmax_load\x18\x03 \x01(\x01R\amaxLoad\" \n" +
+	"\x0eCreateResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\xa7\x01\n" +
+	"\rUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x19\n" +
 	"\x05title\x18\x02 \x01(\tH\x00R\x05title\x88\x01\x01\x12$\n" +
 	"\vvessel_type\x18\x03 \x01(\tH\x01R\n" +
@@ -578,17 +579,17 @@ const file_vessel_vessel_proto_rawDesc = "" +
 	"\bmax_load\x18\x04 \x01(\x01H\x02R\amaxLoad\x88\x01\x01B\b\n" +
 	"\x06_titleB\x0e\n" +
 	"\f_vessel_typeB\v\n" +
-	"\t_max_load\"\x16\n" +
-	"\x14UpdateVesselResponse\"%\n" +
-	"\x13DeleteVesselRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x16\n" +
-	"\x14DeleteVesselResponse2\x98\x03\n" +
-	"\rVesselService\x12L\n" +
-	"\vListVessels\x12\x1d.vessel.v1.ListVesselsRequest\x1a\x1e.vessel.v1.ListVesselsResponse\x12F\n" +
-	"\tGetVessel\x12\x1b.vessel.v1.GetVesselRequest\x1a\x1c.vessel.v1.GetVesselResponse\x12O\n" +
-	"\fUpdateVessel\x12\x1e.vessel.v1.UpdateVesselRequest\x1a\x1f.vessel.v1.UpdateVesselResponse\x12O\n" +
-	"\fCreateVessel\x12\x1e.vessel.v1.CreateVesselRequest\x1a\x1f.vessel.v1.CreateVesselResponse\x12O\n" +
-	"\fDeleteVessel\x12\x1e.vessel.v1.DeleteVesselRequest\x1a\x1f.vessel.v1.DeleteVesselResponseB9Z7github.com/deadsnxcks/dbcp/protos/proto/vessel;vesselv1b\x06proto3"
+	"\t_max_load\"\x10\n" +
+	"\x0eUpdateResponse\"\x1f\n" +
+	"\rDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
+	"\x0eDeleteResponse2\xbb\x02\n" +
+	"\rVesselService\x127\n" +
+	"\x04List\x12\x16.vessel.v1.ListRequest\x1a\x17.vessel.v1.ListResponse\x124\n" +
+	"\x03Get\x12\x15.vessel.v1.GetRequest\x1a\x16.vessel.v1.GetResponse\x12=\n" +
+	"\x06Update\x12\x18.vessel.v1.UpdateRequest\x1a\x19.vessel.v1.UpdateResponse\x12=\n" +
+	"\x06Create\x12\x18.vessel.v1.CreateRequest\x1a\x19.vessel.v1.CreateResponse\x12=\n" +
+	"\x06Delete\x12\x18.vessel.v1.DeleteRequest\x1a\x19.vessel.v1.DeleteResponseB9Z7github.com/deadsnxcks/dbcp/protos/proto/vessel;vesselv1b\x06proto3"
 
 var (
 	file_vessel_vessel_proto_rawDescOnce sync.Once
@@ -604,31 +605,31 @@ func file_vessel_vessel_proto_rawDescGZIP() []byte {
 
 var file_vessel_vessel_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_vessel_vessel_proto_goTypes = []any{
-	(*Vessel)(nil),               // 0: vessel.v1.Vessel
-	(*ListVesselsRequest)(nil),   // 1: vessel.v1.ListVesselsRequest
-	(*ListVesselsResponse)(nil),  // 2: vessel.v1.ListVesselsResponse
-	(*GetVesselRequest)(nil),     // 3: vessel.v1.GetVesselRequest
-	(*GetVesselResponse)(nil),    // 4: vessel.v1.GetVesselResponse
-	(*CreateVesselRequest)(nil),  // 5: vessel.v1.CreateVesselRequest
-	(*CreateVesselResponse)(nil), // 6: vessel.v1.CreateVesselResponse
-	(*UpdateVesselRequest)(nil),  // 7: vessel.v1.UpdateVesselRequest
-	(*UpdateVesselResponse)(nil), // 8: vessel.v1.UpdateVesselResponse
-	(*DeleteVesselRequest)(nil),  // 9: vessel.v1.DeleteVesselRequest
-	(*DeleteVesselResponse)(nil), // 10: vessel.v1.DeleteVesselResponse
+	(*Vessel)(nil),         // 0: vessel.v1.Vessel
+	(*ListRequest)(nil),    // 1: vessel.v1.ListRequest
+	(*ListResponse)(nil),   // 2: vessel.v1.ListResponse
+	(*GetRequest)(nil),     // 3: vessel.v1.GetRequest
+	(*GetResponse)(nil),    // 4: vessel.v1.GetResponse
+	(*CreateRequest)(nil),  // 5: vessel.v1.CreateRequest
+	(*CreateResponse)(nil), // 6: vessel.v1.CreateResponse
+	(*UpdateRequest)(nil),  // 7: vessel.v1.UpdateRequest
+	(*UpdateResponse)(nil), // 8: vessel.v1.UpdateResponse
+	(*DeleteRequest)(nil),  // 9: vessel.v1.DeleteRequest
+	(*DeleteResponse)(nil), // 10: vessel.v1.DeleteResponse
 }
 var file_vessel_vessel_proto_depIdxs = []int32{
-	0,  // 0: vessel.v1.ListVesselsResponse.vessels:type_name -> vessel.v1.Vessel
-	0,  // 1: vessel.v1.GetVesselResponse.vessel:type_name -> vessel.v1.Vessel
-	1,  // 2: vessel.v1.VesselService.ListVessels:input_type -> vessel.v1.ListVesselsRequest
-	3,  // 3: vessel.v1.VesselService.GetVessel:input_type -> vessel.v1.GetVesselRequest
-	7,  // 4: vessel.v1.VesselService.UpdateVessel:input_type -> vessel.v1.UpdateVesselRequest
-	5,  // 5: vessel.v1.VesselService.CreateVessel:input_type -> vessel.v1.CreateVesselRequest
-	9,  // 6: vessel.v1.VesselService.DeleteVessel:input_type -> vessel.v1.DeleteVesselRequest
-	2,  // 7: vessel.v1.VesselService.ListVessels:output_type -> vessel.v1.ListVesselsResponse
-	4,  // 8: vessel.v1.VesselService.GetVessel:output_type -> vessel.v1.GetVesselResponse
-	8,  // 9: vessel.v1.VesselService.UpdateVessel:output_type -> vessel.v1.UpdateVesselResponse
-	6,  // 10: vessel.v1.VesselService.CreateVessel:output_type -> vessel.v1.CreateVesselResponse
-	10, // 11: vessel.v1.VesselService.DeleteVessel:output_type -> vessel.v1.DeleteVesselResponse
+	0,  // 0: vessel.v1.ListResponse.vessels:type_name -> vessel.v1.Vessel
+	0,  // 1: vessel.v1.GetResponse.vessel:type_name -> vessel.v1.Vessel
+	1,  // 2: vessel.v1.VesselService.List:input_type -> vessel.v1.ListRequest
+	3,  // 3: vessel.v1.VesselService.Get:input_type -> vessel.v1.GetRequest
+	7,  // 4: vessel.v1.VesselService.Update:input_type -> vessel.v1.UpdateRequest
+	5,  // 5: vessel.v1.VesselService.Create:input_type -> vessel.v1.CreateRequest
+	9,  // 6: vessel.v1.VesselService.Delete:input_type -> vessel.v1.DeleteRequest
+	2,  // 7: vessel.v1.VesselService.List:output_type -> vessel.v1.ListResponse
+	4,  // 8: vessel.v1.VesselService.Get:output_type -> vessel.v1.GetResponse
+	8,  // 9: vessel.v1.VesselService.Update:output_type -> vessel.v1.UpdateResponse
+	6,  // 10: vessel.v1.VesselService.Create:output_type -> vessel.v1.CreateResponse
+	10, // 11: vessel.v1.VesselService.Delete:output_type -> vessel.v1.DeleteResponse
 	7,  // [7:12] is the sub-list for method output_type
 	2,  // [2:7] is the sub-list for method input_type
 	2,  // [2:2] is the sub-list for extension type_name

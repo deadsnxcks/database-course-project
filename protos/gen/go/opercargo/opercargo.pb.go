@@ -73,26 +73,26 @@ func (x *OperationCargo) GetCargoId() int64 {
 	return 0
 }
 
-type ListOperationsCargosRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListOperationsCargosRequest) Reset() {
-	*x = ListOperationsCargosRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListOperationsCargosRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListOperationsCargosRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListOperationsCargosRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -104,32 +104,32 @@ func (x *ListOperationsCargosRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListOperationsCargosRequest.ProtoReflect.Descriptor instead.
-func (*ListOperationsCargosRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{1}
 }
 
-type ListOperationsCargosResponse struct {
+type ListResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	OperationsCargos []*OperationCargo      `protobuf:"bytes,1,rep,name=operations_cargos,json=operationsCargos,proto3" json:"operations_cargos,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
-func (x *ListOperationsCargosResponse) Reset() {
-	*x = ListOperationsCargosResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListOperationsCargosResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListOperationsCargosResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListOperationsCargosResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -141,19 +141,19 @@ func (x *ListOperationsCargosResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListOperationsCargosResponse.ProtoReflect.Descriptor instead.
-func (*ListOperationsCargosResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListOperationsCargosResponse) GetOperationsCargos() []*OperationCargo {
+func (x *ListResponse) GetOperationsCargos() []*OperationCargo {
 	if x != nil {
 		return x.OperationsCargos
 	}
 	return nil
 }
 
-type CreateOperationCargoRequest struct {
+type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OperationId   int64                  `protobuf:"varint,1,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	CargoId       int64                  `protobuf:"varint,2,opt,name=cargo_id,json=cargoId,proto3" json:"cargo_id,omitempty"`
@@ -161,20 +161,20 @@ type CreateOperationCargoRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateOperationCargoRequest) Reset() {
-	*x = CreateOperationCargoRequest{}
+func (x *CreateRequest) Reset() {
+	*x = CreateRequest{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateOperationCargoRequest) String() string {
+func (x *CreateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateOperationCargoRequest) ProtoMessage() {}
+func (*CreateRequest) ProtoMessage() {}
 
-func (x *CreateOperationCargoRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -186,45 +186,45 @@ func (x *CreateOperationCargoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateOperationCargoRequest.ProtoReflect.Descriptor instead.
-func (*CreateOperationCargoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
+func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreateOperationCargoRequest) GetOperationId() int64 {
+func (x *CreateRequest) GetOperationId() int64 {
 	if x != nil {
 		return x.OperationId
 	}
 	return 0
 }
 
-func (x *CreateOperationCargoRequest) GetCargoId() int64 {
+func (x *CreateRequest) GetCargoId() int64 {
 	if x != nil {
 		return x.CargoId
 	}
 	return 0
 }
 
-type CreateOperationCargoResponse struct {
+type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateOperationCargoResponse) Reset() {
-	*x = CreateOperationCargoResponse{}
+func (x *CreateResponse) Reset() {
+	*x = CreateResponse{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateOperationCargoResponse) String() string {
+func (x *CreateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateOperationCargoResponse) ProtoMessage() {}
+func (*CreateResponse) ProtoMessage() {}
 
-func (x *CreateOperationCargoResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -236,12 +236,12 @@ func (x *CreateOperationCargoResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateOperationCargoResponse.ProtoReflect.Descriptor instead.
-func (*CreateOperationCargoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
+func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{4}
 }
 
-type DeleteOperationCargoRequest struct {
+type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OperationId   int64                  `protobuf:"varint,1,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	CargoId       int64                  `protobuf:"varint,2,opt,name=cargo_id,json=cargoId,proto3" json:"cargo_id,omitempty"`
@@ -249,20 +249,20 @@ type DeleteOperationCargoRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteOperationCargoRequest) Reset() {
-	*x = DeleteOperationCargoRequest{}
+func (x *DeleteRequest) Reset() {
+	*x = DeleteRequest{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteOperationCargoRequest) String() string {
+func (x *DeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteOperationCargoRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() {}
 
-func (x *DeleteOperationCargoRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -274,45 +274,45 @@ func (x *DeleteOperationCargoRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteOperationCargoRequest.ProtoReflect.Descriptor instead.
-func (*DeleteOperationCargoRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *DeleteOperationCargoRequest) GetOperationId() int64 {
+func (x *DeleteRequest) GetOperationId() int64 {
 	if x != nil {
 		return x.OperationId
 	}
 	return 0
 }
 
-func (x *DeleteOperationCargoRequest) GetCargoId() int64 {
+func (x *DeleteRequest) GetCargoId() int64 {
 	if x != nil {
 		return x.CargoId
 	}
 	return 0
 }
 
-type DeleteOperationCargoResponse struct {
+type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteOperationCargoResponse) Reset() {
-	*x = DeleteOperationCargoResponse{}
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
 	mi := &file_opercargo_opercargo_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteOperationCargoResponse) String() string {
+func (x *DeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteOperationCargoResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() {}
 
-func (x *DeleteOperationCargoResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_opercargo_opercargo_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -324,8 +324,8 @@ func (x *DeleteOperationCargoResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteOperationCargoResponse.ProtoReflect.Descriptor instead.
-func (*DeleteOperationCargoResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_opercargo_opercargo_proto_rawDescGZIP(), []int{6}
 }
 
@@ -336,22 +336,22 @@ const file_opercargo_opercargo_proto_rawDesc = "" +
 	"\x19opercargo/opercargo.proto\x12\vopercargov1\"N\n" +
 	"\x0eOperationCargo\x12!\n" +
 	"\foperation_id\x18\x01 \x01(\x03R\voperationId\x12\x19\n" +
-	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\x1d\n" +
-	"\x1bListOperationsCargosRequest\"h\n" +
-	"\x1cListOperationsCargosResponse\x12H\n" +
-	"\x11operations_cargos\x18\x01 \x03(\v2\x1b.opercargov1.OperationCargoR\x10operationsCargos\"[\n" +
-	"\x1bCreateOperationCargoRequest\x12!\n" +
+	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\r\n" +
+	"\vListRequest\"X\n" +
+	"\fListResponse\x12H\n" +
+	"\x11operations_cargos\x18\x01 \x03(\v2\x1b.opercargov1.OperationCargoR\x10operationsCargos\"M\n" +
+	"\rCreateRequest\x12!\n" +
 	"\foperation_id\x18\x01 \x01(\x03R\voperationId\x12\x19\n" +
-	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\x1e\n" +
-	"\x1cCreateOperationCargoResponse\"[\n" +
-	"\x1bDeleteOperationCargoRequest\x12!\n" +
+	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\x10\n" +
+	"\x0eCreateResponse\"M\n" +
+	"\rDeleteRequest\x12!\n" +
 	"\foperation_id\x18\x01 \x01(\x03R\voperationId\x12\x19\n" +
-	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\x1e\n" +
-	"\x1cDeleteOperationCargoResponse2\xde\x02\n" +
-	"\x15OperationCargoService\x12k\n" +
-	"\x14ListOperationsCargos\x12(.opercargov1.ListOperationsCargosRequest\x1a).opercargov1.ListOperationsCargosResponse\x12k\n" +
-	"\x14CreateOperationCargo\x12(.opercargov1.CreateOperationCargoRequest\x1a).opercargov1.CreateOperationCargoResponse\x12k\n" +
-	"\x14DeleteOperationCargo\x12(.opercargov1.DeleteOperationCargoRequest\x1a).opercargov1.DeleteOperationCargoResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/opercargo;opercargov1b\x06proto3"
+	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\"\x10\n" +
+	"\x0eDeleteResponse2\xda\x01\n" +
+	"\x15OperationCargoService\x12;\n" +
+	"\x04List\x12\x18.opercargov1.ListRequest\x1a\x19.opercargov1.ListResponse\x12A\n" +
+	"\x06Create\x12\x1a.opercargov1.CreateRequest\x1a\x1b.opercargov1.CreateResponse\x12A\n" +
+	"\x06Delete\x12\x1a.opercargov1.DeleteRequest\x1a\x1b.opercargov1.DeleteResponseB?Z=github.com/deadsnxcks/dbcp/protos/proto/opercargo;opercargov1b\x06proto3"
 
 var (
 	file_opercargo_opercargo_proto_rawDescOnce sync.Once
@@ -367,22 +367,22 @@ func file_opercargo_opercargo_proto_rawDescGZIP() []byte {
 
 var file_opercargo_opercargo_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_opercargo_opercargo_proto_goTypes = []any{
-	(*OperationCargo)(nil),               // 0: opercargov1.OperationCargo
-	(*ListOperationsCargosRequest)(nil),  // 1: opercargov1.ListOperationsCargosRequest
-	(*ListOperationsCargosResponse)(nil), // 2: opercargov1.ListOperationsCargosResponse
-	(*CreateOperationCargoRequest)(nil),  // 3: opercargov1.CreateOperationCargoRequest
-	(*CreateOperationCargoResponse)(nil), // 4: opercargov1.CreateOperationCargoResponse
-	(*DeleteOperationCargoRequest)(nil),  // 5: opercargov1.DeleteOperationCargoRequest
-	(*DeleteOperationCargoResponse)(nil), // 6: opercargov1.DeleteOperationCargoResponse
+	(*OperationCargo)(nil), // 0: opercargov1.OperationCargo
+	(*ListRequest)(nil),    // 1: opercargov1.ListRequest
+	(*ListResponse)(nil),   // 2: opercargov1.ListResponse
+	(*CreateRequest)(nil),  // 3: opercargov1.CreateRequest
+	(*CreateResponse)(nil), // 4: opercargov1.CreateResponse
+	(*DeleteRequest)(nil),  // 5: opercargov1.DeleteRequest
+	(*DeleteResponse)(nil), // 6: opercargov1.DeleteResponse
 }
 var file_opercargo_opercargo_proto_depIdxs = []int32{
-	0, // 0: opercargov1.ListOperationsCargosResponse.operations_cargos:type_name -> opercargov1.OperationCargo
-	1, // 1: opercargov1.OperationCargoService.ListOperationsCargos:input_type -> opercargov1.ListOperationsCargosRequest
-	3, // 2: opercargov1.OperationCargoService.CreateOperationCargo:input_type -> opercargov1.CreateOperationCargoRequest
-	5, // 3: opercargov1.OperationCargoService.DeleteOperationCargo:input_type -> opercargov1.DeleteOperationCargoRequest
-	2, // 4: opercargov1.OperationCargoService.ListOperationsCargos:output_type -> opercargov1.ListOperationsCargosResponse
-	4, // 5: opercargov1.OperationCargoService.CreateOperationCargo:output_type -> opercargov1.CreateOperationCargoResponse
-	6, // 6: opercargov1.OperationCargoService.DeleteOperationCargo:output_type -> opercargov1.DeleteOperationCargoResponse
+	0, // 0: opercargov1.ListResponse.operations_cargos:type_name -> opercargov1.OperationCargo
+	1, // 1: opercargov1.OperationCargoService.List:input_type -> opercargov1.ListRequest
+	3, // 2: opercargov1.OperationCargoService.Create:input_type -> opercargov1.CreateRequest
+	5, // 3: opercargov1.OperationCargoService.Delete:input_type -> opercargov1.DeleteRequest
+	2, // 4: opercargov1.OperationCargoService.List:output_type -> opercargov1.ListResponse
+	4, // 5: opercargov1.OperationCargoService.Create:output_type -> opercargov1.CreateResponse
+	6, // 6: opercargov1.OperationCargoService.Delete:output_type -> opercargov1.DeleteResponse
 	4, // [4:7] is the sub-list for method output_type
 	1, // [1:4] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

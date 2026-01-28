@@ -19,22 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OperationService_ListOperations_FullMethodName  = "/operationv1.OperationService/ListOperations"
-	OperationService_CreateOperation_FullMethodName = "/operationv1.OperationService/CreateOperation"
-	OperationService_DeleteOperation_FullMethodName = "/operationv1.OperationService/DeleteOperation"
-	OperationService_GetOperation_FullMethodName    = "/operationv1.OperationService/GetOperation"
-	OperationService_UpdateOperation_FullMethodName = "/operationv1.OperationService/UpdateOperation"
+	OperationService_List_FullMethodName   = "/operationv1.OperationService/List"
+	OperationService_Create_FullMethodName = "/operationv1.OperationService/Create"
+	OperationService_Delete_FullMethodName = "/operationv1.OperationService/Delete"
+	OperationService_Get_FullMethodName    = "/operationv1.OperationService/Get"
+	OperationService_Update_FullMethodName = "/operationv1.OperationService/Update"
 )
 
 // OperationServiceClient is the client API for OperationService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OperationServiceClient interface {
-	ListOperations(ctx context.Context, in *ListOperationsRequest, opts ...grpc.CallOption) (*ListOperationsResponse, error)
-	CreateOperation(ctx context.Context, in *CreateOperationRequest, opts ...grpc.CallOption) (*CreateOperationResponse, error)
-	DeleteOperation(ctx context.Context, in *DeleteOperationRequest, opts ...grpc.CallOption) (*DeleteOperationResponse, error)
-	GetOperation(ctx context.Context, in *GetOperationRequest, opts ...grpc.CallOption) (*GetOperationResponse, error)
-	UpdateOperation(ctx context.Context, in *UpdateOperationRequest, opts ...grpc.CallOption) (*UpdateOperationResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 }
 
 type operationServiceClient struct {
@@ -45,50 +45,50 @@ func NewOperationServiceClient(cc grpc.ClientConnInterface) OperationServiceClie
 	return &operationServiceClient{cc}
 }
 
-func (c *operationServiceClient) ListOperations(ctx context.Context, in *ListOperationsRequest, opts ...grpc.CallOption) (*ListOperationsResponse, error) {
+func (c *operationServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListOperationsResponse)
-	err := c.cc.Invoke(ctx, OperationService_ListOperations_FullMethodName, in, out, cOpts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, OperationService_List_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationServiceClient) CreateOperation(ctx context.Context, in *CreateOperationRequest, opts ...grpc.CallOption) (*CreateOperationResponse, error) {
+func (c *operationServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateOperationResponse)
-	err := c.cc.Invoke(ctx, OperationService_CreateOperation_FullMethodName, in, out, cOpts...)
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, OperationService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationServiceClient) DeleteOperation(ctx context.Context, in *DeleteOperationRequest, opts ...grpc.CallOption) (*DeleteOperationResponse, error) {
+func (c *operationServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteOperationResponse)
-	err := c.cc.Invoke(ctx, OperationService_DeleteOperation_FullMethodName, in, out, cOpts...)
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, OperationService_Delete_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationServiceClient) GetOperation(ctx context.Context, in *GetOperationRequest, opts ...grpc.CallOption) (*GetOperationResponse, error) {
+func (c *operationServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetOperationResponse)
-	err := c.cc.Invoke(ctx, OperationService_GetOperation_FullMethodName, in, out, cOpts...)
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, OperationService_Get_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *operationServiceClient) UpdateOperation(ctx context.Context, in *UpdateOperationRequest, opts ...grpc.CallOption) (*UpdateOperationResponse, error) {
+func (c *operationServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateOperationResponse)
-	err := c.cc.Invoke(ctx, OperationService_UpdateOperation_FullMethodName, in, out, cOpts...)
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, OperationService_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,11 +99,11 @@ func (c *operationServiceClient) UpdateOperation(ctx context.Context, in *Update
 // All implementations must embed UnimplementedOperationServiceServer
 // for forward compatibility.
 type OperationServiceServer interface {
-	ListOperations(context.Context, *ListOperationsRequest) (*ListOperationsResponse, error)
-	CreateOperation(context.Context, *CreateOperationRequest) (*CreateOperationResponse, error)
-	DeleteOperation(context.Context, *DeleteOperationRequest) (*DeleteOperationResponse, error)
-	GetOperation(context.Context, *GetOperationRequest) (*GetOperationResponse, error)
-	UpdateOperation(context.Context, *UpdateOperationRequest) (*UpdateOperationResponse, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	mustEmbedUnimplementedOperationServiceServer()
 }
 
@@ -114,20 +114,20 @@ type OperationServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedOperationServiceServer struct{}
 
-func (UnimplementedOperationServiceServer) ListOperations(context.Context, *ListOperationsRequest) (*ListOperationsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListOperations not implemented")
+func (UnimplementedOperationServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedOperationServiceServer) CreateOperation(context.Context, *CreateOperationRequest) (*CreateOperationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateOperation not implemented")
+func (UnimplementedOperationServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedOperationServiceServer) DeleteOperation(context.Context, *DeleteOperationRequest) (*DeleteOperationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteOperation not implemented")
+func (UnimplementedOperationServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedOperationServiceServer) GetOperation(context.Context, *GetOperationRequest) (*GetOperationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetOperation not implemented")
+func (UnimplementedOperationServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedOperationServiceServer) UpdateOperation(context.Context, *UpdateOperationRequest) (*UpdateOperationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateOperation not implemented")
+func (UnimplementedOperationServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedOperationServiceServer) mustEmbedUnimplementedOperationServiceServer() {}
 func (UnimplementedOperationServiceServer) testEmbeddedByValue()                          {}
@@ -150,92 +150,92 @@ func RegisterOperationServiceServer(s grpc.ServiceRegistrar, srv OperationServic
 	s.RegisterService(&OperationService_ServiceDesc, srv)
 }
 
-func _OperationService_ListOperations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOperationsRequest)
+func _OperationService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationServiceServer).ListOperations(ctx, in)
+		return srv.(OperationServiceServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationService_ListOperations_FullMethodName,
+		FullMethod: OperationService_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationServiceServer).ListOperations(ctx, req.(*ListOperationsRequest))
+		return srv.(OperationServiceServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationService_CreateOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOperationRequest)
+func _OperationService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationServiceServer).CreateOperation(ctx, in)
+		return srv.(OperationServiceServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationService_CreateOperation_FullMethodName,
+		FullMethod: OperationService_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationServiceServer).CreateOperation(ctx, req.(*CreateOperationRequest))
+		return srv.(OperationServiceServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationService_DeleteOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteOperationRequest)
+func _OperationService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationServiceServer).DeleteOperation(ctx, in)
+		return srv.(OperationServiceServer).Delete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationService_DeleteOperation_FullMethodName,
+		FullMethod: OperationService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationServiceServer).DeleteOperation(ctx, req.(*DeleteOperationRequest))
+		return srv.(OperationServiceServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationService_GetOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOperationRequest)
+func _OperationService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationServiceServer).GetOperation(ctx, in)
+		return srv.(OperationServiceServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationService_GetOperation_FullMethodName,
+		FullMethod: OperationService_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationServiceServer).GetOperation(ctx, req.(*GetOperationRequest))
+		return srv.(OperationServiceServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OperationService_UpdateOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateOperationRequest)
+func _OperationService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OperationServiceServer).UpdateOperation(ctx, in)
+		return srv.(OperationServiceServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OperationService_UpdateOperation_FullMethodName,
+		FullMethod: OperationService_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OperationServiceServer).UpdateOperation(ctx, req.(*UpdateOperationRequest))
+		return srv.(OperationServiceServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -248,24 +248,24 @@ var OperationService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*OperationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListOperations",
-			Handler:    _OperationService_ListOperations_Handler,
+			MethodName: "List",
+			Handler:    _OperationService_List_Handler,
 		},
 		{
-			MethodName: "CreateOperation",
-			Handler:    _OperationService_CreateOperation_Handler,
+			MethodName: "Create",
+			Handler:    _OperationService_Create_Handler,
 		},
 		{
-			MethodName: "DeleteOperation",
-			Handler:    _OperationService_DeleteOperation_Handler,
+			MethodName: "Delete",
+			Handler:    _OperationService_Delete_Handler,
 		},
 		{
-			MethodName: "GetOperation",
-			Handler:    _OperationService_GetOperation_Handler,
+			MethodName: "Get",
+			Handler:    _OperationService_Get_Handler,
 		},
 		{
-			MethodName: "UpdateOperation",
-			Handler:    _OperationService_UpdateOperation_Handler,
+			MethodName: "Update",
+			Handler:    _OperationService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

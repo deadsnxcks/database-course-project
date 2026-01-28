@@ -19,26 +19,26 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	StorageLocationService_ListStorageLocations_FullMethodName  = "/storagelocv1.StorageLocationService/ListStorageLocations"
-	StorageLocationService_CreateStorageLocation_FullMethodName = "/storagelocv1.StorageLocationService/CreateStorageLocation"
-	StorageLocationService_DeleteStorageLocation_FullMethodName = "/storagelocv1.StorageLocationService/DeleteStorageLocation"
-	StorageLocationService_GetStorageLocation_FullMethodName    = "/storagelocv1.StorageLocationService/GetStorageLocation"
-	StorageLocationService_UpdateStorageLocation_FullMethodName = "/storagelocv1.StorageLocationService/UpdateStorageLocation"
-	StorageLocationService_UseStorageLocation_FullMethodName    = "/storagelocv1.StorageLocationService/UseStorageLocation"
-	StorageLocationService_ResetStorageLocation_FullMethodName  = "/storagelocv1.StorageLocationService/ResetStorageLocation"
+	StorageLocationService_List_FullMethodName   = "/storagelocv1.StorageLocationService/List"
+	StorageLocationService_Create_FullMethodName = "/storagelocv1.StorageLocationService/Create"
+	StorageLocationService_Delete_FullMethodName = "/storagelocv1.StorageLocationService/Delete"
+	StorageLocationService_Get_FullMethodName    = "/storagelocv1.StorageLocationService/Get"
+	StorageLocationService_Update_FullMethodName = "/storagelocv1.StorageLocationService/Update"
+	StorageLocationService_Use_FullMethodName    = "/storagelocv1.StorageLocationService/Use"
+	StorageLocationService_Reset_FullMethodName  = "/storagelocv1.StorageLocationService/Reset"
 )
 
 // StorageLocationServiceClient is the client API for StorageLocationService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StorageLocationServiceClient interface {
-	ListStorageLocations(ctx context.Context, in *ListStorageLocationsRequest, opts ...grpc.CallOption) (*ListStorageLocationsResponse, error)
-	CreateStorageLocation(ctx context.Context, in *CreateStorageLocationRequest, opts ...grpc.CallOption) (*CreateStorageLocationResponse, error)
-	DeleteStorageLocation(ctx context.Context, in *DeleteStorageLocationRequest, opts ...grpc.CallOption) (*DeleteStorageLocationResponse, error)
-	GetStorageLocation(ctx context.Context, in *GetStorageLocationRequest, opts ...grpc.CallOption) (*GetStorageLocationResponse, error)
-	UpdateStorageLocation(ctx context.Context, in *UpdateStorageLocationRequest, opts ...grpc.CallOption) (*UpdateStorageLocationResponse, error)
-	UseStorageLocation(ctx context.Context, in *UseStorageLocationRequest, opts ...grpc.CallOption) (*UseStorageLocationResponse, error)
-	ResetStorageLocation(ctx context.Context, in *ResetStorageLocationRequest, opts ...grpc.CallOption) (*ResetStorageLocationResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	Use(ctx context.Context, in *UseRequest, opts ...grpc.CallOption) (*UseResponse, error)
+	Reset(ctx context.Context, in *ResetRequest, opts ...grpc.CallOption) (*ResetResponse, error)
 }
 
 type storageLocationServiceClient struct {
@@ -49,70 +49,70 @@ func NewStorageLocationServiceClient(cc grpc.ClientConnInterface) StorageLocatio
 	return &storageLocationServiceClient{cc}
 }
 
-func (c *storageLocationServiceClient) ListStorageLocations(ctx context.Context, in *ListStorageLocationsRequest, opts ...grpc.CallOption) (*ListStorageLocationsResponse, error) {
+func (c *storageLocationServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListStorageLocationsResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_ListStorageLocations_FullMethodName, in, out, cOpts...)
+	out := new(ListResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_List_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) CreateStorageLocation(ctx context.Context, in *CreateStorageLocationRequest, opts ...grpc.CallOption) (*CreateStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_CreateStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(CreateResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) DeleteStorageLocation(ctx context.Context, in *DeleteStorageLocationRequest, opts ...grpc.CallOption) (*DeleteStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_DeleteStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Delete_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) GetStorageLocation(ctx context.Context, in *GetStorageLocationRequest, opts ...grpc.CallOption) (*GetStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_GetStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Get_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) UpdateStorageLocation(ctx context.Context, in *UpdateStorageLocationRequest, opts ...grpc.CallOption) (*UpdateStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_UpdateStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) UseStorageLocation(ctx context.Context, in *UseStorageLocationRequest, opts ...grpc.CallOption) (*UseStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Use(ctx context.Context, in *UseRequest, opts ...grpc.CallOption) (*UseResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UseStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_UseStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(UseResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Use_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageLocationServiceClient) ResetStorageLocation(ctx context.Context, in *ResetStorageLocationRequest, opts ...grpc.CallOption) (*ResetStorageLocationResponse, error) {
+func (c *storageLocationServiceClient) Reset(ctx context.Context, in *ResetRequest, opts ...grpc.CallOption) (*ResetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ResetStorageLocationResponse)
-	err := c.cc.Invoke(ctx, StorageLocationService_ResetStorageLocation_FullMethodName, in, out, cOpts...)
+	out := new(ResetResponse)
+	err := c.cc.Invoke(ctx, StorageLocationService_Reset_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,13 +123,13 @@ func (c *storageLocationServiceClient) ResetStorageLocation(ctx context.Context,
 // All implementations must embed UnimplementedStorageLocationServiceServer
 // for forward compatibility.
 type StorageLocationServiceServer interface {
-	ListStorageLocations(context.Context, *ListStorageLocationsRequest) (*ListStorageLocationsResponse, error)
-	CreateStorageLocation(context.Context, *CreateStorageLocationRequest) (*CreateStorageLocationResponse, error)
-	DeleteStorageLocation(context.Context, *DeleteStorageLocationRequest) (*DeleteStorageLocationResponse, error)
-	GetStorageLocation(context.Context, *GetStorageLocationRequest) (*GetStorageLocationResponse, error)
-	UpdateStorageLocation(context.Context, *UpdateStorageLocationRequest) (*UpdateStorageLocationResponse, error)
-	UseStorageLocation(context.Context, *UseStorageLocationRequest) (*UseStorageLocationResponse, error)
-	ResetStorageLocation(context.Context, *ResetStorageLocationRequest) (*ResetStorageLocationResponse, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	Use(context.Context, *UseRequest) (*UseResponse, error)
+	Reset(context.Context, *ResetRequest) (*ResetResponse, error)
 	mustEmbedUnimplementedStorageLocationServiceServer()
 }
 
@@ -140,26 +140,26 @@ type StorageLocationServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedStorageLocationServiceServer struct{}
 
-func (UnimplementedStorageLocationServiceServer) ListStorageLocations(context.Context, *ListStorageLocationsRequest) (*ListStorageLocationsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListStorageLocations not implemented")
+func (UnimplementedStorageLocationServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) CreateStorageLocation(context.Context, *CreateStorageLocationRequest) (*CreateStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) DeleteStorageLocation(context.Context, *DeleteStorageLocationRequest) (*DeleteStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) GetStorageLocation(context.Context, *GetStorageLocationRequest) (*GetStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) UpdateStorageLocation(context.Context, *UpdateStorageLocationRequest) (*UpdateStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) UseStorageLocation(context.Context, *UseStorageLocationRequest) (*UseStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UseStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Use(context.Context, *UseRequest) (*UseResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Use not implemented")
 }
-func (UnimplementedStorageLocationServiceServer) ResetStorageLocation(context.Context, *ResetStorageLocationRequest) (*ResetStorageLocationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ResetStorageLocation not implemented")
+func (UnimplementedStorageLocationServiceServer) Reset(context.Context, *ResetRequest) (*ResetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Reset not implemented")
 }
 func (UnimplementedStorageLocationServiceServer) mustEmbedUnimplementedStorageLocationServiceServer() {
 }
@@ -183,128 +183,128 @@ func RegisterStorageLocationServiceServer(s grpc.ServiceRegistrar, srv StorageLo
 	s.RegisterService(&StorageLocationService_ServiceDesc, srv)
 }
 
-func _StorageLocationService_ListStorageLocations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListStorageLocationsRequest)
+func _StorageLocationService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).ListStorageLocations(ctx, in)
+		return srv.(StorageLocationServiceServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_ListStorageLocations_FullMethodName,
+		FullMethod: StorageLocationService_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).ListStorageLocations(ctx, req.(*ListStorageLocationsRequest))
+		return srv.(StorageLocationServiceServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_CreateStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateStorageLocationRequest)
+func _StorageLocationService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).CreateStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_CreateStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).CreateStorageLocation(ctx, req.(*CreateStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_DeleteStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteStorageLocationRequest)
+func _StorageLocationService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).DeleteStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Delete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_DeleteStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).DeleteStorageLocation(ctx, req.(*DeleteStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_GetStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetStorageLocationRequest)
+func _StorageLocationService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).GetStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_GetStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).GetStorageLocation(ctx, req.(*GetStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_UpdateStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateStorageLocationRequest)
+func _StorageLocationService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).UpdateStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_UpdateStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).UpdateStorageLocation(ctx, req.(*UpdateStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_UseStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UseStorageLocationRequest)
+func _StorageLocationService_Use_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).UseStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Use(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_UseStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Use_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).UseStorageLocation(ctx, req.(*UseStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Use(ctx, req.(*UseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StorageLocationService_ResetStorageLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResetStorageLocationRequest)
+func _StorageLocationService_Reset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageLocationServiceServer).ResetStorageLocation(ctx, in)
+		return srv.(StorageLocationServiceServer).Reset(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: StorageLocationService_ResetStorageLocation_FullMethodName,
+		FullMethod: StorageLocationService_Reset_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageLocationServiceServer).ResetStorageLocation(ctx, req.(*ResetStorageLocationRequest))
+		return srv.(StorageLocationServiceServer).Reset(ctx, req.(*ResetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -317,32 +317,32 @@ var StorageLocationService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*StorageLocationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListStorageLocations",
-			Handler:    _StorageLocationService_ListStorageLocations_Handler,
+			MethodName: "List",
+			Handler:    _StorageLocationService_List_Handler,
 		},
 		{
-			MethodName: "CreateStorageLocation",
-			Handler:    _StorageLocationService_CreateStorageLocation_Handler,
+			MethodName: "Create",
+			Handler:    _StorageLocationService_Create_Handler,
 		},
 		{
-			MethodName: "DeleteStorageLocation",
-			Handler:    _StorageLocationService_DeleteStorageLocation_Handler,
+			MethodName: "Delete",
+			Handler:    _StorageLocationService_Delete_Handler,
 		},
 		{
-			MethodName: "GetStorageLocation",
-			Handler:    _StorageLocationService_GetStorageLocation_Handler,
+			MethodName: "Get",
+			Handler:    _StorageLocationService_Get_Handler,
 		},
 		{
-			MethodName: "UpdateStorageLocation",
-			Handler:    _StorageLocationService_UpdateStorageLocation_Handler,
+			MethodName: "Update",
+			Handler:    _StorageLocationService_Update_Handler,
 		},
 		{
-			MethodName: "UseStorageLocation",
-			Handler:    _StorageLocationService_UseStorageLocation_Handler,
+			MethodName: "Use",
+			Handler:    _StorageLocationService_Use_Handler,
 		},
 		{
-			MethodName: "ResetStorageLocation",
-			Handler:    _StorageLocationService_ResetStorageLocation_Handler,
+			MethodName: "Reset",
+			Handler:    _StorageLocationService_Reset_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

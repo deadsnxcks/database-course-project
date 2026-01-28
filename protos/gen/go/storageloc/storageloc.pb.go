@@ -106,26 +106,26 @@ func (x *StorageLocation) GetDateOfPlacement() *timestamppb.Timestamp {
 	return nil
 }
 
-type ListStorageLocationsRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListStorageLocationsRequest) Reset() {
-	*x = ListStorageLocationsRequest{}
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListStorageLocationsRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListStorageLocationsRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListStorageLocationsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -137,32 +137,32 @@ func (x *ListStorageLocationsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListStorageLocationsRequest.ProtoReflect.Descriptor instead.
-func (*ListStorageLocationsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{1}
 }
 
-type ListStorageLocationsResponse struct {
+type ListResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	StorageLocations []*StorageLocation     `protobuf:"bytes,1,rep,name=storage_locations,json=storageLocations,proto3" json:"storage_locations,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
-func (x *ListStorageLocationsResponse) Reset() {
-	*x = ListStorageLocationsResponse{}
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListStorageLocationsResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListStorageLocationsResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListStorageLocationsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -174,39 +174,39 @@ func (x *ListStorageLocationsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListStorageLocationsResponse.ProtoReflect.Descriptor instead.
-func (*ListStorageLocationsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListStorageLocationsResponse) GetStorageLocations() []*StorageLocation {
+func (x *ListResponse) GetStorageLocations() []*StorageLocation {
 	if x != nil {
 		return x.StorageLocations
 	}
 	return nil
 }
 
-type GetStorageLocationRequest struct {
+type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetStorageLocationRequest) Reset() {
-	*x = GetStorageLocationRequest{}
+func (x *GetRequest) Reset() {
+	*x = GetRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetStorageLocationRequest) String() string {
+func (x *GetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetStorageLocationRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() {}
 
-func (x *GetStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *GetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -218,39 +218,39 @@ func (x *GetStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*GetStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
+func (*GetRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetStorageLocationRequest) GetId() int64 {
+func (x *GetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type GetStorageLocationResponse struct {
+type GetResponse struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	StorageLocation *StorageLocation       `protobuf:"bytes,1,opt,name=storage_location,json=storageLocation,proto3" json:"storage_location,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *GetStorageLocationResponse) Reset() {
-	*x = GetStorageLocationResponse{}
+func (x *GetResponse) Reset() {
+	*x = GetResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetStorageLocationResponse) String() string {
+func (x *GetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetStorageLocationResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() {}
 
-func (x *GetStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *GetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -262,19 +262,19 @@ func (x *GetStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*GetStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
+func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetStorageLocationResponse) GetStorageLocation() *StorageLocation {
+func (x *GetResponse) GetStorageLocation() *StorageLocation {
 	if x != nil {
 		return x.StorageLocation
 	}
 	return nil
 }
 
-type CreateStorageLocationRequest struct {
+type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CargoTypeId   int64                  `protobuf:"varint,1,opt,name=cargo_type_id,json=cargoTypeId,proto3" json:"cargo_type_id,omitempty"`
 	MaxWeight     float64                `protobuf:"fixed64,2,opt,name=max_weight,json=maxWeight,proto3" json:"max_weight,omitempty"`
@@ -283,20 +283,20 @@ type CreateStorageLocationRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateStorageLocationRequest) Reset() {
-	*x = CreateStorageLocationRequest{}
+func (x *CreateRequest) Reset() {
+	*x = CreateRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateStorageLocationRequest) String() string {
+func (x *CreateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateStorageLocationRequest) ProtoMessage() {}
+func (*CreateRequest) ProtoMessage() {}
 
-func (x *CreateStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -308,53 +308,53 @@ func (x *CreateStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*CreateStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
+func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateStorageLocationRequest) GetCargoTypeId() int64 {
+func (x *CreateRequest) GetCargoTypeId() int64 {
 	if x != nil {
 		return x.CargoTypeId
 	}
 	return 0
 }
 
-func (x *CreateStorageLocationRequest) GetMaxWeight() float64 {
+func (x *CreateRequest) GetMaxWeight() float64 {
 	if x != nil {
 		return x.MaxWeight
 	}
 	return 0
 }
 
-func (x *CreateStorageLocationRequest) GetMaxVolume() float64 {
+func (x *CreateRequest) GetMaxVolume() float64 {
 	if x != nil {
 		return x.MaxVolume
 	}
 	return 0
 }
 
-type CreateStorageLocationResponse struct {
+type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateStorageLocationResponse) Reset() {
-	*x = CreateStorageLocationResponse{}
+func (x *CreateResponse) Reset() {
+	*x = CreateResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateStorageLocationResponse) String() string {
+func (x *CreateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateStorageLocationResponse) ProtoMessage() {}
+func (*CreateResponse) ProtoMessage() {}
 
-func (x *CreateStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -366,19 +366,19 @@ func (x *CreateStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*CreateStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
+func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CreateStorageLocationResponse) GetId() int64 {
+func (x *CreateResponse) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type UpdateStorageLocationRequest struct {
+type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	CargoTypeId   *int64                 `protobuf:"varint,2,opt,name=cargo_type_id,json=cargoTypeId,proto3,oneof" json:"cargo_type_id,omitempty"`
@@ -388,20 +388,20 @@ type UpdateStorageLocationRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateStorageLocationRequest) Reset() {
-	*x = UpdateStorageLocationRequest{}
+func (x *UpdateRequest) Reset() {
+	*x = UpdateRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateStorageLocationRequest) String() string {
+func (x *UpdateRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateStorageLocationRequest) ProtoMessage() {}
+func (*UpdateRequest) ProtoMessage() {}
 
-func (x *UpdateStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -413,59 +413,59 @@ func (x *UpdateStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*UpdateStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *UpdateStorageLocationRequest) GetId() int64 {
+func (x *UpdateRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateStorageLocationRequest) GetCargoTypeId() int64 {
+func (x *UpdateRequest) GetCargoTypeId() int64 {
 	if x != nil && x.CargoTypeId != nil {
 		return *x.CargoTypeId
 	}
 	return 0
 }
 
-func (x *UpdateStorageLocationRequest) GetMaxWeight() float64 {
+func (x *UpdateRequest) GetMaxWeight() float64 {
 	if x != nil && x.MaxWeight != nil {
 		return *x.MaxWeight
 	}
 	return 0
 }
 
-func (x *UpdateStorageLocationRequest) GetMaxVolume() float64 {
+func (x *UpdateRequest) GetMaxVolume() float64 {
 	if x != nil && x.MaxVolume != nil {
 		return *x.MaxVolume
 	}
 	return 0
 }
 
-type UpdateStorageLocationResponse struct {
+type UpdateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateStorageLocationResponse) Reset() {
-	*x = UpdateStorageLocationResponse{}
+func (x *UpdateResponse) Reset() {
+	*x = UpdateResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateStorageLocationResponse) String() string {
+func (x *UpdateResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateStorageLocationResponse) ProtoMessage() {}
+func (*UpdateResponse) ProtoMessage() {}
 
-func (x *UpdateStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -477,32 +477,32 @@ func (x *UpdateStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*UpdateStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{8}
 }
 
-type DeleteStorageLocationRequest struct {
+type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteStorageLocationRequest) Reset() {
-	*x = DeleteStorageLocationRequest{}
+func (x *DeleteRequest) Reset() {
+	*x = DeleteRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteStorageLocationRequest) String() string {
+func (x *DeleteRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteStorageLocationRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() {}
 
-func (x *DeleteStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -514,38 +514,38 @@ func (x *DeleteStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*DeleteStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DeleteStorageLocationRequest) GetId() int64 {
+func (x *DeleteRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type DeleteStorageLocationResponse struct {
+type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteStorageLocationResponse) Reset() {
-	*x = DeleteStorageLocationResponse{}
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteStorageLocationResponse) String() string {
+func (x *DeleteResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteStorageLocationResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() {}
 
-func (x *DeleteStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -557,12 +557,12 @@ func (x *DeleteStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*DeleteStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{10}
 }
 
-type UseStorageLocationRequest struct {
+type UseRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	StorageLocationId int64                  `protobuf:"varint,1,opt,name=storage_location_id,json=storageLocationId,proto3" json:"storage_location_id,omitempty"`
 	CargoId           int64                  `protobuf:"varint,2,opt,name=cargo_id,json=cargoId,proto3" json:"cargo_id,omitempty"`
@@ -571,20 +571,20 @@ type UseStorageLocationRequest struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *UseStorageLocationRequest) Reset() {
-	*x = UseStorageLocationRequest{}
+func (x *UseRequest) Reset() {
+	*x = UseRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UseStorageLocationRequest) String() string {
+func (x *UseRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UseStorageLocationRequest) ProtoMessage() {}
+func (*UseRequest) ProtoMessage() {}
 
-func (x *UseStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *UseRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -596,52 +596,52 @@ func (x *UseStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UseStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*UseStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UseRequest.ProtoReflect.Descriptor instead.
+func (*UseRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *UseStorageLocationRequest) GetStorageLocationId() int64 {
+func (x *UseRequest) GetStorageLocationId() int64 {
 	if x != nil {
 		return x.StorageLocationId
 	}
 	return 0
 }
 
-func (x *UseStorageLocationRequest) GetCargoId() int64 {
+func (x *UseRequest) GetCargoId() int64 {
 	if x != nil {
 		return x.CargoId
 	}
 	return 0
 }
 
-func (x *UseStorageLocationRequest) GetDateOfPlacement() *timestamppb.Timestamp {
+func (x *UseRequest) GetDateOfPlacement() *timestamppb.Timestamp {
 	if x != nil {
 		return x.DateOfPlacement
 	}
 	return nil
 }
 
-type UseStorageLocationResponse struct {
+type UseResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UseStorageLocationResponse) Reset() {
-	*x = UseStorageLocationResponse{}
+func (x *UseResponse) Reset() {
+	*x = UseResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UseStorageLocationResponse) String() string {
+func (x *UseResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UseStorageLocationResponse) ProtoMessage() {}
+func (*UseResponse) ProtoMessage() {}
 
-func (x *UseStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *UseResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -653,32 +653,32 @@ func (x *UseStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UseStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*UseStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UseResponse.ProtoReflect.Descriptor instead.
+func (*UseResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{12}
 }
 
-type ResetStorageLocationRequest struct {
+type ResetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ResetStorageLocationRequest) Reset() {
-	*x = ResetStorageLocationRequest{}
+func (x *ResetRequest) Reset() {
+	*x = ResetRequest{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ResetStorageLocationRequest) String() string {
+func (x *ResetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ResetStorageLocationRequest) ProtoMessage() {}
+func (*ResetRequest) ProtoMessage() {}
 
-func (x *ResetStorageLocationRequest) ProtoReflect() protoreflect.Message {
+func (x *ResetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -690,38 +690,38 @@ func (x *ResetStorageLocationRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ResetStorageLocationRequest.ProtoReflect.Descriptor instead.
-func (*ResetStorageLocationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ResetRequest.ProtoReflect.Descriptor instead.
+func (*ResetRequest) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ResetStorageLocationRequest) GetId() int64 {
+func (x *ResetRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-type ResetStorageLocationResponse struct {
+type ResetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ResetStorageLocationResponse) Reset() {
-	*x = ResetStorageLocationResponse{}
+func (x *ResetResponse) Reset() {
+	*x = ResetResponse{}
 	mi := &file_storageloc_storageloc_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ResetStorageLocationResponse) String() string {
+func (x *ResetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ResetStorageLocationResponse) ProtoMessage() {}
+func (*ResetResponse) ProtoMessage() {}
 
-func (x *ResetStorageLocationResponse) ProtoReflect() protoreflect.Message {
+func (x *ResetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storageloc_storageloc_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -733,8 +733,8 @@ func (x *ResetStorageLocationResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ResetStorageLocationResponse.ProtoReflect.Descriptor instead.
-func (*ResetStorageLocationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ResetResponse.ProtoReflect.Descriptor instead.
+func (*ResetResponse) Descriptor() ([]byte, []int) {
 	return file_storageloc_storageloc_proto_rawDescGZIP(), []int{14}
 }
 
@@ -753,23 +753,24 @@ const file_storageloc_storageloc_proto_rawDesc = "" +
 	"\bcargo_id\x18\x05 \x01(\x03H\x00R\acargoId\x88\x01\x01\x12K\n" +
 	"\x11date_of_placement\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampH\x01R\x0fdateOfPlacement\x88\x01\x01B\v\n" +
 	"\t_cargo_idB\x14\n" +
-	"\x12_date_of_placement\"\x1d\n" +
-	"\x1bListStorageLocationsRequest\"j\n" +
-	"\x1cListStorageLocationsResponse\x12J\n" +
-	"\x11storage_locations\x18\x01 \x03(\v2\x1d.storagelocv1.StorageLocationR\x10storageLocations\"+\n" +
-	"\x19GetStorageLocationRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"f\n" +
-	"\x1aGetStorageLocationResponse\x12H\n" +
-	"\x10storage_location\x18\x01 \x01(\v2\x1d.storagelocv1.StorageLocationR\x0fstorageLocation\"\x80\x01\n" +
-	"\x1cCreateStorageLocationRequest\x12\"\n" +
+	"\x12_date_of_placement\"\r\n" +
+	"\vListRequest\"Z\n" +
+	"\fListResponse\x12J\n" +
+	"\x11storage_locations\x18\x01 \x03(\v2\x1d.storagelocv1.StorageLocationR\x10storageLocations\"\x1c\n" +
+	"\n" +
+	"GetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"W\n" +
+	"\vGetResponse\x12H\n" +
+	"\x10storage_location\x18\x01 \x01(\v2\x1d.storagelocv1.StorageLocationR\x0fstorageLocation\"q\n" +
+	"\rCreateRequest\x12\"\n" +
 	"\rcargo_type_id\x18\x01 \x01(\x03R\vcargoTypeId\x12\x1d\n" +
 	"\n" +
 	"max_weight\x18\x02 \x01(\x01R\tmaxWeight\x12\x1d\n" +
 	"\n" +
-	"max_volume\x18\x03 \x01(\x01R\tmaxVolume\"/\n" +
-	"\x1dCreateStorageLocationResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\xcf\x01\n" +
-	"\x1cUpdateStorageLocationRequest\x12\x0e\n" +
+	"max_volume\x18\x03 \x01(\x01R\tmaxVolume\" \n" +
+	"\x0eCreateResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\xc0\x01\n" +
+	"\rUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12'\n" +
 	"\rcargo_type_id\x18\x02 \x01(\x03H\x00R\vcargoTypeId\x88\x01\x01\x12\"\n" +
 	"\n" +
@@ -778,27 +779,28 @@ const file_storageloc_storageloc_proto_rawDesc = "" +
 	"max_volume\x18\x04 \x01(\x01H\x02R\tmaxVolume\x88\x01\x01B\x10\n" +
 	"\x0e_cargo_type_idB\r\n" +
 	"\v_max_weightB\r\n" +
-	"\v_max_volume\"\x1f\n" +
-	"\x1dUpdateStorageLocationResponse\".\n" +
-	"\x1cDeleteStorageLocationRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1f\n" +
-	"\x1dDeleteStorageLocationResponse\"\xae\x01\n" +
-	"\x19UseStorageLocationRequest\x12.\n" +
+	"\v_max_volume\"\x10\n" +
+	"\x0eUpdateResponse\"\x1f\n" +
+	"\rDeleteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
+	"\x0eDeleteResponse\"\x9f\x01\n" +
+	"\n" +
+	"UseRequest\x12.\n" +
 	"\x13storage_location_id\x18\x01 \x01(\x03R\x11storageLocationId\x12\x19\n" +
 	"\bcargo_id\x18\x02 \x01(\x03R\acargoId\x12F\n" +
-	"\x11date_of_placement\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdateOfPlacement\"\x1c\n" +
-	"\x1aUseStorageLocationResponse\"-\n" +
-	"\x1bResetStorageLocationRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1e\n" +
-	"\x1cResetStorageLocationResponse2\x9e\x06\n" +
-	"\x16StorageLocationService\x12m\n" +
-	"\x14ListStorageLocations\x12).storagelocv1.ListStorageLocationsRequest\x1a*.storagelocv1.ListStorageLocationsResponse\x12p\n" +
-	"\x15CreateStorageLocation\x12*.storagelocv1.CreateStorageLocationRequest\x1a+.storagelocv1.CreateStorageLocationResponse\x12p\n" +
-	"\x15DeleteStorageLocation\x12*.storagelocv1.DeleteStorageLocationRequest\x1a+.storagelocv1.DeleteStorageLocationResponse\x12g\n" +
-	"\x12GetStorageLocation\x12'.storagelocv1.GetStorageLocationRequest\x1a(.storagelocv1.GetStorageLocationResponse\x12p\n" +
-	"\x15UpdateStorageLocation\x12*.storagelocv1.UpdateStorageLocationRequest\x1a+.storagelocv1.UpdateStorageLocationResponse\x12g\n" +
-	"\x12UseStorageLocation\x12'.storagelocv1.UseStorageLocationRequest\x1a(.storagelocv1.UseStorageLocationResponse\x12m\n" +
-	"\x14ResetStorageLocation\x12).storagelocv1.ResetStorageLocationRequest\x1a*.storagelocv1.ResetStorageLocationResponseBAZ?github.com/deadsnxcks/dbcp/protos/proto/storageloc;storagelocv1b\x06proto3"
+	"\x11date_of_placement\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdateOfPlacement\"\r\n" +
+	"\vUseResponse\"\x1e\n" +
+	"\fResetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x0f\n" +
+	"\rResetResponse2\xe0\x03\n" +
+	"\x16StorageLocationService\x12=\n" +
+	"\x04List\x12\x19.storagelocv1.ListRequest\x1a\x1a.storagelocv1.ListResponse\x12C\n" +
+	"\x06Create\x12\x1b.storagelocv1.CreateRequest\x1a\x1c.storagelocv1.CreateResponse\x12C\n" +
+	"\x06Delete\x12\x1b.storagelocv1.DeleteRequest\x1a\x1c.storagelocv1.DeleteResponse\x12:\n" +
+	"\x03Get\x12\x18.storagelocv1.GetRequest\x1a\x19.storagelocv1.GetResponse\x12C\n" +
+	"\x06Update\x12\x1b.storagelocv1.UpdateRequest\x1a\x1c.storagelocv1.UpdateResponse\x12:\n" +
+	"\x03Use\x12\x18.storagelocv1.UseRequest\x1a\x19.storagelocv1.UseResponse\x12@\n" +
+	"\x05Reset\x12\x1a.storagelocv1.ResetRequest\x1a\x1b.storagelocv1.ResetResponseBAZ?github.com/deadsnxcks/dbcp/protos/proto/storageloc;storagelocv1b\x06proto3"
 
 var (
 	file_storageloc_storageloc_proto_rawDescOnce sync.Once
@@ -814,42 +816,42 @@ func file_storageloc_storageloc_proto_rawDescGZIP() []byte {
 
 var file_storageloc_storageloc_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_storageloc_storageloc_proto_goTypes = []any{
-	(*StorageLocation)(nil),               // 0: storagelocv1.StorageLocation
-	(*ListStorageLocationsRequest)(nil),   // 1: storagelocv1.ListStorageLocationsRequest
-	(*ListStorageLocationsResponse)(nil),  // 2: storagelocv1.ListStorageLocationsResponse
-	(*GetStorageLocationRequest)(nil),     // 3: storagelocv1.GetStorageLocationRequest
-	(*GetStorageLocationResponse)(nil),    // 4: storagelocv1.GetStorageLocationResponse
-	(*CreateStorageLocationRequest)(nil),  // 5: storagelocv1.CreateStorageLocationRequest
-	(*CreateStorageLocationResponse)(nil), // 6: storagelocv1.CreateStorageLocationResponse
-	(*UpdateStorageLocationRequest)(nil),  // 7: storagelocv1.UpdateStorageLocationRequest
-	(*UpdateStorageLocationResponse)(nil), // 8: storagelocv1.UpdateStorageLocationResponse
-	(*DeleteStorageLocationRequest)(nil),  // 9: storagelocv1.DeleteStorageLocationRequest
-	(*DeleteStorageLocationResponse)(nil), // 10: storagelocv1.DeleteStorageLocationResponse
-	(*UseStorageLocationRequest)(nil),     // 11: storagelocv1.UseStorageLocationRequest
-	(*UseStorageLocationResponse)(nil),    // 12: storagelocv1.UseStorageLocationResponse
-	(*ResetStorageLocationRequest)(nil),   // 13: storagelocv1.ResetStorageLocationRequest
-	(*ResetStorageLocationResponse)(nil),  // 14: storagelocv1.ResetStorageLocationResponse
-	(*timestamppb.Timestamp)(nil),         // 15: google.protobuf.Timestamp
+	(*StorageLocation)(nil),       // 0: storagelocv1.StorageLocation
+	(*ListRequest)(nil),           // 1: storagelocv1.ListRequest
+	(*ListResponse)(nil),          // 2: storagelocv1.ListResponse
+	(*GetRequest)(nil),            // 3: storagelocv1.GetRequest
+	(*GetResponse)(nil),           // 4: storagelocv1.GetResponse
+	(*CreateRequest)(nil),         // 5: storagelocv1.CreateRequest
+	(*CreateResponse)(nil),        // 6: storagelocv1.CreateResponse
+	(*UpdateRequest)(nil),         // 7: storagelocv1.UpdateRequest
+	(*UpdateResponse)(nil),        // 8: storagelocv1.UpdateResponse
+	(*DeleteRequest)(nil),         // 9: storagelocv1.DeleteRequest
+	(*DeleteResponse)(nil),        // 10: storagelocv1.DeleteResponse
+	(*UseRequest)(nil),            // 11: storagelocv1.UseRequest
+	(*UseResponse)(nil),           // 12: storagelocv1.UseResponse
+	(*ResetRequest)(nil),          // 13: storagelocv1.ResetRequest
+	(*ResetResponse)(nil),         // 14: storagelocv1.ResetResponse
+	(*timestamppb.Timestamp)(nil), // 15: google.protobuf.Timestamp
 }
 var file_storageloc_storageloc_proto_depIdxs = []int32{
 	15, // 0: storagelocv1.StorageLocation.date_of_placement:type_name -> google.protobuf.Timestamp
-	0,  // 1: storagelocv1.ListStorageLocationsResponse.storage_locations:type_name -> storagelocv1.StorageLocation
-	0,  // 2: storagelocv1.GetStorageLocationResponse.storage_location:type_name -> storagelocv1.StorageLocation
-	15, // 3: storagelocv1.UseStorageLocationRequest.date_of_placement:type_name -> google.protobuf.Timestamp
-	1,  // 4: storagelocv1.StorageLocationService.ListStorageLocations:input_type -> storagelocv1.ListStorageLocationsRequest
-	5,  // 5: storagelocv1.StorageLocationService.CreateStorageLocation:input_type -> storagelocv1.CreateStorageLocationRequest
-	9,  // 6: storagelocv1.StorageLocationService.DeleteStorageLocation:input_type -> storagelocv1.DeleteStorageLocationRequest
-	3,  // 7: storagelocv1.StorageLocationService.GetStorageLocation:input_type -> storagelocv1.GetStorageLocationRequest
-	7,  // 8: storagelocv1.StorageLocationService.UpdateStorageLocation:input_type -> storagelocv1.UpdateStorageLocationRequest
-	11, // 9: storagelocv1.StorageLocationService.UseStorageLocation:input_type -> storagelocv1.UseStorageLocationRequest
-	13, // 10: storagelocv1.StorageLocationService.ResetStorageLocation:input_type -> storagelocv1.ResetStorageLocationRequest
-	2,  // 11: storagelocv1.StorageLocationService.ListStorageLocations:output_type -> storagelocv1.ListStorageLocationsResponse
-	6,  // 12: storagelocv1.StorageLocationService.CreateStorageLocation:output_type -> storagelocv1.CreateStorageLocationResponse
-	10, // 13: storagelocv1.StorageLocationService.DeleteStorageLocation:output_type -> storagelocv1.DeleteStorageLocationResponse
-	4,  // 14: storagelocv1.StorageLocationService.GetStorageLocation:output_type -> storagelocv1.GetStorageLocationResponse
-	8,  // 15: storagelocv1.StorageLocationService.UpdateStorageLocation:output_type -> storagelocv1.UpdateStorageLocationResponse
-	12, // 16: storagelocv1.StorageLocationService.UseStorageLocation:output_type -> storagelocv1.UseStorageLocationResponse
-	14, // 17: storagelocv1.StorageLocationService.ResetStorageLocation:output_type -> storagelocv1.ResetStorageLocationResponse
+	0,  // 1: storagelocv1.ListResponse.storage_locations:type_name -> storagelocv1.StorageLocation
+	0,  // 2: storagelocv1.GetResponse.storage_location:type_name -> storagelocv1.StorageLocation
+	15, // 3: storagelocv1.UseRequest.date_of_placement:type_name -> google.protobuf.Timestamp
+	1,  // 4: storagelocv1.StorageLocationService.List:input_type -> storagelocv1.ListRequest
+	5,  // 5: storagelocv1.StorageLocationService.Create:input_type -> storagelocv1.CreateRequest
+	9,  // 6: storagelocv1.StorageLocationService.Delete:input_type -> storagelocv1.DeleteRequest
+	3,  // 7: storagelocv1.StorageLocationService.Get:input_type -> storagelocv1.GetRequest
+	7,  // 8: storagelocv1.StorageLocationService.Update:input_type -> storagelocv1.UpdateRequest
+	11, // 9: storagelocv1.StorageLocationService.Use:input_type -> storagelocv1.UseRequest
+	13, // 10: storagelocv1.StorageLocationService.Reset:input_type -> storagelocv1.ResetRequest
+	2,  // 11: storagelocv1.StorageLocationService.List:output_type -> storagelocv1.ListResponse
+	6,  // 12: storagelocv1.StorageLocationService.Create:output_type -> storagelocv1.CreateResponse
+	10, // 13: storagelocv1.StorageLocationService.Delete:output_type -> storagelocv1.DeleteResponse
+	4,  // 14: storagelocv1.StorageLocationService.Get:output_type -> storagelocv1.GetResponse
+	8,  // 15: storagelocv1.StorageLocationService.Update:output_type -> storagelocv1.UpdateResponse
+	12, // 16: storagelocv1.StorageLocationService.Use:output_type -> storagelocv1.UseResponse
+	14, // 17: storagelocv1.StorageLocationService.Reset:output_type -> storagelocv1.ResetResponse
 	11, // [11:18] is the sub-list for method output_type
 	4,  // [4:11] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

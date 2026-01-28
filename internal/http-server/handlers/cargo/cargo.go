@@ -1,37 +1,43 @@
-package vessel
+package cargo
 
 import (
 	"context"
 	"dbcp-api-gateway/internal/lib/api/response"
 	"dbcp-api-gateway/internal/lib/logger/sl"
-	vesselv1 "dbcp-api-gateway/protos/gen/go/vessel"
+	cargov1 "dbcp-api-gateway/protos/gen/go/cargo"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
 
-	"google.golang.org/grpc/status"
-    "google.golang.org/grpc/codes"
-	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
+const opStart = "handlers.cargo"
+
 type Handler struct {
-	log    *slog.Logger
-	client vesselv1.VesselServiceClient
+	log *slog.Logger
+	client cargov1.CargoServiceClient
 }
 
-func New(log *slog.Logger, client vesselv1.VesselServiceClient) *Handler {
+func New(
+	log *slog.Logger, 
+	client cargov1.CargoServiceClient,
+) *Handler {
 	return &Handler{
-		log:    log,
+		log: log,
 		client: client,
 	}
 }
 
 func (h *Handler) List() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.vessel.List"
+		const op = opStart + ".List"
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -40,7 +46,7 @@ func (h *Handler) List() http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
-		resp, err := h.client.List(ctx, &vesselv1.ListRequest{})
+		resp, err := h.client.List(ctx, &cargov1.ListRequest{}) 
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			render.JSON(w, r, response.Error(err.Error()))
@@ -48,12 +54,14 @@ func (h *Handler) List() http.HandlerFunc {
 		}
 
 		var result []map[string]interface{}
-		for _, v := range resp.GetVessels() {
+		for _, v := range resp.GetCargos() {
 			result = append(result, map[string]interface{}{
-				"id":          v.GetId(),
-				"title":       v.GetTitle(),
-				"vesselType": v.GetVesselType(),
-				"maxLoad":    v.GetMaxLoad(),
+				"id": v.GetId(),
+				"title": v.GetTitle(),
+				"typeId": v.GetTypeId(),
+				"weight": v.GetWeight(),
+				"volume": v.GetVolume(),
+				"vesselId": v.GetVesselId(), 
 			})
 		}
 
@@ -62,18 +70,24 @@ func (h *Handler) List() http.HandlerFunc {
 }
 
 type createRequest struct {
-	Title      string  `json:"title"`
-	VesselType string  `json:"vesselType"`
-	MaxLoad    float64 `json:"maxLoad"`
+	Title 		string	`json:"title"`
+	TypeID 		int64	`json:"typeId"`
+	Weight 		float64	`json:"weight"`
+	Volume 		float64	`json:"volume"`
+	VesselID 	int64	`json:"vesselId"`
 }
 
 func (h *Handler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.vessel.Create"
+		const op = opStart + ".Create"
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
 		)
+
+		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+		defer cancel()
 
 		var req createRequest
 		if err := render.DecodeJSON(r.Body, &req); err != nil {
@@ -82,21 +96,14 @@ func (h *Handler) Create() http.HandlerFunc {
 			return
 		}
 
-		log.Debug("received request",
-			slog.String("title", req.Title),
-			slog.String("vesselType", req.VesselType),
-			slog.Float64("maxLoad", req.MaxLoad))
-
-		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-		defer cancel()
-
-		grpcReq := &vesselv1.CreateRequest{
-			Title:      req.Title,
-			VesselType: req.VesselType,
-			MaxLoad:    req.MaxLoad,
+		grpcReq := cargov1.CreateRequest{
+			Title: req.Title,
+			TypeId: req.TypeID,
+			Weight: req.Weight,
+			Volume: req.Volume,
+			VesselId: req.VesselID,
 		}
-
-		resp, err := h.client.Create(ctx, grpcReq)
+		resp, err := h.client.Create(ctx, &grpcReq)
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			st, ok := status.FromError(err)
@@ -134,11 +141,15 @@ func (h *Handler) Create() http.HandlerFunc {
 
 func (h *Handler) Get() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.vessel.Get"
+		const op = opStart + ".Get"
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
 		)
+
+		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+		defer cancel()
 
 		idStr := chi.URLParam(r, "id")
 		id, err := strconv.ParseInt(idStr, 10, 64)
@@ -147,10 +158,7 @@ func (h *Handler) Get() http.HandlerFunc {
 			return
 		}
 
-		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-		defer cancel()
-
-		resp, err := h.client.Get(ctx, &vesselv1.GetRequest{Id: id})
+		resp, err := h.client.Get(ctx, &cargov1.GetRequest{Id: id})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			st, ok := status.FromError(err)
@@ -163,8 +171,6 @@ func (h *Handler) Get() http.HandlerFunc {
 			httpStatus := http.StatusInternalServerError
 
 			switch st.Code() {
-			case codes.AlreadyExists:
-				httpStatus = http.StatusConflict
 			case codes.NotFound:
 				httpStatus = http.StatusNotFound
 			case codes.InvalidArgument:
@@ -180,25 +186,30 @@ func (h *Handler) Get() http.HandlerFunc {
 			return
 		}
 
-		v := resp.GetVessel()
+		c := resp.GetCargo()
 		render.JSON(w, r, map[string]interface{}{
-			"id":          v.GetId(),
-			"title":       v.GetTitle(),
-			"vessel_type": v.GetVesselType(),
-			"max_load":    v.GetMaxLoad(),
+			"id": c.GetId(),
+			"title": c.GetTitle(),
+			"typeId": c.GetTypeId(),
+			"weight": c.GetWeight(),
+			"volume": c.GetVolume(),
+			"vesselId": c.GetVesselId(),
 		})
 	}
 }
 
 type updateRequest struct {
-	Title      *string  `json:"title,omitempty"`
-	VesselType *string  `json:"vesselType,omitempty"`
-	MaxLoad    *float64 `json:"maxLoad,omitempty"`
+	Title 		*string		`json:"title"`
+	TypeID 		*int64		`json:"typeId"`
+	Weight 		*float64	`json:"weight"`
+	Volume 		*float64	`json:"volume"`
+	VesselID 	*int64		`json:"vesselId`
 }
 
 func (h *Handler) Update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.vessel.Update"
+		const op = opStart + ".Update"
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -214,25 +225,34 @@ func (h *Handler) Update() http.HandlerFunc {
 		var req updateRequest
 		if err := render.DecodeJSON(r.Body, &req); err != nil {
 			log.Error("failed to decode body", sl.Err(err))
-			render.JSON(w, r, response.Error(err.Error()))
+			render.JSON(w, r, response.Error("invalid request"))
 			return
 		}
 
-		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-		defer cancel()
-
-		grpcReq := &vesselv1.UpdateRequest{
-			Id:         id,
-			Title:      req.Title,
-			VesselType: req.VesselType,
+		grpcReq := &cargov1.UpdateRequest{
+			Id: id,
 		}
-		if req.MaxLoad != nil {
-			grpcReq.MaxLoad = req.MaxLoad
+		
+		if req.Title != nil {
+			grpcReq.Title = req.Title
+		}
+		if req.TypeID != nil {
+			grpcReq.TypeId = req.TypeID
+		}
+		if req.Weight != nil {
+			grpcReq.Weight = req.Weight
+		}
+		if req.Volume != nil {
+			grpcReq.Volume = req.Volume
+		}
+		if req.VesselID != nil {
+			grpcReq.VesselId = req.VesselID
 		}
 
-		_, err = h.client.Update(ctx, grpcReq)
+		_, err = h.client.Update(r.Context(), grpcReq)
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
+
 			st, ok := status.FromError(err)
 			if !ok {
 				render.Status(r, http.StatusInternalServerError)
@@ -241,7 +261,6 @@ func (h *Handler) Update() http.HandlerFunc {
 			}
 
 			httpStatus := http.StatusInternalServerError
-
 			switch st.Code() {
 			case codes.AlreadyExists:
 				httpStatus = http.StatusConflict
@@ -256,7 +275,7 @@ func (h *Handler) Update() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -264,9 +283,11 @@ func (h *Handler) Update() http.HandlerFunc {
 	}
 }
 
+
 func (h *Handler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.vessel.Delete"
+		const op = opStart + ".Delete"
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -275,7 +296,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 		idStr := chi.URLParam(r, "id")
 		id, err := strconv.ParseInt(idStr, 10, 64)
 		if err != nil {
-			log.Error("invalid vessel id", sl.Err(err))
+			log.Error("invalid cargo id", sl.Err(err))
 			render.JSON(w, r, response.Error("invalid id"))
 			return
 		}
@@ -283,7 +304,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
-		_, err = h.client.Delete(ctx, &vesselv1.DeleteRequest{Id: id})
+		_, err = h.client.Delete(ctx, &cargov1.DeleteRequest{Id: id})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			st, ok := status.FromError(err)

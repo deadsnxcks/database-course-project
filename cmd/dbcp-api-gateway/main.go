@@ -2,10 +2,21 @@ package main
 
 import (
 	"dbcp-api-gateway/internal/config"
+	"dbcp-api-gateway/internal/http-server/handlers/cargo"
 	cargotype "dbcp-api-gateway/internal/http-server/handlers/cargo-type"
+	"dbcp-api-gateway/internal/http-server/handlers/operations"
+	"dbcp-api-gateway/internal/http-server/handlers/opercargo"
+	"dbcp-api-gateway/internal/http-server/handlers/report"
+	"dbcp-api-gateway/internal/http-server/handlers/storageloc"
 	"dbcp-api-gateway/internal/http-server/handlers/vessel"
+	"dbcp-api-gateway/internal/lib/logger/sl"
 	"dbcp-api-gateway/internal/lib/logger/slogpretty"
+	cargov1 "dbcp-api-gateway/protos/gen/go/cargo"
 	cargotypev1 "dbcp-api-gateway/protos/gen/go/cargotype"
+	operationv1 "dbcp-api-gateway/protos/gen/go/operation"
+	opercargov1 "dbcp-api-gateway/protos/gen/go/opercargo"
+	reportv1 "dbcp-api-gateway/protos/gen/go/report"
+	storagelocv1 "dbcp-api-gateway/protos/gen/go/storageloc"
 	vesselv1 "dbcp-api-gateway/protos/gen/go/vessel"
 	"log/slog"
 	"net/http"
@@ -33,18 +44,18 @@ func main() {
 	router := chi.NewRouter()
 
 	corsMiddleware := cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"}, // или конкретный фронт: "http://localhost:3000"
+		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: true,
-		MaxAge:           300, // 5 минут
+		MaxAge:           300,
 	})
 	router.Use(corsMiddleware)
 
 	conn, err := grpc.NewClient(cfg.GRPC.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Error("failed to connect grpc", err)
+		log.Error("failed to connect grpc", sl.Err(err))
 	}
 	defer conn.Close()
 
@@ -54,7 +65,22 @@ func main() {
 	cargoTypeClient := cargotypev1.NewCargoTypeServiceClient(conn)
 	cargoTypeHandler := cargotype.New(log, cargoTypeClient)
 
-	router.Route("/vessels", func(r chi.Router) {
+	cargoClient := cargov1.NewCargoServiceClient(conn)
+	cargoHandler := cargo.New(log, cargoClient)
+
+	operationsClient := operationv1.NewOperationServiceClient(conn)
+	operationsHandler := operations.New(log, operationsClient)
+
+	operCargoClient := opercargov1.NewOperationCargoServiceClient(conn)
+	operCargoHandler := opercargo.New(log, operCargoClient)
+
+	storageLocClient := storagelocv1.NewStorageLocationServiceClient(conn)
+	storageLocHandler := storageloc.New(log, storageLocClient)
+
+	reportClient := reportv1.NewReportServiceClient(conn)
+	reportHandler := report.New(log, reportClient)
+
+	router.Route("/vessel", func(r chi.Router) {
 		r.Get("/", vesselHandler.List())
 		r.Post("/", vesselHandler.Create())
 		r.Get("/{id}", vesselHandler.Get())
@@ -70,6 +96,41 @@ func main() {
 		r.Delete("/{id}", cargoTypeHandler.Delete())
 	})
 
+	router.Route("/cargo", func(r chi.Router) {
+		r.Get("/", cargoHandler.List())
+		r.Post("/", cargoHandler.Create())
+		r.Get("/{id}", cargoHandler.Get())
+		r.Put("/{id}", cargoHandler.Update())
+		r.Delete("/{id}", cargoHandler.Delete())
+	})
+
+	router.Route("/operation", func(r chi.Router) {
+		r.Get("/", operationsHandler.List())
+		r.Post("/", operationsHandler.Create())
+		r.Get("/{id}", operationsHandler.Get())
+		r.Put("/{id}", operationsHandler.Update())
+		r.Delete("/{id}", operationsHandler.Delete())
+	})
+
+	router.Route("/opercargo", func(r chi.Router) {
+		r.Get("/", operCargoHandler.List())
+		r.Post("/", operCargoHandler.Create())
+		r.Delete("/", operCargoHandler.Delete())
+	})
+
+	router.Route("/storageloc", func(r chi.Router) {
+		r.Get("/", storageLocHandler.List())
+		r.Post("/", storageLocHandler.Create())
+		r.Get("/{id}", storageLocHandler.Get())
+		r.Put("/{id}", storageLocHandler.Update())
+		r.Delete("/{id}", storageLocHandler.Delete())
+		r.Post("/{id}/use", storageLocHandler.Use())
+		r.Post("/{id}/reset", storageLocHandler.Reset())
+	})
+
+	router.Method("Get", "/report-cargo-detail", reportHandler.CargoDetailReport())
+	router.Method("Get", "/report-cargo-type", reportHandler.CargoTypeReport())
+
 	log.Info("starting server", slog.String("address", cfg.Address))
 
 	srv := &http.Server{
@@ -81,7 +142,7 @@ func main() {
 	}
 
 	if err := srv.ListenAndServe(); err != nil {
-		log.Error("failed to start server", err.Error())
+		log.Error("failed to start server", sl.Err(err))
 	}
 
 	log.Error("server stopped")
