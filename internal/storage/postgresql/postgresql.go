@@ -801,6 +801,20 @@ func (s *Storage) UseStorageLoc(
 		return fmt.Errorf("%s: %w", op, storage.ErrCargoAlreadyPlaced)
 	}
 
+	var isCargoType bool
+	err = s.pool.QueryRow(ctx, `
+		SELECT sl.cargo_type_id = c.type_id
+		FROM storage_loc sl
+		JOIN cargo c ON c.id = $2
+		WHERE sl.id = $1
+	`, storageLocID, cargoID).Scan(&isCargoType)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	if !isCargoType {
+		return fmt.Errorf("%s: %w", op, storage.ErrStorageLocTypeNotSuitable)
+	}
+
 	tx, err := s.pool.Begin(ctx)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
