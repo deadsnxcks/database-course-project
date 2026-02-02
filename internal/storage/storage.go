@@ -23,6 +23,7 @@ var (
 	ErrStorageLocNotFound = errors.New("storage location not found")
 	ErrStorageLocInUse = errors.New("storage location is useed")
 	ErrStorageLocNotSuitable = errors.New("storage location not suitable")
+	ErrStorageLocTypeNotSuitable = errors.New("storage location type not suitable")
 	ErrStorageLocAlreadyEmpty = errors.New("storage location already empty")
 
 	ErrOperCargoAlreadyExist = errors.New("an operation with such cargo already exists")

@@ -240,6 +240,8 @@ func (s *serverAPI) Use(
 			return nil, status.Error(codes.FailedPrecondition, "storage location is already in use")
 		case errors.Is(err, storage.ErrStorageLocNotSuitable):
 			return nil, status.Error(codes.FailedPrecondition, "storage location not suitable for this cargo")
+		case errors.Is(err, storage.ErrStorageLocTypeNotSuitable):
+			return nil, status.Error(codes.FailedPrecondition, "storage location type not suitable for this cargo")
 		case errors.Is(err, storage.ErrCargoAlreadyPlaced):
 			return nil, status.Error(codes.FailedPrecondition, "cargo is already placed in a storage location")
 		default:
