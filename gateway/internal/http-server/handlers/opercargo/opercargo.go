@@ -51,7 +51,7 @@ func (h *Handler) List() http.HandlerFunc {
 			return
 		}
 
-		var result []map[string]interface{}
+		result := []map[string]interface{}{}
 		for _, v := range resp.GetOperationsCargos() {
 			result = append(result, map[string]interface{}{
 				"operationId":    	v.GetOperationId(),

@@ -47,7 +47,7 @@ func (h *Handler) CargoDetailReport() http.HandlerFunc {
 			return
 		}
 
-		var result []map[string]interface{}
+		result := []map[string]interface{}{}
 		for _, item := range resp.GetItems() {
 			result = append(result, map[string]interface{}{
 				"cargoName": item.GetCargoName(),
@@ -81,7 +81,7 @@ func (h *Handler) CargoTypeReport() http.HandlerFunc {
 			return
 		}
 
-		var result []map[string]interface{}
+		result := []map[string]interface{}{}
 		for _, item := range resp.GetItems() {
 			result = append(result, map[string]interface{}{
 				"cargoTypeName": item.GetCargoTypeName(),
