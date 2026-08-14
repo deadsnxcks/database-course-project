@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8081/operation';
+const BASE_URL = '/api/operation';
 
 export interface Operation {
   id: number;

@@ -14,7 +14,7 @@ type ApiErrorResponse = {
   message?: string
 }
 
-const BASE_URL = 'http://localhost:8081/cargo'
+const BASE_URL = '/api/cargo'
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {

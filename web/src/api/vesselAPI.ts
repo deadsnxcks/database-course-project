@@ -12,7 +12,7 @@ type ApiErrorResponse = {
   message?: string
 }
 
-const BASE_URL = 'http://localhost:8081/vessel'
+const BASE_URL = '/api/vessel'
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
