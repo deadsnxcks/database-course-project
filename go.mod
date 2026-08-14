@@ -1,4 +1,4 @@
-module dbcp
+module github.com/deadsnxcks/dbcp
 
 go 1.25.5
 
