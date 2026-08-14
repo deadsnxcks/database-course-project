@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import WarehouseLayout from './WarehouseLayout'
 
 export default function WarehousePage() {
