@@ -2,9 +2,9 @@ package storageloc
 
 import (
 	"context"
-	"dbcp-api-gateway/internal/lib/api/response"
-	"dbcp-api-gateway/internal/lib/logger/sl"
-	storagelocv1 "dbcp-api-gateway/protos/gen/go/storageloc"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/api/response"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/logger/sl"
+	storagelocv1 "github.com/deadsnxcks/dbcp/protos/gen/go/storageloc"
 	"log/slog"
 	"net/http"
 	"strconv"

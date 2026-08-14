@@ -2,9 +2,9 @@ package vessel
 
 import (
 	"context"
-	"dbcp-api-gateway/internal/lib/api/response"
-	"dbcp-api-gateway/internal/lib/logger/sl"
-	vesselv1 "dbcp-api-gateway/protos/gen/go/vessel"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/api/response"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/logger/sl"
+	vesselv1 "github.com/deadsnxcks/dbcp/protos/gen/go/vessel"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 
 	"google.golang.org/grpc/status"
     "google.golang.org/grpc/codes"
-	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )

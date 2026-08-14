@@ -3,7 +3,7 @@ package grpcclient
 import (
 	"log/slog"
 
-	vesselv1 "dbcp-api-gateway/protos/gen/go/vessel"
+	vesselv1 "github.com/deadsnxcks/dbcp/protos/gen/go/vessel"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

@@ -2,9 +2,9 @@ package cargotype
 
 import (
 	"context"
-	"dbcp-api-gateway/internal/lib/api/response"
-	"dbcp-api-gateway/internal/lib/logger/sl"
-	cargotypev1 "dbcp-api-gateway/protos/gen/go/cargotype"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/api/response"
+	"github.com/deadsnxcks/dbcp/gateway/internal/lib/logger/sl"
+	cargotypev1 "github.com/deadsnxcks/dbcp/protos/gen/go/cargotype"
 	"log/slog"
 	"net/http"
 	"strconv"
