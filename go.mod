@@ -1,9 +1,12 @@
-module dbcp
+module github.com/deadsnxcks/dbcp
 
 go 1.25.5
 
 require (
 	github.com/fatih/color v1.18.0
+	github.com/go-chi/chi/v5 v5.3.1
+	github.com/go-chi/cors v1.2.2
+	github.com/go-chi/render v1.0.3
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v5 v5.8.0
 	google.golang.org/grpc v1.78.0
@@ -12,6 +15,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.6.0 // indirect
+	github.com/ajg/form v1.5.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
