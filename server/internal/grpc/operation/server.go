@@ -106,22 +106,11 @@ func (s *serverAPI) Update(
 	ctx context.Context,
 	req *operationv1.UpdateRequest,
 ) (*operationv1.UpdateResponse, error) {
-
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	var title *string
-	if req.GetTitle() != "" {
-		t := req.GetTitle()
-		title = &t
-	}
-
-	if err := s.operation.Update(
-		ctx,
-		req.GetId(),
-		title,
-	); err != nil {
+	if err := s.operation.Update(ctx, req.GetId(), req.Title); err != nil {
 		switch {
 		case errors.Is(err, storage.ErrOperationNotFound):
 			return nil, status.Error(codes.NotFound, "operation not found")

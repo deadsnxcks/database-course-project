@@ -109,19 +109,11 @@ func (s *serverAPI) Update(
 	ctx context.Context,
 	req *cargotypev1.UpdateRequest,
 ) (*cargotypev1.UpdateResponse, error) {
-	var title *string
-	if req.GetTitle() != "" {
-		t := req.GetTitle()
-		title = &t
+	if req.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
-
-	var processCost *float64
-	if req.GetProcessCost() != 0 {
-		pc := req.GetProcessCost()
-		processCost = &pc
-	}
-
-	err := s.cargoType.Update(ctx, req.GetId(), title, processCost)
+	
+	err := s.cargoType.Update(ctx, req.GetId(), req.Title, req.ProcessCost)
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrCargoTypeNotFound):

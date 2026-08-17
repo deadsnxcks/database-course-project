@@ -124,48 +124,18 @@ func (s *serverAPI) Update(
 	ctx context.Context,
 	req *cargov1.UpdateRequest,
 ) (*cargov1.UpdateResponse, error) {
-
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
-	}
-
-	var (
-		title       *string
-		cargoTypeID *int64
-		weight      *float64
-		volume      *float64
-		vesselID    *int64
-	)
-
-	if req.GetTitle() != "" {
-		t := req.GetTitle()
-		title = &t
-	}
-	if req.GetTypeId() > 0 {
-		ct := req.GetTypeId()
-		cargoTypeID = &ct
-	}
-	if req.GetWeight() > 0 {
-		w := req.GetWeight()
-		weight = &w
-	}
-	if req.GetVolume() > 0 {
-		v := req.GetVolume()
-		volume = &v
-	}
-	if req.GetVesselId() > 0 {
-		vid := req.GetVesselId()
-		vesselID = &vid
 	}
 
 	if err := s.cargo.Update(
 		ctx,
 		req.GetId(),
-		title,
-		cargoTypeID,
-		weight,
-		volume,
-		vesselID,
+		req.Title,
+		req.TypeId,
+		req.Weight,
+		req.Volume,
+		req.VesselId,
 	); err != nil {
 		switch {
 		case errors.Is(err, storage.ErrCargoNotFound):

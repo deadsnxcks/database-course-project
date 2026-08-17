@@ -118,31 +118,7 @@ func (s *serverAPI) Update(
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	var title *string
-	if uv.GetTitle() != "" {
-		t := uv.GetTitle()
-		title = &t
-	}
-
-	var vesselType *string
-	if uv.GetVesselType() != "" {
-		vt := uv.GetVesselType()
-		vesselType = &vt
-	}
-
-	var maxLoad *float64
-	if uv.GetMaxLoad() > 0 {
-		ml := uv.GetMaxLoad()
-		maxLoad = &ml
-	}
-
-	err := s.vessel.Update(
-		ctx,
-		uv.GetId(),
-		title,
-		vesselType,
-		maxLoad,
-	)
+	err := s.vessel.Update(ctx, uv.GetId(), uv.Title, uv.VesselType, uv.MaxLoad)
 	if err != nil {
 		switch {
 		case errors.Is(err, storage.ErrVesselNotFound):
