@@ -1,24 +1,26 @@
 package grpcapp
 
 import (
+	"fmt"
+	"log/slog"
+	"net"
+
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/cargo"
 	cargotype "github.com/deadsnxcks/dbcp/server/internal/grpc/cargo-type"
+	"github.com/deadsnxcks/dbcp/server/internal/grpc/interceptors"
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/operation"
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/opercargo"
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/report"
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/storageloc"
 	"github.com/deadsnxcks/dbcp/server/internal/grpc/vessel"
-	"fmt"
-	"log/slog"
-	"net"
 
 	"google.golang.org/grpc"
 )
 
 type App struct {
-	log 		*slog.Logger
-	gRPCServer 	*grpc.Server
-	port 		int
+	log        *slog.Logger
+	gRPCServer *grpc.Server
+	port       int
 }
 
 func New(
@@ -32,7 +34,12 @@ func New(
 	reportService report.Report,
 	port int,
 ) *App {
-	gRPCServer := grpc.NewServer()
+	gRPCServer := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			interceptors.ErrorMapping(),
+			interceptors.Logging(log),
+		),
+	)
 
 	vessel.Register(gRPCServer, vesselService)
 	cargotype.Register(gRPCServer, cargoTypeService)
@@ -43,9 +50,9 @@ func New(
 	report.Register(gRPCServer, reportService)
 
 	return &App{
-		log: log,
+		log:        log,
 		gRPCServer: gRPCServer,
-		port: port,
+		port:       port,
 	}
 }
 

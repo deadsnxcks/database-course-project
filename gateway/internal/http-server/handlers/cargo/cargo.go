@@ -20,16 +20,16 @@ import (
 const opStart = "handlers.cargo"
 
 type Handler struct {
-	log *slog.Logger
+	log    *slog.Logger
 	client cargov1.CargoServiceClient
 }
 
 func New(
-	log *slog.Logger, 
+	log *slog.Logger,
 	client cargov1.CargoServiceClient,
 ) *Handler {
 	return &Handler{
-		log: log,
+		log:    log,
 		client: client,
 	}
 }
@@ -46,7 +46,7 @@ func (h *Handler) List() http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
-		resp, err := h.client.List(ctx, &cargov1.ListRequest{}) 
+		resp, err := h.client.List(ctx, &cargov1.ListRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			render.JSON(w, r, response.Error(err.Error()))
@@ -56,12 +56,12 @@ func (h *Handler) List() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, v := range resp.GetCargos() {
 			result = append(result, map[string]interface{}{
-				"id": v.GetId(),
-				"title": v.GetTitle(),
-				"typeId": v.GetTypeId(),
-				"weight": v.GetWeight(),
-				"volume": v.GetVolume(),
-				"vesselId": v.GetVesselId(), 
+				"id":       v.GetId(),
+				"title":    v.GetTitle(),
+				"typeId":   v.GetTypeId(),
+				"weight":   v.GetWeight(),
+				"volume":   v.GetVolume(),
+				"vesselId": v.GetVesselId(),
 			})
 		}
 
@@ -70,11 +70,11 @@ func (h *Handler) List() http.HandlerFunc {
 }
 
 type createRequest struct {
-	Title 		string	`json:"title"`
-	TypeID 		int64	`json:"typeId"`
-	Weight 		float64	`json:"weight"`
-	Volume 		float64	`json:"volume"`
-	VesselID 	int64	`json:"vesselId"`
+	Title    string  `json:"title"`
+	TypeID   int64   `json:"typeId"`
+	Weight   float64 `json:"weight"`
+	Volume   float64 `json:"volume"`
+	VesselID int64   `json:"vesselId"`
 }
 
 func (h *Handler) Create() http.HandlerFunc {
@@ -97,10 +97,10 @@ func (h *Handler) Create() http.HandlerFunc {
 		}
 
 		grpcReq := cargov1.CreateRequest{
-			Title: req.Title,
-			TypeId: req.TypeID,
-			Weight: req.Weight,
-			Volume: req.Volume,
+			Title:    req.Title,
+			TypeId:   req.TypeID,
+			Weight:   req.Weight,
+			Volume:   req.Volume,
 			VesselId: req.VesselID,
 		}
 		resp, err := h.client.Create(ctx, &grpcReq)
@@ -129,7 +129,7 @@ func (h *Handler) Create() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -182,28 +182,28 @@ func (h *Handler) Get() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
 		c := resp.GetCargo()
 		render.JSON(w, r, map[string]interface{}{
-			"id": c.GetId(),
-			"title": c.GetTitle(),
-			"typeId": c.GetTypeId(),
-			"weight": c.GetWeight(),
-			"volume": c.GetVolume(),
+			"id":       c.GetId(),
+			"title":    c.GetTitle(),
+			"typeId":   c.GetTypeId(),
+			"weight":   c.GetWeight(),
+			"volume":   c.GetVolume(),
 			"vesselId": c.GetVesselId(),
 		})
 	}
 }
 
 type updateRequest struct {
-	Title 		*string		`json:"title"`
-	TypeID 		*int64		`json:"typeId"`
-	Weight 		*float64	`json:"weight"`
-	Volume 		*float64	`json:"volume"`
-	VesselID 	*int64		`json:"vesselId`
+	Title    *string  `json:"title"`
+	TypeID   *int64   `json:"typeId"`
+	Weight   *float64 `json:"weight"`
+	Volume   *float64 `json:"volume"`
+	VesselID *int64   `json:"vesselId`
 }
 
 func (h *Handler) Update() http.HandlerFunc {
@@ -232,7 +232,7 @@ func (h *Handler) Update() http.HandlerFunc {
 		grpcReq := &cargov1.UpdateRequest{
 			Id: id,
 		}
-		
+
 		if req.Title != nil {
 			grpcReq.Title = req.Title
 		}
@@ -283,7 +283,6 @@ func (h *Handler) Update() http.HandlerFunc {
 	}
 }
 
-
 func (h *Handler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Delete"
@@ -330,7 +329,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 

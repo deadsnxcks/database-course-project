@@ -108,7 +108,7 @@ func (s *Storage) CargoType(
 
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.CargoType{}, fmt.Errorf("%s: %w", op, storage.ErrCargoNotFound)
+			return models.CargoType{}, fmt.Errorf("%s: %w", op, storage.ErrCargoTypeNotFound)
 		}
 
 		return models.CargoType{}, fmt.Errorf("%s: %w", op, err)

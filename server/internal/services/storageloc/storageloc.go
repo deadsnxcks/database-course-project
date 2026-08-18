@@ -2,11 +2,14 @@ package storagelocservice
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/lib/logger/sl"
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
+
+	"github.com/deadsnxcks/dbcp/server/internal/domain"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
+	"github.com/deadsnxcks/dbcp/server/internal/storage"
 )
 
 const (
@@ -14,7 +17,7 @@ const (
 )
 
 type StorageLocService struct {
-	log *slog.Logger
+	log        *slog.Logger
 	slProvider StorageLocProvider
 }
 
@@ -49,7 +52,7 @@ func New(
 	slProvider StorageLocProvider,
 ) *StorageLocService {
 	return &StorageLocService{
-		log: log,
+		log:        log,
 		slProvider: slProvider,
 	}
 }
@@ -59,41 +62,28 @@ func (s *StorageLocService) List(
 ) ([]models.StorageLocation, error) {
 	const op = opStart + ".List"
 
-	log := s.log.With(slog.String("op", op))
-	log.Info("listing storage locations")
-
 	locs, err := s.slProvider.StorageLocations(ctx)
 	if err != nil {
-		log.Error("failed to list storage locations", sl.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
 	return locs, nil
 }
 
-
 func (s *StorageLocService) Get(
-	ctx context.Context, 
+	ctx context.Context,
 	id int64,
 ) (models.StorageLocation, error) {
 	const op = opStart + ".Get"
 
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("id", id),
-	)
-
-	if id <= 0 {
-		return models.StorageLocation{}, fmt.Errorf("%s: invalid id", op)
-	}
-
 	loc, err := s.slProvider.StorageLocation(ctx, id)
 	if err != nil {
-		log.Error("failed to get storage location", sl.Err(err))
+		if errors.Is(err, storage.ErrStorageLocNotFound) {
+			return models.StorageLocation{}, fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotFound)
+		}
 		return models.StorageLocation{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("storage location fetched")
 	return loc, nil
 }
 
@@ -110,19 +100,11 @@ func (s *StorageLocService) Create(
 		slog.Int64("cargoTypeID", cargoTypeID),
 	)
 
-	if cargoTypeID <= 0 {
-		return 0, fmt.Errorf("%s: cargoTypeID is required", op)
-	}
-	if maxWeight <= 0 {
-		return 0, fmt.Errorf("%s: maxWeight must be positive", op)
-	}
-	if maxVolume <= 0 {
-		return 0, fmt.Errorf("%s: maxVolume must be positive", op)
-	}
-
 	id, err := s.slProvider.SaveStorageLoc(ctx, cargoTypeID, maxWeight, maxVolume)
 	if err != nil {
-		log.Error("failed to create storage location", sl.Err(err))
+		if errors.Is(err, storage.ErrRelatedEntityNotFound) {
+			return 0, fmt.Errorf("%s: %w", op, domain.ErrRelatedEntityNotFound)
+		}
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -131,26 +113,22 @@ func (s *StorageLocService) Create(
 }
 
 func (s *StorageLocService) Delete(
-	ctx context.Context, 
+	ctx context.Context,
 	id int64,
 ) error {
 	const op = opStart + ".Delete"
 
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("id", id),
-	)
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid id", op)
-	}
-
 	if err := s.slProvider.DeleteStorageLoc(ctx, id); err != nil {
-		log.Error("failed to delete storage location", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrStorageLocInUse):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocInUse)
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotFound)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("storage location deleted")
 	return nil
 }
 
@@ -163,15 +141,6 @@ func (s *StorageLocService) Update(
 ) error {
 	const op = opStart + ".Update"
 
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("id", id),
-	)
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid id", op)
-	}
-
 	if err := s.slProvider.UpdateStorageLoc(
 		ctx,
 		id,
@@ -179,11 +148,16 @@ func (s *StorageLocService) Update(
 		maxWeight,
 		maxVolume,
 	); err != nil {
-		log.Error("failed to update storage location", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrRelatedEntityNotFound)
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotFound)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("storage location updated")
 	return nil
 }
 
@@ -195,51 +169,42 @@ func (s *StorageLocService) Use(
 ) error {
 	const op = opStart + ".Use"
 
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("id", id),
-		slog.Int64("cargoID", cargoID),
-	)
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid storage location id", op)
-	}
-	if cargoID <= 0 {
-		return fmt.Errorf("%s: invalid cargo id", op)
-	}
-	if date.IsZero() {
-		date = time.Now()
-	}
-
 	if err := s.slProvider.UseStorageLoc(ctx, id, cargoID, date); err != nil {
-		log.Error("failed to use storage location", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotFound)
+		case errors.Is(err, storage.ErrStorageLocInUse):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocInUse)
+		case errors.Is(err, storage.ErrCargoNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoNotFound)
+		case errors.Is(err, storage.ErrCargoAlreadyPlaced):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoAlreadyPlaced)
+		case errors.Is(err, storage.ErrStorageLocNotSuitable):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotSuitable)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("storage location used")
 	return nil
 }
 
 func (s *StorageLocService) Reset(
-	ctx context.Context, 
+	ctx context.Context,
 	id int64,
 ) error {
 	const op = opStart + ".Reset"
 
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("id", id),
-	)
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid id", op)
-	}
-
 	if err := s.slProvider.ResetStorageLoc(ctx, id); err != nil {
-		log.Error("failed to reset storage location", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrStorageLocNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocNotFound)
+		case errors.Is(err, storage.ErrStorageLocAlreadyEmpty):
+			return fmt.Errorf("%s: %w", op, domain.ErrStorageLocAlreadyEmpty)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("storage location reset")
 	return nil
 }

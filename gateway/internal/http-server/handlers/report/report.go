@@ -14,7 +14,7 @@ import (
 )
 
 type Handler struct {
-	log *slog.Logger
+	log    *slog.Logger
 	client reportv1.ReportServiceClient
 }
 
@@ -23,7 +23,7 @@ func New(
 	client reportv1.ReportServiceClient,
 ) *Handler {
 	return &Handler{
-		log: log,
+		log:    log,
 		client: client,
 	}
 }
@@ -39,7 +39,7 @@ func (h *Handler) CargoDetailReport() http.HandlerFunc {
 
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
-		
+
 		resp, err := h.client.GenerateUnloadedCargoReport(ctx, &reportv1.UnloadedCargoReportRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -50,11 +50,11 @@ func (h *Handler) CargoDetailReport() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, item := range resp.GetItems() {
 			result = append(result, map[string]interface{}{
-				"cargoName": item.GetCargoName(),
-				"weight": item.GetWeightTons(),
-				"cargoType": item.GetCargoType(),
+				"cargoName":  item.GetCargoName(),
+				"weight":     item.GetWeightTons(),
+				"cargoType":  item.GetCargoType(),
 				"vesselName": item.GetVesselName(),
-				"unloadDate": item.GetUnloadingDate(), 
+				"unloadDate": item.GetUnloadingDate(),
 			})
 		}
 
@@ -73,7 +73,7 @@ func (h *Handler) CargoTypeReport() http.HandlerFunc {
 
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
-		
+
 		resp, err := h.client.GenerateCargoTypeSummaryReport(ctx, &reportv1.CargoTypeReportRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -85,10 +85,10 @@ func (h *Handler) CargoTypeReport() http.HandlerFunc {
 		for _, item := range resp.GetItems() {
 			result = append(result, map[string]interface{}{
 				"cargoTypeName": item.GetCargoTypeName(),
-				"count": item.GetCargoCount(),
-				"weight": item.GetTotalWeightTons(),
-				"volume": item.GetTotalVolumeM3(),
-				"processCost": item.GetProcessCost(),
+				"count":         item.GetCargoCount(),
+				"weight":        item.GetTotalWeightTons(),
+				"volume":        item.GetTotalVolumeM3(),
+				"processCost":   item.GetProcessCost(),
 			})
 		}
 

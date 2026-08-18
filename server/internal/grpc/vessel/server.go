@@ -2,10 +2,8 @@ package vessel
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/storage"
 	vesselv1 "github.com/deadsnxcks/dbcp/protos/gen/go/vessel"
-	"errors"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -39,20 +37,14 @@ func (s *serverAPI) List(
 	ctx context.Context,
 	lv *vesselv1.ListRequest,
 ) (*vesselv1.ListResponse, error) {
-
 	vessels, err := s.vessel.List(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to list vessels")
+		return nil, err
 	}
 
 	resp := make([]*vesselv1.Vessel, 0, len(vessels))
 	for _, v := range vessels {
-		resp = append(resp, &vesselv1.Vessel{
-			Id:         v.ID,
-			Title:      v.Title,
-			VesselType: v.VesselType,
-			MaxLoad:    v.MaxLoad,
-		})
+		resp = append(resp, toProtoVessel(v))
 	}
 
 	return &vesselv1.ListResponse{Vessels: resp}, nil
@@ -65,14 +57,10 @@ func (s *serverAPI) Get(
 	if gv.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
+
 	vessel, err := s.vessel.Get(ctx, gv.GetId())
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrVesselNotFound):
-			return nil, status.Error(codes.NotFound, "vessel not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to get vessel")
-		}
+		return nil, err
 	}
 
 	return &vesselv1.GetResponse{Vessel: toProtoVessel(vessel)}, nil
@@ -85,26 +73,20 @@ func (s *serverAPI) Create(
 	if cv.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required")
 	}
-	if cv.GetMaxLoad() <= 0 {
-		return nil, status.Error(codes.InvalidArgument, "max load must be greater than 0")
-	}
 	if cv.GetVesselType() == "" {
 		return nil, status.Error(codes.InvalidArgument, "vessel type is required")
 	}
-
-	vessel := models.Vessel{
-		Title:      cv.GetTitle(),
-		MaxLoad:    cv.GetMaxLoad(),
-		VesselType: cv.GetVesselType(),
+	if cv.GetMaxLoad() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "max load must be greater than 0")
 	}
-	id, err := s.vessel.Create(ctx, vessel)
+
+	id, err := s.vessel.Create(ctx, models.Vessel{
+		Title:      cv.GetTitle(),
+		VesselType: cv.GetVesselType(),
+		MaxLoad:    cv.GetMaxLoad(),
+	})
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrVesselExists):
-			return nil, status.Error(codes.AlreadyExists, "vessel already exists")
-		default:
-			return nil, status.Error(codes.Internal, "failed to create vessel")
-		}
+		return nil, err
 	}
 
 	return &vesselv1.CreateResponse{Id: id}, nil
@@ -118,16 +100,8 @@ func (s *serverAPI) Update(
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	err := s.vessel.Update(ctx, uv.GetId(), uv.Title, uv.VesselType, uv.MaxLoad)
-	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrVesselNotFound):
-			return nil, status.Error(codes.NotFound, "vessel not found")
-		case errors.Is(err, storage.ErrVesselExists):
-			return nil, status.Error(codes.AlreadyExists, "vessel already exists")
-		default:
-			return nil, status.Error(codes.Internal, "failed to update vessel")
-		}
+	if err := s.vessel.Update(ctx, uv.GetId(), uv.Title, uv.VesselType, uv.MaxLoad); err != nil {
+		return nil, err
 	}
 
 	return &vesselv1.UpdateResponse{}, nil
@@ -142,14 +116,7 @@ func (s *serverAPI) Delete(
 	}
 
 	if err := s.vessel.Delete(ctx, dv.GetId()); err != nil {
-		switch {
-		case errors.Is(err, storage.ErrVesselInUse):
-			return nil, status.Error(codes.FailedPrecondition, "vessel is used")
-		case errors.Is(err, storage.ErrVesselNotFound):
-			return nil, status.Error(codes.NotFound, "vessel not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to delete vessel")
-		}
+		return nil, err
 	}
 
 	return &vesselv1.DeleteResponse{}, nil

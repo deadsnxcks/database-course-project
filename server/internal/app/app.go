@@ -39,11 +39,11 @@ func New(
 	reportService := reportservice.New(log, storage)
 
 	grpcApp := grpcapp.New(
-		log, 
-		vesselService, 
-		cargoTypeService, 
+		log,
+		vesselService,
+		cargoTypeService,
 		cargoService,
-		storageLocService, 
+		storageLocService,
 		operationService,
 		operCargoService,
 		reportService,
@@ -52,11 +52,11 @@ func New(
 
 	return &App{
 		GRPCServer: grpcApp,
-		storage: storage,
+		storage:    storage,
 	}
 }
 
 func (a *App) Stop() {
-    a.GRPCServer.Stop()
-    a.storage.Close()
+	a.GRPCServer.Stop()
+	a.storage.Close()
 }

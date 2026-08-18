@@ -2,10 +2,8 @@ package opercargo
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/storage"
 	opercargov1 "github.com/deadsnxcks/dbcp/protos/gen/go/opercargo"
-	"errors"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -14,8 +12,8 @@ import (
 
 type OperationCargo interface {
 	List(ctx context.Context) ([]models.OperationCargo, error)
-	Create(ctx context.Context, operID, cargoID int64) (error)
-	Delete(ctx context.Context, operID, cargoID int64) (error)
+	Create(ctx context.Context, operID, cargoID int64) error
+	Delete(ctx context.Context, operID, cargoID int64) error
 }
 
 type serverAPI struct {
@@ -34,11 +32,11 @@ func Register(gRPCServer *grpc.Server, operCargo OperationCargo) {
 
 func (s *serverAPI) List(
 	ctx context.Context,
-	req *opercargov1.ListRequest,
+	_ *opercargov1.ListRequest,
 ) (*opercargov1.ListResponse, error) {
 	operCargos, err := s.operCargo.List(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to list operation cargos")
+		return nil, err
 	}
 
 	resp := make([]*opercargov1.OperationCargo, 0, len(operCargos))
@@ -64,14 +62,7 @@ func (s *serverAPI) Create(
 
 	err := s.operCargo.Create(ctx, req.GetOperationId(), req.GetCargoId())
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrOperCargoAlreadyExist):
-			return nil, status.Error(codes.AlreadyExists, "operarion_cargo already exists")
-		case errors.Is(err, storage.ErrRelatedEntityNotFound):
-			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to create operation_cargo")
-		}
+		return nil, err
 	}
 
 	return &opercargov1.CreateResponse{}, nil
@@ -87,12 +78,7 @@ func (s *serverAPI) Delete(
 
 	err := s.operCargo.Delete(ctx, req.GetOperationId(), req.GetCargoId())
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrOperCargoNotFound):
-			return nil, status.Error(codes.NotFound, "operation_cargo not found")
-		default:
-			return nil, status.Error(codes.Internal, "operation_cargo deletion failed")
-		}
+		return nil, err
 	}
 
 	return &opercargov1.DeleteResponse{}, nil

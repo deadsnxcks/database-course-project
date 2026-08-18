@@ -20,16 +20,16 @@ import (
 const opStart = "handlers.operations"
 
 type Handler struct {
-	log *slog.Logger
+	log    *slog.Logger
 	client operationv1.OperationServiceClient
 }
 
 func New(
-	log *slog.Logger, 
+	log *slog.Logger,
 	client operationv1.OperationServiceClient,
 ) *Handler {
 	return &Handler{
-		log: log,
+		log:    log,
 		client: client,
 	}
 }
@@ -46,7 +46,7 @@ func (h *Handler) List() http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
-		resp, err := h.client.List(ctx, &operationv1.ListRequest{}) 
+		resp, err := h.client.List(ctx, &operationv1.ListRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			render.JSON(w, r, response.Error(err.Error()))
@@ -56,8 +56,8 @@ func (h *Handler) List() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, v := range resp.GetOperations() {
 			result = append(result, map[string]interface{}{
-				"id": v.GetId(),
-				"title": v.GetTitle(),
+				"id":        v.GetId(),
+				"title":     v.GetTitle(),
 				"createdAt": v.GetCreatedAt(),
 			})
 		}
@@ -110,34 +110,33 @@ func (h *Handler) Get() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
 		o := resp.GetOperation()
 		render.JSON(w, r, map[string]interface{}{
-			"id":          o.GetId(),
-			"title":       o.GetTitle(),
-			"createdAt":   o.GetCreatedAt(),
+			"id":        o.GetId(),
+			"title":     o.GetTitle(),
+			"createdAt": o.GetCreatedAt(),
 		})
 	}
-}		
-
-type createRequest struct {
-	Title     string    	`json:"title"`
 }
 
+type createRequest struct {
+	Title string `json:"title"`
+}
 
 func (h *Handler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Create"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
 		)
 		var req createRequest
-		if err := render.DecodeJSON(r.Body, &req);  err != nil {
+		if err := render.DecodeJSON(r.Body, &req); err != nil {
 			log.Error("failed to decode request body", sl.Err(err))
 			render.JSON(w, r, response.Error("invalid request body"))
 			return
@@ -147,7 +146,7 @@ func (h *Handler) Create() http.HandlerFunc {
 		defer cancel()
 
 		resp, err := h.client.Create(ctx, &operationv1.CreateRequest{
-			Title:     req.Title,
+			Title: req.Title,
 		})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -174,7 +173,7 @@ func (h *Handler) Create() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -187,7 +186,7 @@ func (h *Handler) Create() http.HandlerFunc {
 func (h *Handler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Delete"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -203,7 +202,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
-		
+
 		_, err = h.client.Delete(ctx, &operationv1.DeleteRequest{Id: id})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -230,7 +229,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -239,13 +238,13 @@ func (h *Handler) Delete() http.HandlerFunc {
 }
 
 type updateRequest struct {
-	Title     *string    	`json:"title"`
+	Title *string `json:"title"`
 }
 
 func (h *Handler) Update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Update"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -260,7 +259,7 @@ func (h *Handler) Update() http.HandlerFunc {
 		}
 
 		var req updateRequest
-		if err := render.DecodeJSON(r.Body, &req);  err != nil {
+		if err := render.DecodeJSON(r.Body, &req); err != nil {
 			log.Error("failed to decode request body", sl.Err(err))
 			render.JSON(w, r, response.Error("invalid request body"))
 			return
@@ -268,7 +267,7 @@ func (h *Handler) Update() http.HandlerFunc {
 
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
-		
+
 		_, err = h.client.Update(ctx, &operationv1.UpdateRequest{
 			Id:    id,
 			Title: req.Title,

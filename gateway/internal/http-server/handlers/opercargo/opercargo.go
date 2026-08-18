@@ -35,7 +35,7 @@ func New(
 func (h *Handler) List() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".List"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -44,7 +44,7 @@ func (h *Handler) List() http.HandlerFunc {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
-		resp, err := h.client.List(ctx, &opercargov1.ListRequest{}) 
+		resp, err := h.client.List(ctx, &opercargov1.ListRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
 			render.JSON(w, r, response.Error(err.Error()))
@@ -54,8 +54,8 @@ func (h *Handler) List() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, v := range resp.GetOperationsCargos() {
 			result = append(result, map[string]interface{}{
-				"operationId":    	v.GetOperationId(),
-				"cargoId": 			v.GetCargoId(),
+				"operationId": v.GetOperationId(),
+				"cargoId":     v.GetCargoId(),
 			})
 		}
 
@@ -64,14 +64,14 @@ func (h *Handler) List() http.HandlerFunc {
 }
 
 type createRequest struct {
-	OperationId	int64	`json:"operationId"`
-	CargoId		int64	`json:"cargoId"`
+	OperationId int64 `json:"operationId"`
+	CargoId     int64 `json:"cargoId"`
 }
 
 func (h *Handler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Create"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -117,7 +117,7 @@ func (h *Handler) Create() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -126,14 +126,14 @@ func (h *Handler) Create() http.HandlerFunc {
 }
 
 type DeleteRequest struct {
-	OperationId	int64	`json:"operationId"`
-	CargoId		int64	`json:"cargoId"`
+	OperationId int64 `json:"operationId"`
+	CargoId     int64 `json:"cargoId"`
 }
 
 func (h *Handler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Delete"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -177,7 +177,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 

@@ -82,6 +82,7 @@ func (s *Storage) DeleteVessel(
 		if errors.As(err, &pgErr) && pgErr.Code == "23503" {
 			return fmt.Errorf("%s: %w", op, storage.ErrVesselInUse)
 		}
+
 		return fmt.Errorf("%s: %w", op, err)
 	}
 

@@ -2,10 +2,8 @@ package cargo
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/storage"
 	cargov1 "github.com/deadsnxcks/dbcp/protos/gen/go/cargo"
-	"errors"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -16,16 +14,16 @@ type Cargo interface {
 	List(ctx context.Context) ([]models.Cargo, error)
 	Get(ctx context.Context, id int64) (models.Cargo, error)
 	Create(ctx context.Context, cargo models.Cargo) (int64, error)
-	Delete(ctx context.Context, id int64) (error)
+	Delete(ctx context.Context, id int64) error
 	Update(
-		ctx context.Context, 
+		ctx context.Context,
 		id int64,
-		title *string, 
-		cargoTypeID *int64, 
+		title *string,
+		cargoTypeID *int64,
 		weight *float64,
 		volume *float64,
 		vesselID *int64,
-	) (error)
+	) error
 }
 
 type serverAPI struct {
@@ -44,7 +42,7 @@ func (s *serverAPI) List(
 
 	cargos, err := s.cargo.List(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to list cargos")
+		return nil, err
 	}
 
 	resp := make([]*cargov1.Cargo, 0, len(cargos))
@@ -59,17 +57,13 @@ func (s *serverAPI) Get(
 	ctx context.Context,
 	req *cargov1.GetRequest,
 ) (*cargov1.GetResponse, error) {
-
 	if req.GetId() <= 0 {
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
 	cargo, err := s.cargo.Get(ctx, req.GetId())
 	if err != nil {
-		if errors.Is(err, storage.ErrCargoNotFound) {
-			return nil, status.Error(codes.NotFound, "cargo not found")
-		}
-		return nil, status.Error(codes.Internal, "failed to get cargo")
+		return nil, err
 	}
 
 	return &cargov1.GetResponse{Cargo: toProtoCargo(cargo)}, nil
@@ -96,25 +90,17 @@ func (s *serverAPI) Create(
 		return nil, status.Error(codes.InvalidArgument, "vessel_id is required")
 	}
 
-
 	cargo := models.Cargo{
-		Title:      req.GetTitle(),
-		TypeID:		req.GetTypeId(),
-		Weight:     req.GetWeight(),
-		Volume:		req.GetVolume(),
-		VesselID:	req.GetVesselId(),
+		Title:    req.GetTitle(),
+		TypeID:   req.GetTypeId(),
+		Weight:   req.GetWeight(),
+		Volume:   req.GetVolume(),
+		VesselID: req.GetVesselId(),
 	}
 
 	id, err := s.cargo.Create(ctx, cargo)
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoExists):
-			return nil, status.Error(codes.AlreadyExists, "cargo already exists")
-		case errors.Is(err, storage.ErrRelatedEntityNotFound):
-			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to create cargo")
-		}
+		return nil, err
 	}
 
 	return &cargov1.CreateResponse{Id: id}, nil
@@ -128,6 +114,10 @@ func (s *serverAPI) Update(
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
+	if req.Weight != nil && *req.Weight <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "weight must be positive")
+	}
+
 	if err := s.cargo.Update(
 		ctx,
 		req.GetId(),
@@ -137,16 +127,7 @@ func (s *serverAPI) Update(
 		req.Volume,
 		req.VesselId,
 	); err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoNotFound):
-			return nil, status.Error(codes.NotFound, "cargo not found")
-		case errors.Is(err, storage.ErrCargoExists):
-			return nil, status.Error(codes.AlreadyExists, "cargo already exists")
-		case errors.Is(err, storage.ErrRelatedEntityNotFound):
-			return nil, status.Error(codes.FailedPrecondition, "one or more related entities not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to update cargo")
-		}
+		return nil, err
 	}
 
 	return &cargov1.UpdateResponse{}, nil
@@ -162,26 +143,19 @@ func (s *serverAPI) Delete(
 	}
 
 	if err := s.cargo.Delete(ctx, req.GetId()); err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoInUse):
-			return nil, status.Error(codes.FailedPrecondition, "cargo is used")
-		case errors.Is(err, storage.ErrCargoNotFound):
-			return nil, status.Error(codes.NotFound, "cargo not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to delete cargo")
-		}
+		return nil, err
 	}
 
 	return &cargov1.DeleteResponse{}, nil
 }
 
 func toProtoCargo(c models.Cargo) *cargov1.Cargo {
-    return &cargov1.Cargo{
-        Id:         c.ID,
-        Title:      c.Title,
-        TypeId: 	c.TypeID,
-        Weight:    	c.Weight,
-		Volume: 	c.Volume,
-		VesselId: 	c.VesselID,	
-    }
+	return &cargov1.Cargo{
+		Id:       c.ID,
+		Title:    c.Title,
+		TypeId:   c.TypeID,
+		Weight:   c.Weight,
+		Volume:   c.Volume,
+		VesselId: c.VesselID,
+	}
 }

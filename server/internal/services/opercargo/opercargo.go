@@ -2,11 +2,13 @@ package opercargoservice
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/lib/logger/sl"
-	"github.com/deadsnxcks/dbcp/server/internal/storage"
+	"errors"
 	"fmt"
 	"log/slog"
+
+	"github.com/deadsnxcks/dbcp/server/internal/domain"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
+	"github.com/deadsnxcks/dbcp/server/internal/storage"
 )
 
 const (
@@ -14,7 +16,7 @@ const (
 )
 
 type OperationCargoService struct {
-	log *slog.Logger
+	log        *slog.Logger
 	ocProvider OperationCargoProvider
 }
 
@@ -29,7 +31,7 @@ func New(
 	ocProvider OperationCargoProvider,
 ) *OperationCargoService {
 	return &OperationCargoService{
-		log: log,
+		log:        log,
 		ocProvider: ocProvider,
 	}
 }
@@ -39,12 +41,8 @@ func (s *OperationCargoService) List(
 ) ([]models.OperationCargo, error) {
 	const op = opStart + ".List"
 
-	log := s.log.With(slog.String("op", op))
-	log.Info("Listing operation cargos")
-
 	opsCargos, err := s.ocProvider.OperationsCargos(ctx)
 	if err != nil {
-		log.Error("failed to list operation cargos", sl.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -52,20 +50,10 @@ func (s *OperationCargoService) List(
 }
 
 func (s *OperationCargoService) Create(
-	ctx context.Context, 
+	ctx context.Context,
 	operID, cargoID int64,
 ) error {
 	const op = opStart + ".Create"
-
-	log := s.log.With(
-		slog.String("op", op), 
-		slog.Int64("operation_id", operID), 
-		slog.Int64("cargo_id", cargoID),
-	)
-
-	if operID <= 0 || cargoID <= 0 {
-		return fmt.Errorf("%s: invalid operation_id or cargo_id", op)
-	}
 
 	operCargo := models.OperationCargo{
 		OperationID: operID,
@@ -73,36 +61,27 @@ func (s *OperationCargoService) Create(
 	}
 
 	if err := s.ocProvider.SaveOperationCargo(ctx, operCargo); err != nil {
-		log.Error("failed to create operation cargo", sl.Err(err))
-		if err == storage.ErrOperCargoAlreadyExist {
-			return fmt.Errorf("%s: %w", op, storage.ErrOperCargoAlreadyExist)
+		switch {
+		case errors.Is(err, storage.ErrOperCargoAlreadyExist):
+			return fmt.Errorf("%s: %w", op, domain.ErrOperCargoAlreadyExist)
+		case errors.Is(err, storage.ErrRelatedEntityNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrRelatedEntityNotFound)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
 		}
-		if err == storage.ErrRelatedEntityNotFound {
-			return fmt.Errorf("%s: %w", op, storage.ErrRelatedEntityNotFound)
-		}
-		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("OperationCargo created")
+	s.log.Info("operation_cargo created", slog.Int64("operation_id", operID), slog.Int64("cargo_id", cargoID))
+
 	return nil
 }
 
 func (s *OperationCargoService) Delete(
-	ctx context.Context, 
-	operID, 
+	ctx context.Context,
+	operID,
 	cargoID int64,
 ) error {
 	const op = opStart + ".Delete"
-
-	log := s.log.With(
-		slog.String("op", op),
-		slog.Int64("operation_id", operID), 
-		slog.Int64("cargo_id", cargoID),
-	)
-
-	if operID <= 0 || cargoID <= 0 {
-		return fmt.Errorf("%s: invalid operation_id or cargo_id", op)
-	}
 
 	operCargo := models.OperationCargo{
 		OperationID: operID,
@@ -110,13 +89,12 @@ func (s *OperationCargoService) Delete(
 	}
 
 	if err := s.ocProvider.DeleteOperationCargo(ctx, operCargo); err != nil {
-		log.Error("failed to delete operation cargo", sl.Err(err))
-		if err == storage.ErrOperCargoNotFound {
-			return fmt.Errorf("%s: %w", op, storage.ErrOperCargoNotFound)
+		if errors.Is(err, storage.ErrOperCargoNotFound) {
+			return fmt.Errorf("%s: %w", op, domain.ErrOperCargoNotFound)
 		}
+
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("OperationCargo deleted")
 	return nil
 }

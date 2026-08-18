@@ -2,13 +2,11 @@ package report
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 	reportv1 "github.com/deadsnxcks/dbcp/protos/gen/go/report"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 	"time"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type Report interface {
@@ -27,22 +25,22 @@ func Register(gRPCServer *grpc.Server, report Report) {
 
 func (s *serverAPI) GenerateUnloadedCargoReport(
 	ctx context.Context,
-	_ *reportv1.UnloadedCargoReportRequest,	
+	_ *reportv1.UnloadedCargoReportRequest,
 ) (*reportv1.CargoDetailReport, error) {
 
 	report, err := s.r.CargoDetailReport(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to generrate report")
+		return nil, err
 	}
 
 	resp := make([]*reportv1.CargoDetailItem, 0, len(report))
 	for _, item := range report {
 		resp = append(resp,
 			&reportv1.CargoDetailItem{
-				CargoName: item.CargoName,
-				WeightTons: item.Weight,
-				CargoType: item.CargoType,
-				VesselName: item.VesselName,
+				CargoName:     item.CargoName,
+				WeightTons:    item.Weight,
+				CargoType:     item.CargoType,
+				VesselName:    item.VesselName,
 				UnloadingDate: item.UnloadingDate.Format(time.DateTime),
 			},
 		)
@@ -59,18 +57,18 @@ func (s *serverAPI) GenerateCargoTypeSummaryReport(
 ) (*reportv1.CargoTypeReport, error) {
 	report, err := s.r.CargoTypeReport(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to generrate report")
+		return nil, err
 	}
 
 	resp := make([]*reportv1.CargoTypeItem, 0, len(report))
 	for _, item := range report {
 		resp = append(resp,
 			&reportv1.CargoTypeItem{
-				CargoTypeName: item.CargoTypeName,
-				CargoCount: item.CargoCount,
+				CargoTypeName:   item.CargoTypeName,
+				CargoCount:      item.CargoCount,
 				TotalWeightTons: item.TotalWeight,
-				TotalVolumeM3: item.TotalVolume,
-				ProcessCost: item.TotalProcessCost,
+				TotalVolumeM3:   item.TotalVolume,
+				ProcessCost:     item.TotalProcessCost,
 			},
 		)
 	}

@@ -46,7 +46,7 @@ func (h *Handler) List() http.HandlerFunc {
 
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
-		
+
 		resp, err := h.client.List(ctx, &storagelocv1.ListRequest{})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -57,12 +57,12 @@ func (h *Handler) List() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, v := range resp.GetStorageLocations() {
 			result = append(result, map[string]interface{}{
-				"id":    			v.GetId(),
-				"cargoTypeId": 		v.GetCargoTypeId(),
-				"maxWeight": 		v.GetMaxWeight(),
-				"maxVolume": 		v.GetMaxVolume(),
-				"cargoId": 			v.GetCargoId(),
-				"dateOfPlacement": 	v.GetDateOfPlacement(),
+				"id":              v.GetId(),
+				"cargoTypeId":     v.GetCargoTypeId(),
+				"maxWeight":       v.GetMaxWeight(),
+				"maxVolume":       v.GetMaxVolume(),
+				"cargoId":         v.GetCargoId(),
+				"dateOfPlacement": v.GetDateOfPlacement(),
 			})
 		}
 
@@ -71,9 +71,9 @@ func (h *Handler) List() http.HandlerFunc {
 }
 
 type createRequest struct {
-	CargoTypeId	int64	`json:"cargoTypeId"`
-	MaxWeight	float64	`json:"maxWeight"`
-	MaxVolume	float64	`json:"maxVolume"`
+	CargoTypeId int64   `json:"cargoTypeId"`
+	MaxWeight   float64 `json:"maxWeight"`
+	MaxVolume   float64 `json:"maxVolume"`
 }
 
 func (h *Handler) Create() http.HandlerFunc {
@@ -84,7 +84,7 @@ func (h *Handler) Create() http.HandlerFunc {
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
 		)
-		
+
 		var req createRequest
 		if err := render.DecodeJSON(r.Body, &req); err != nil {
 			log.Error("failed to decode json", sl.Err(err))
@@ -96,9 +96,9 @@ func (h *Handler) Create() http.HandlerFunc {
 		defer cancel()
 
 		_, err := h.client.Create(ctx, &storagelocv1.CreateRequest{
-			CargoTypeId:	req.CargoTypeId,
-			MaxWeight:		req.MaxWeight,
-			MaxVolume:		req.MaxVolume,
+			CargoTypeId: req.CargoTypeId,
+			MaxWeight:   req.MaxWeight,
+			MaxVolume:   req.MaxVolume,
 		})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -123,7 +123,7 @@ func (h *Handler) Create() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -134,7 +134,7 @@ func (h *Handler) Create() http.HandlerFunc {
 func (h *Handler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Delete"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -193,7 +193,7 @@ func (h *Handler) Get() http.HandlerFunc {
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
 		)
-		
+
 		idStr := chi.URLParam(r, "id")
 		id, err := strconv.ParseInt(idStr, 10, 64)
 		if err != nil {
@@ -231,32 +231,32 @@ func (h *Handler) Get() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
 		sl := resp.GetStorageLocation()
 		render.JSON(w, r, map[string]interface{}{
-			"id":    			sl.GetId(),
-			"cargoTypeId": 		sl.GetCargoTypeId(),
-			"maxWeight": 		sl.GetMaxWeight(),
-			"maxVolume": 		sl.GetMaxVolume(),
-			"cargoId": 			sl.GetCargoId(),
-			"dateOfPlacement": 	sl.GetDateOfPlacement(),
-		})	
+			"id":              sl.GetId(),
+			"cargoTypeId":     sl.GetCargoTypeId(),
+			"maxWeight":       sl.GetMaxWeight(),
+			"maxVolume":       sl.GetMaxVolume(),
+			"cargoId":         sl.GetCargoId(),
+			"dateOfPlacement": sl.GetDateOfPlacement(),
+		})
 	}
 }
 
 type updateRequest struct {
-	CargoTypeId	*int64	`json:"cargoTypeId"`
-	MaxWeight	*float64	`json:"maxWeight"`
-	MaxVolume	*float64	`json:"maxVolume"`
+	CargoTypeId *int64   `json:"cargoTypeId"`
+	MaxWeight   *float64 `json:"maxWeight"`
+	MaxVolume   *float64 `json:"maxVolume"`
 }
 
 func (h *Handler) Update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = opStart + ".Update"
-		
+
 		log := h.log.With(
 			slog.String("op", op),
 			slog.String("req_id", middleware.GetReqID(r.Context())),
@@ -276,15 +276,15 @@ func (h *Handler) Update() http.HandlerFunc {
 			render.JSON(w, r, response.Error("invalid id param"))
 			return
 		}
-		
+
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()
 
 		_, err = h.client.Update(ctx, &storagelocv1.UpdateRequest{
-			Id:				id,
-			CargoTypeId:	req.CargoTypeId,
-			MaxWeight:		req.MaxWeight,
-			MaxVolume:		req.MaxVolume,
+			Id:          id,
+			CargoTypeId: req.CargoTypeId,
+			MaxWeight:   req.MaxWeight,
+			MaxVolume:   req.MaxVolume,
 		})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -311,7 +311,7 @@ func (h *Handler) Update() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -320,8 +320,8 @@ func (h *Handler) Update() http.HandlerFunc {
 }
 
 type useRequest struct {
-	CargoId			int64		`json:"cargoId"`
-	DateOfPlacement	time.Time	`json:"dateOfPlacement"`
+	CargoId         int64     `json:"cargoId"`
+	DateOfPlacement time.Time `json:"dateOfPlacement"`
 }
 
 func (h *Handler) Use() http.HandlerFunc {
@@ -353,9 +353,9 @@ func (h *Handler) Use() http.HandlerFunc {
 
 		dateOfPlacement := timestamppb.New(req.DateOfPlacement)
 		_, err = h.client.Use(ctx, &storagelocv1.UseRequest{
-			StorageLocationId:	id,
-			CargoId:			req.CargoId,
-			DateOfPlacement:	dateOfPlacement,
+			StorageLocationId: id,
+			CargoId:           req.CargoId,
+			DateOfPlacement:   dateOfPlacement,
 		})
 		if err != nil {
 			log.Error("grpc call failed", sl.Err(err))
@@ -364,8 +364,8 @@ func (h *Handler) Use() http.HandlerFunc {
 				render.Status(r, http.StatusInternalServerError)
 				render.JSON(w, r, response.Error("internal error"))
 				return
-			}	
-			
+			}
+
 			httpStatus := http.StatusInternalServerError
 
 			switch st.Code() {
@@ -382,7 +382,7 @@ func (h *Handler) Use() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -436,7 +436,7 @@ func (h *Handler) Reset() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 

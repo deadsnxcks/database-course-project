@@ -1,8 +1,8 @@
 package response
 
 type Response struct {
-	Status 	string	`json:"ststus"`
-	Error	string	`json:"error,omitempty"`
+	Status string `json:"ststus"`
+	Error  string `json:"error,omitempty"`
 }
 
 const (
@@ -19,6 +19,6 @@ func Ok() Response {
 func Error(msg string) Response {
 	return Response{
 		Status: StatusError,
-		Error: msg,
+		Error:  msg,
 	}
 }

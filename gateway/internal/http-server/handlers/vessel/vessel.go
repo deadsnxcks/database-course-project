@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"time"
 
-	"google.golang.org/grpc/status"
-    "google.golang.org/grpc/codes"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type Handler struct {
@@ -50,8 +50,8 @@ func (h *Handler) List() http.HandlerFunc {
 		result := []map[string]interface{}{}
 		for _, v := range resp.GetVessels() {
 			result = append(result, map[string]interface{}{
-				"id":          v.GetId(),
-				"title":       v.GetTitle(),
+				"id":         v.GetId(),
+				"title":      v.GetTitle(),
 				"vesselType": v.GetVesselType(),
 				"maxLoad":    v.GetMaxLoad(),
 			})
@@ -122,7 +122,7 @@ func (h *Handler) Create() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -176,7 +176,7 @@ func (h *Handler) Get() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -256,7 +256,7 @@ func (h *Handler) Update() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
@@ -309,7 +309,7 @@ func (h *Handler) Delete() http.HandlerFunc {
 				"code":    st.Code().String(),
 				"message": st.Message(),
 			})
-			
+
 			return
 		}
 
