@@ -2,10 +2,8 @@ package cargotype
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/storage"
 	cargotypev1 "github.com/deadsnxcks/dbcp/protos/gen/go/cargotype"
-	"errors"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -16,13 +14,13 @@ type CargoType interface {
 	List(ctx context.Context) ([]models.CargoType, error)
 	Get(ctx context.Context, id int64) (models.CargoType, error)
 	Create(ctx context.Context, vessel models.CargoType) (int64, error)
-	Delete(ctx context.Context, id int64) (error)
+	Delete(ctx context.Context, id int64) error
 	Update(
-		ctx context.Context, 
+		ctx context.Context,
 		id int64,
-		title *string, 
+		title *string,
 		processCost *float64,
-	) (error)
+	) error
 }
 
 type serverAPI struct {
@@ -36,11 +34,11 @@ func Register(gRPCServer *grpc.Server, cargoType CargoType) {
 
 func (s *serverAPI) List(
 	ctx context.Context,
-	req *cargotypev1.ListRequest,
+	_ *cargotypev1.ListRequest,
 ) (*cargotypev1.ListResponse, error) {
 	ctList, err := s.cargoType.List(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to list cargo types")
+		return nil, err
 	}
 
 	var pbList []*cargotypev1.CargoType
@@ -59,14 +57,13 @@ func (s *serverAPI) Get(
 	ctx context.Context,
 	req *cargotypev1.GetRequest,
 ) (*cargotypev1.GetResponse, error) {
+	if req.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
+	}
+
 	ct, err := s.cargoType.Get(ctx, req.GetId())
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, "cargo type not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to get cargo type")
-		}
+		return nil, err
 	}
 
 	return &cargotypev1.GetResponse{
@@ -85,52 +82,39 @@ func (s *serverAPI) Create(
 	if req.GetTitle() == "" {
 		return nil, status.Error(codes.InvalidArgument, "title is required")
 	}
-
-	ct := models.CargoType{
-		Title:       req.GetTitle(),
-		ProcessCost: req.GetProcessCost(),
+	if req.GetProcessCost() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "process_cost must be greater than 0")
 	}
 
-	id, err := s.cargoType.Create(ctx, ct)
+	id, err := s.cargoType.Create(ctx, models.CargoType{
+		Title:       req.GetTitle(),
+		ProcessCost: req.GetProcessCost(),
+	})
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoTypeExists):
-			return nil, status.Error(codes.AlreadyExists, "cargo type already exists")
-		default:
-			return nil, status.Error(codes.Internal, "failed to create cargo type")
-		}
+		return nil, err
 	}
 
 	return &cargotypev1.CreateResponse{Id: id}, nil
 }
 
-
 func (s *serverAPI) Update(
 	ctx context.Context,
 	req *cargotypev1.UpdateRequest,
 ) (*cargotypev1.UpdateResponse, error) {
-	var title *string
-	if req.GetTitle() != "" {
-		t := req.GetTitle()
-		title = &t
+	if req.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	var processCost *float64
-	if req.GetProcessCost() != 0 {
-		pc := req.GetProcessCost()
-		processCost = &pc
+	if req.Title != nil && *req.Title == "" {
+		return nil, status.Error(codes.InvalidArgument, "title must not be empty")
+	}
+	if req.ProcessCost != nil && *req.ProcessCost <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "process_cost must be greater than 0")
 	}
 
-	err := s.cargoType.Update(ctx, req.GetId(), title, processCost)
+	err := s.cargoType.Update(ctx, req.GetId(), req.Title, req.ProcessCost)
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, "cargo type not found")
-		case errors.Is(err, storage.ErrCargoTypeExists):
-			return nil, status.Error(codes.AlreadyExists, "cargo type already exists")
-		default:
-			return nil, status.Error(codes.Internal, "failed to update cargp type")
-		}
+		return nil, err
 	}
 
 	return &cargotypev1.UpdateResponse{}, nil
@@ -140,16 +124,13 @@ func (s *serverAPI) Delete(
 	ctx context.Context,
 	req *cargotypev1.DeleteRequest,
 ) (*cargotypev1.DeleteResponse, error) {
+	if req.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
+	}
+
 	err := s.cargoType.Delete(ctx, req.GetId())
 	if err != nil {
-		switch {
-		case errors.Is(err, storage.ErrCargoTypeInUse):
-			return nil, status.Error(codes.FailedPrecondition, "cargo type is used")
-		case errors.Is(err, storage.ErrCargoTypeNotFound):
-			return nil, status.Error(codes.NotFound, "cargo type not found")
-		default:
-			return nil, status.Error(codes.Internal, "failed to delete cargo type")
-		}
+		return nil, err
 	}
 
 	return &cargotypev1.DeleteResponse{}, nil

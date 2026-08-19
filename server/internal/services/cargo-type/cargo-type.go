@@ -2,10 +2,13 @@ package cargotypeservice
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
-	"github.com/deadsnxcks/dbcp/server/internal/lib/logger/sl"
+	"errors"
 	"fmt"
 	"log/slog"
+
+	"github.com/deadsnxcks/dbcp/server/internal/domain"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
+	"github.com/deadsnxcks/dbcp/server/internal/storage"
 )
 
 const (
@@ -13,7 +16,7 @@ const (
 )
 
 type CargoTypeService struct {
-	log *slog.Logger
+	log        *slog.Logger
 	ctProvider CargoTypeProvider
 }
 
@@ -35,7 +38,7 @@ func New(
 	ctProvider CargoTypeProvider,
 ) *CargoTypeService {
 	return &CargoTypeService{
-		log: log,
+		log:        log,
 		ctProvider: ctProvider,
 	}
 }
@@ -43,12 +46,8 @@ func New(
 func (c *CargoTypeService) List(ctx context.Context) ([]models.CargoType, error) {
 	const op = opStart + ".List"
 
-	log := c.log.With(slog.String("op", op))
-	log.Info("Listing cargo types")
-
 	types, err := c.ctProvider.CargoTypes(ctx)
 	if err != nil {
-		log.Error("failed to list cargo types", sl.Err(err))
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -58,60 +57,48 @@ func (c *CargoTypeService) List(ctx context.Context) ([]models.CargoType, error)
 func (c *CargoTypeService) Get(ctx context.Context, id int64) (models.CargoType, error) {
 	const op = opStart + ".Get"
 
-	log := c.log.With(slog.String("op", op), slog.Int64("id", id))
-
-	if id <= 0 {
-		return models.CargoType{}, fmt.Errorf("%s: invalid id", op)
-	}
-
 	ct, err := c.ctProvider.CargoType(ctx, id)
 	if err != nil {
-		log.Error("failed to get cargo type", sl.Err(err))
+		if errors.Is(err, storage.ErrCargoTypeNotFound) {
+			return models.CargoType{}, fmt.Errorf("%s: %w", op, domain.ErrCargoTypeNotFound)
+		}
 		return models.CargoType{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("Cargo type retrieved", slog.Int64("id", id))
 	return ct, nil
 }
 
 func (c *CargoTypeService) Create(ctx context.Context, cargoType models.CargoType) (int64, error) {
 	const op = opStart + ".Create"
 
-	log := c.log.With(slog.String("op", op), slog.String("title", cargoType.Title))
-
-	if cargoType.Title == "" {
-		return 0, fmt.Errorf("%s: title is required", op)
-	}
-	if cargoType.ProcessCost <= 0 {
-		return 0, fmt.Errorf("%s: processCost must be positive", op)
-	}
-
 	id, err := c.ctProvider.SaveCargoType(ctx, cargoType)
 	if err != nil {
-		log.Error("failed to create cargo type", sl.Err(err))
+		if errors.Is(err, storage.ErrCargoTypeExists) {
+			return 0, fmt.Errorf("%s: %w", op, domain.ErrCargoTypeExists)
+		}
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("Cargo type created", slog.Int64("id", id))
+	c.log.Info("Cargo type created", slog.Int64("id", id))
+
 	return id, nil
 }
 
 func (c *CargoTypeService) Delete(ctx context.Context, id int64) error {
 	const op = opStart + ".Delete"
 
-	log := c.log.With(slog.String("op", op), slog.Int64("id", id))
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid id", op)
-	}
-
 	err := c.ctProvider.DeleteCargoType(ctx, id)
 	if err != nil {
-		log.Error("failed to delete cargo type", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrCargoTypeInUse):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoTypeInUse)
+		case errors.Is(err, storage.ErrCargoTypeNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoTypeNotFound)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("Cargo type deleted")
 	return nil
 }
 
@@ -123,18 +110,17 @@ func (c *CargoTypeService) Update(
 ) error {
 	const op = opStart + ".Update"
 
-	log := c.log.With(slog.String("op", op), slog.Int64("id", id))
-
-	if id <= 0 {
-		return fmt.Errorf("%s: invalid id", op)
-	}
-
 	err := c.ctProvider.UpdateCargoType(ctx, id, title, processCost)
 	if err != nil {
-		log.Error("failed to update cargo type", sl.Err(err))
-		return fmt.Errorf("%s: %w", op, err)
+		switch {
+		case errors.Is(err, storage.ErrCargoTypeExists):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoTypeExists)
+		case errors.Is(err, storage.ErrCargoTypeNotFound):
+			return fmt.Errorf("%s: %w", op, domain.ErrCargoTypeNotFound)
+		default:
+			return fmt.Errorf("%s: %w", op, err)
+		}
 	}
 
-	log.Info("Cargo type updated")
 	return nil
 }

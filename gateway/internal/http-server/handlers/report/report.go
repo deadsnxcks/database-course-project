@@ -2,19 +2,25 @@ package report
 
 import (
 	"context"
-	"github.com/deadsnxcks/dbcp/gateway/internal/lib/api/response"
-	"github.com/deadsnxcks/dbcp/gateway/internal/lib/logger/sl"
-	reportv1 "github.com/deadsnxcks/dbcp/protos/gen/go/report"
 	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/deadsnxcks/dbcp/gateway/internal/http-server/dto"
+	"github.com/deadsnxcks/dbcp/gateway/internal/http-server/response"
+	reportv1 "github.com/deadsnxcks/dbcp/protos/gen/go/report"
 
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 )
 
+const (
+	opStart = "handlers.report"
+	timeout = 15 * time.Second
+)
+
 type Handler struct {
-	log *slog.Logger
+	log    *slog.Logger
 	client reportv1.ReportServiceClient
 }
 
@@ -22,76 +28,54 @@ func New(
 	log *slog.Logger,
 	client reportv1.ReportServiceClient,
 ) *Handler {
-	return &Handler{
-		log: log,
-		client: client,
-	}
+	return &Handler{log: log, client: client}
+}
+
+func (h *Handler) logger(r *http.Request, op string) *slog.Logger {
+	return h.log.With(
+		slog.String("op", opStart+"."+op),
+		slog.String("req_id", middleware.GetReqID(r.Context())),
+	)
 }
 
 func (h *Handler) CargoDetailReport() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.report.CargoDetailReport"
+		log := h.logger(r, "CargoDetailReport")
 
-		log := h.log.With(
-			slog.String("op", op),
-			slog.String("req_id", middleware.GetReqID(r.Context())),
-		)
-
-		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(r.Context(), timeout)
 		defer cancel()
-		
-		resp, err := h.client.GenerateUnloadedCargoReport(ctx, &reportv1.UnloadedCargoReportRequest{})
+
+		resp, err := h.client.GenerateUnloadedCargoReport(
+			ctx,
+			&reportv1.UnloadedCargoReportRequest{},
+		)
 		if err != nil {
-			log.Error("grpc call failed", sl.Err(err))
-			render.JSON(w, r, response.Error(err.Error()))
+			response.GRPCError(w, r, log, err)
+
 			return
 		}
 
-		result := []map[string]interface{}{}
-		for _, item := range resp.GetItems() {
-			result = append(result, map[string]interface{}{
-				"cargoName": item.GetCargoName(),
-				"weight": item.GetWeightTons(),
-				"cargoType": item.GetCargoType(),
-				"vesselName": item.GetVesselName(),
-				"unloadDate": item.GetUnloadingDate(), 
-			})
-		}
-
-		render.JSON(w, r, result)
+		render.JSON(w, r, dto.CargoDetailItemsFromProto(resp.GetItems()))
 	}
 }
 
 func (h *Handler) CargoTypeReport() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.report.CargoTypeReport"
+		log := h.logger(r, "CargoTypeReport")
 
-		log := h.log.With(
-			slog.String("op", op),
-			slog.String("req_id", middleware.GetReqID(r.Context())),
-		)
-
-		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(r.Context(), timeout)
 		defer cancel()
-		
-		resp, err := h.client.GenerateCargoTypeSummaryReport(ctx, &reportv1.CargoTypeReportRequest{})
+
+		resp, err := h.client.GenerateCargoTypeSummaryReport(
+			ctx,
+			&reportv1.CargoTypeReportRequest{},
+		)
 		if err != nil {
-			log.Error("grpc call failed", sl.Err(err))
-			render.JSON(w, r, response.Error(err.Error()))
+			response.GRPCError(w, r, log, err)
+
 			return
 		}
 
-		result := []map[string]interface{}{}
-		for _, item := range resp.GetItems() {
-			result = append(result, map[string]interface{}{
-				"cargoTypeName": item.GetCargoTypeName(),
-				"count": item.GetCargoCount(),
-				"weight": item.GetTotalWeightTons(),
-				"volume": item.GetTotalVolumeM3(),
-				"processCost": item.GetProcessCost(),
-			})
-		}
-
-		render.JSON(w, r, result)
+		render.JSON(w, r, dto.CargoTypeItemsFromProto(resp.GetItems()))
 	}
 }

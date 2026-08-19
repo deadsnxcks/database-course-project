@@ -7,6 +7,7 @@ import Modal from '../../../components/ui/Modal'
 import NotificationModal, { type NotificationType } from '../../../components/ui/NotificationModal'
 import * as operationApi from '../../../api/operationAPI'
 import type { Operation } from '../../../api/operationAPI'
+import { formatDate }  from '../../../lib/date';
 
 interface NotificationState {
   isOpen: boolean;
@@ -51,71 +52,6 @@ const formatErrorMessage = (error: any) => {
       }
   }
 }
-
-const formatDate = (value: any): string => {
-  if (!value) return '-';
-
-  console.log('Formatting date value:', value);
-  
-  if (value && typeof value === 'object' && 'seconds' in value) {
-    const seconds = Number(value.seconds);
-    const nanos = Number(value.nanos ?? 0); // 🔥 ВОТ ЭТО ГЛАВНОЕ
-
-    const timestamp = seconds * 1000 + Math.floor(nanos / 1_000_000);
-    const date = new Date(timestamp);
-
-    if (isNaN(date.getTime())) {
-      return 'Неверная дата';
-    }
-
-    return new Intl.DateTimeFormat('ru-RU', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }).format(date);
-  }
-
-  
-  if (typeof value === 'string') {
-  // Превращаем postgres timestamp в валидный ISO
-  const isoDate = value
-    .replace(' ', 'T')
-    + 'Z'; // или +03:00 если у тебя локальное время
-
-  const date = new Date(isoDate);
-
-  if (!isNaN(date.getTime())) {
-      return new Intl.DateTimeFormat('ru-RU', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      }).format(date);
-    }
-  }
-
-  
-  // Если это число (timestamp)
-  if (typeof value === 'number') {
-    const date = new Date(value);
-    if (!isNaN(date.getTime())) {
-      return new Intl.DateTimeFormat('ru-RU', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(date);
-    }
-  }
-  
-  return 'Неверный формат даты';
-};
 
 export default function OperationSection() {
   const [search, setSearch] = useState('')

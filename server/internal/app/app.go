@@ -16,6 +16,7 @@ import (
 
 type App struct {
 	GRPCServer *grpcapp.App
+	storage    *postgresql.Storage
 }
 
 func New(
@@ -38,11 +39,11 @@ func New(
 	reportService := reportservice.New(log, storage)
 
 	grpcApp := grpcapp.New(
-		log, 
-		vesselService, 
-		cargoTypeService, 
+		log,
+		vesselService,
+		cargoTypeService,
 		cargoService,
-		storageLocService, 
+		storageLocService,
 		operationService,
 		operCargoService,
 		reportService,
@@ -51,5 +52,11 @@ func New(
 
 	return &App{
 		GRPCServer: grpcApp,
+		storage:    storage,
 	}
+}
+
+func (a *App) Stop() {
+	a.GRPCServer.Stop()
+	a.storage.Close()
 }

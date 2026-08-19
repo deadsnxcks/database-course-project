@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	envLocal 	= "local"
-	envDev 		= "dev"
-	envProd 	= "prod"
+	envLocal = "local"
+	envDev   = "dev"
+	envProd  = "prod"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 	ctx := context.Background()
 	application := app.New(log, cfg.GRPC.Port, cfg.DBConnString, ctx)
 
-	go func () {
+	go func() {
 		application.GRPCServer.MustRun()
 	}()
 
@@ -34,9 +34,9 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
 
-	<- stop
-	application.GRPCServer.Stop()
-	log.Info("Gracefully stopped")	
+	<-stop
+	application.Stop()
+	log.Info("Gracefully stopped")
 }
 
 func setupLogger(env string) *slog.Logger {

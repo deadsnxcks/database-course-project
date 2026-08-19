@@ -3,16 +3,11 @@ package grpcclient
 import (
 	"log/slog"
 
-	vesselv1 "github.com/deadsnxcks/dbcp/protos/gen/go/vessel"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type Clients struct {
-	Vessel vesselv1.VesselServiceClient
-}
-
-func New(addr string, log *slog.Logger) (*Clients, error) {
+func New(addr string, log *slog.Logger) (*grpc.ClientConn, error) {
 	conn, err := grpc.NewClient(
 		addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -21,7 +16,5 @@ func New(addr string, log *slog.Logger) (*Clients, error) {
 		return nil, err
 	}
 
-	return &Clients{
-		Vessel: vesselv1.NewVesselServiceClient(conn),
-	}, nil
+	return conn, nil
 }

@@ -1,7 +1,5 @@
 .PHONY: up down down-v logs ps run-server run-gateway build \
-        migrate-up migrate-down gen-proto \
-        gen-report-proto gen-vessel-proto gen-cargotype-proto gen-cargo-proto \
-        gen-operation-proto gen-storageloc-proto gen-opercargo-proto
+        migrate-up migrate-down gen-proto
 
 -include .env
 export
