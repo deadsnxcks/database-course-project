@@ -1,3 +1,5 @@
+import { toServerDate } from '../lib/date'
+
 const BASE_URL = '/api/storageloc'
 
 /* =======================
@@ -9,8 +11,8 @@ export type StorageLocType = {
   cargoTypeId: number
   maxWeight: number
   maxVolume: number
-  cargoId?: number
-  dateOfPlacement?: string 
+  cargoId?: number | null
+  dateOfPlacement?: string | null
 }
 
 export type StorageLocCreate = {
@@ -27,7 +29,8 @@ export type StorageLocUpdate = {
 
 export type StorageLocUse = {
   cargoId: number
-  dateOfPlacement: string
+  /** Значение из <input type="datetime-local">, без часового пояса. */
+  dateOfPlacement?: string
 }
 
 /* =======================
@@ -61,136 +64,74 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
   return response.json() as Promise<T>
 }
 
+const json = (method: string, body?: unknown): RequestInit => ({
+  method,
+  headers: { 'Content-Type': 'application/json' },
+  body: body === undefined ? undefined : JSON.stringify(body),
+})
+
 /* =======================
    API
 ======================= */
 
+// Сервер отдаёт даты строками RFC3339 — конвертировать на приёме нечего.
+// Форматирование для показа живёт в компонентах (lib/date.ts).
 export const storageLocAPI = {
-  /* ---------- GET ---------- */
-
   list: async (): Promise<StorageLocType[]> => {
-  const resp = await fetch(BASE_URL)
-  const data = await handleResponse<any[]>(resp)
-  
-  // Преобразуй timestamp в строку
-  return data.map(item => ({
-      ...item,
-      dateOfPlacement: item.dateOfPlacement 
-        ? convertTimestampToString(item.dateOfPlacement)
-        : undefined
-    }))
+    const resp = await fetch(BASE_URL)
+
+    return handleResponse<StorageLocType[]>(resp)
   },
 
   get: async (id: number): Promise<StorageLocType> => {
     const resp = await fetch(`${BASE_URL}/${id}`)
-    const data = await handleResponse<any>(resp)
-    
-    return {
-      ...data,
-      dateOfPlacement: data.dateOfPlacement 
-        ? convertTimestampToString(data.dateOfPlacement)
-        : undefined
-    }
+
+    return handleResponse<StorageLocType>(resp)
   },
 
-  /* ---------- CREATE ---------- */
-
-  create: async (data: StorageLocCreate): Promise<void> => {
+  create: async (data: StorageLocCreate): Promise<{ id: number }> => {
     if (!data.cargoTypeId || data.cargoTypeId <= 0) {
       throw new Error('cargoTypeId обязателен')
     }
 
-    const resp = await fetch(BASE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
+    const resp = await fetch(BASE_URL, json('POST', data))
 
-    await handleResponse<void>(resp)
+    return handleResponse<{ id: number }>(resp)
   },
-
-  /* ---------- UPDATE ---------- */
 
   update: async (id: number, data: StorageLocUpdate): Promise<void> => {
-    const resp = await fetch(`${BASE_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
+    const resp = await fetch(`${BASE_URL}/${id}`, json('PUT', data))
 
     await handleResponse<void>(resp)
   },
-
-  /* ---------- DELETE ---------- */
 
   delete: async (id: number): Promise<void> => {
-    const resp = await fetch(`${BASE_URL}/${id}`, {
-      method: 'DELETE',
-    })
+    const resp = await fetch(`${BASE_URL}/${id}`, json('DELETE'))
 
     await handleResponse<void>(resp)
   },
-
-  /* ---------- USE ---------- */
 
   use: async (id: number, data: StorageLocUse): Promise<void> => {
     if (!data.cargoId || data.cargoId <= 0) {
       throw new Error('cargoId обязателен')
     }
 
-    const resp = await fetch(`${BASE_URL}/${id}/use`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
+    // Дата приводится к UTC здесь, а не в форме:
+    // одно место, через которое проходят все вызовы
+    const resp = await fetch(
+      `${BASE_URL}/${id}/use`,
+      json('POST', {
+        cargoId: data.cargoId,
+        dateOfPlacement: toServerDate(data.dateOfPlacement),
+      }),
+    )
 
     await handleResponse<void>(resp)
   },
-
-  /* ---------- RESET ---------- */
 
   reset: async (id: number): Promise<void> => {
-    const resp = await fetch(`${BASE_URL}/${id}/reset`, {
-      method: 'POST',
-    })
+    const resp = await fetch(`${BASE_URL}/${id}/reset`, json('POST'))
 
     await handleResponse<void>(resp)
   },
-}
-
-const convertTimestampToString = (timestamp: any): string => {
-  if (!timestamp) return ''
-  
-  try {
-    let date: Date
-    
-    if (typeof timestamp === 'string') {
-      date = new Date(timestamp)
-    } else if (timestamp && typeof timestamp === 'object' && 'seconds' in timestamp) {
-      // gRPC timestamp уже в UTC
-      const seconds = Number(timestamp.seconds)
-      const nanos = timestamp.nanos ? Number(timestamp.nanos) / 1000000 : 0
-      date = new Date(seconds * 1000 + nanos)
-    } else {
-      date = new Date(timestamp)
-    }
-    
-    if (isNaN(date.getTime())) {
-      return ''
-    }
-    
-    // Указываем UTC чтобы убрать смещение +10 часов
-    return new Intl.DateTimeFormat('ru-RU', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'UTC' // ← ВАЖНО!
-    }).format(date)
-    
-  } catch (error) {
-    console.error('Error converting timestamp:', error, timestamp)
-    return ''
-  }
 }

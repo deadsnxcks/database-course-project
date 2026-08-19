@@ -17,12 +17,9 @@ export default function UseStorageLocForm({ onSubmit, onCancel }: UseStorageLocF
       return
     }
 
-
-    const dateWithSeconds = dateOfPlacement + ':00Z';
-
     const data = {
       cargoId: Number(cargoId),
-      dateOfPlacement: dateWithSeconds,
+      dateOfPlacement,
     }
 
     if (onSubmit) onSubmit(data)
@@ -38,7 +35,7 @@ export default function UseStorageLocForm({ onSubmit, onCancel }: UseStorageLocF
         <input
           type="number"
           value={cargoId}
-          onChange={(e) => setCargoId(e.target.valueAsNumber)}
+          onChange={(e) => setCargoId(e.target.value === '' ? '' : e.target.valueAsNumber)}
           className="w-full border rounded px-2 py-1"
         />
       </div>
