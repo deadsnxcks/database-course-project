@@ -1,2 +1,5 @@
 .env
 config/local.yaml
+# конфиги с реальными строками подключения
+server/config/local.yaml
+gateway/config/local.yaml

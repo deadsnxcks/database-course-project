@@ -1,0 +1,132 @@
+package vessel
+
+import (
+	"context"
+	vesselv1 "github.com/deadsnxcks/dbcp/protos/gen/go/vessel"
+	"github.com/deadsnxcks/dbcp/server/internal/domain/models"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
+
+type Vessel interface {
+	List(ctx context.Context) ([]models.Vessel, error)
+	Get(ctx context.Context, id int64) (models.Vessel, error)
+	Create(ctx context.Context, vessel models.Vessel) (int64, error)
+	Delete(ctx context.Context, id int64) error
+	Update(
+		ctx context.Context,
+		id int64,
+		title *string,
+		vesselType *string,
+		maxLoad *float64,
+	) error
+}
+
+type serverAPI struct {
+	vesselv1.UnimplementedVesselServiceServer
+	vessel Vessel
+}
+
+func Register(gRPCServer *grpc.Server, vessel Vessel) {
+	vesselv1.RegisterVesselServiceServer(gRPCServer, &serverAPI{vessel: vessel})
+}
+
+func (s *serverAPI) List(
+	ctx context.Context,
+	lv *vesselv1.ListRequest,
+) (*vesselv1.ListResponse, error) {
+	vessels, err := s.vessel.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := make([]*vesselv1.Vessel, 0, len(vessels))
+	for _, v := range vessels {
+		resp = append(resp, toProtoVessel(v))
+	}
+
+	return &vesselv1.ListResponse{Vessels: resp}, nil
+}
+
+func (s *serverAPI) Get(
+	ctx context.Context,
+	gv *vesselv1.GetRequest,
+) (*vesselv1.GetResponse, error) {
+	if gv.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
+	}
+
+	vessel, err := s.vessel.Get(ctx, gv.GetId())
+	if err != nil {
+		return nil, err
+	}
+
+	return &vesselv1.GetResponse{Vessel: toProtoVessel(vessel)}, nil
+}
+
+func (s *serverAPI) Create(
+	ctx context.Context,
+	cv *vesselv1.CreateRequest,
+) (*vesselv1.CreateResponse, error) {
+	if cv.GetTitle() == "" {
+		return nil, status.Error(codes.InvalidArgument, "title is required")
+	}
+	if cv.GetVesselType() == "" {
+		return nil, status.Error(codes.InvalidArgument, "vessel type is required")
+	}
+	if cv.GetMaxLoad() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "max load must be greater than 0")
+	}
+
+	id, err := s.vessel.Create(ctx, models.Vessel{
+		Title:      cv.GetTitle(),
+		VesselType: cv.GetVesselType(),
+		MaxLoad:    cv.GetMaxLoad(),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &vesselv1.CreateResponse{Id: id}, nil
+}
+
+func (s *serverAPI) Update(
+	ctx context.Context,
+	uv *vesselv1.UpdateRequest,
+) (*vesselv1.UpdateResponse, error) {
+	if uv.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
+	}
+
+	if err := s.vessel.Update(ctx, uv.GetId(), uv.Title, uv.VesselType, uv.MaxLoad); err != nil {
+		return nil, err
+	}
+
+	return &vesselv1.UpdateResponse{}, nil
+}
+
+func (s *serverAPI) Delete(
+	ctx context.Context,
+	dv *vesselv1.DeleteRequest,
+) (*vesselv1.DeleteResponse, error) {
+	if dv.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "id is required")
+	}
+
+	if err := s.vessel.Delete(ctx, dv.GetId()); err != nil {
+		return nil, err
+	}
+
+	return &vesselv1.DeleteResponse{}, nil
+}
+
+func toProtoVessel(v models.Vessel) *vesselv1.Vessel {
+	return &vesselv1.Vessel{
+		Id:         v.ID,
+		Title:      v.Title,
+		VesselType: v.VesselType,
+		MaxLoad:    v.MaxLoad,
+	}
+}

@@ -1,0 +1,5 @@
+env: "local"
+db_conn_string: "postgres://postgres:password@postgres:5432/postgres?sslmode=disable"
+grpc:
+  port: 44044
+  timeout: 5s
